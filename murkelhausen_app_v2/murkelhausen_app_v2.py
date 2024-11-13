@@ -1,39 +1,79 @@
-"""Welcome to Reflex! This file outlines the steps to create a basic app."""
+from datetime import date
 
 import reflex as rx
 
-from rxconfig import config
+from murkelhausen_app_v2.backend import MuellTermine, get_muelltermine_for_this_week, get_muelltermine_for_home
+
+
+class Termin(rx.Base):
+    art: str
+    datum: str
+    delta_days: int
+
+    @classmethod
+    def from_muelltermine(cls, muelltermine: MuellTermine) -> "Termin":
+        return cls(
+            art=muelltermine.art,
+            datum=muelltermine.day,
+            delta_days=muelltermine.delta_days,
+        )
+
+
+def get_termine():
+    termine = get_muelltermine_for_home()
+    return [Termin.from_muelltermine(termin) for termin in termine]
 
 
 class State(rx.State):
-    """The app state."""
-
-    ...
+    termine: list[Termin] = get_termine()
 
 
-def index() -> rx.Component:
-    # Welcome Page (Index)
-    return rx.container(
-        rx.color_mode.button(position="top-right"),
-        rx.vstack(
-            rx.heading("Welcome to Reflex!", size="9"),
-            rx.text(
-                "Get started by editing ",
-                rx.code(f"{config.app_name}/{config.app_name}.py"),
-                size="5",
-            ),
-            rx.link(
-                rx.button("Check out our docs!"),
-                href="https://reflex.dev/docs/getting-started/introduction/",
-                is_external=True,
-            ),
-            spacing="5",
-            justify="center",
-            min_height="85vh",
-        ),
-        rx.logo(),
+def show_termin(termin: Termin):
+    """Show a user in a table row."""
+    color = rx.cond(
+        termin.delta_days < 2,
+        rx.color("yellow"),
+        rx.color("gray"),
+    )
+
+    return rx.table.row(
+        rx.table.cell(termin.art),
+        rx.table.cell(termin.datum),
+        rx.table.cell(termin.delta_days),
+        bg=color,
+        style={"_hover": {"bg": color, "opacity": 0.5}},
+        align="center",
     )
 
 
-app = rx.App()
+def index() -> rx.Component:
+    return rx.vstack(
+        rx.table.root(
+            rx.table.header(
+                rx.table.row(
+                    rx.table.column_header_cell("Tonne"),
+                    rx.table.column_header_cell("Datum"),
+                    rx.table.column_header_cell("Tage"),
+                ),
+            ),
+            rx.table.body(
+                rx.foreach(
+                    State.termine, show_termin
+                ),
+            ),
+            variant="surface",
+            size="3",
+            width="100%",
+        ),
+        align="center",
+        width="100%",
+    )
+
+
+app = rx.App(
+    theme=rx.theme(
+        radius="full", accent_color="grass"
+    ),
+)
+
 app.add_page(index)
