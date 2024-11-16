@@ -12,6 +12,7 @@ pydantic = "^2.9.2"
 requests = "^2.32.3"
 cachetools = "^5.5.0"
 babel = "^2.16.0"
+beautifulsoup4 = "^4.12.3"
 
 
 [tool.poetry.group.dev.dependencies]

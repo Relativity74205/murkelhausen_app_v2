@@ -2,7 +2,7 @@ from datetime import date
 
 import reflex as rx
 
-from murkelhausen_app_v2.backend import MuellTermine, get_muelltermine_for_this_week, get_muelltermine_for_home
+from murkelhausen_app_v2.backend import mheg, fussballde
 from murkelhausen_app_v2.config import config
 from murkelhausen_app_v2.templates.template import template
 
@@ -13,7 +13,7 @@ class Termin(rx.Base):
     delta_days: int
 
     @classmethod
-    def from_muelltermine(cls, muelltermine: MuellTermine) -> "Termin":
+    def from_muelltermine(cls, muelltermine: mheg.MuellTermine) -> "Termin":
         return cls(
             art=muelltermine.art,
             datum=muelltermine.day,
@@ -22,16 +22,18 @@ class Termin(rx.Base):
 
 
 def get_termine():
-    termine = get_muelltermine_for_home()
+    termine = mheg.get_muelltermine_for_home()
     return [Termin.from_muelltermine(termin) for termin in termine]
 
 
 class State(rx.State):
-    termine: list[Termin] = get_termine()
+    termine: list[Termin]
+
+    def update_termine(self):
+        self.termine = get_termine()
 
 
 def show_termin(termin: Termin):
-    """Show a user in a table row."""
     color = rx.cond(
         termin.delta_days <= config.mheg.alert_days,
         rx.color("yellow"),
@@ -48,7 +50,7 @@ def show_termin(termin: Termin):
     )
 
 
-@template(route="/mheg", title="MHEG", icon="calendar")
+@template(route="/mheg", title="MHEG", icon="calendar", on_load=State.update_termine)
 def mheg() -> rx.Component:
     return rx.vstack(
         rx.table.root(
