@@ -109,6 +109,5 @@ def fussball() -> rx.Component:
             variant="surface",
             size="3",
         ),
-        align="center",
         width="100%",
     )

@@ -13,6 +13,7 @@ BASE_URL = "https://hnr-handball.liga.nu/"
 class State(rx.State):
     d_jugend: list[handballnordrhein.HandballGame]
 
+    @rx.event
     def update_termine(self):
         self.d_jugend = handballnordrhein.get_djk_saarn_d_jugend()
 
@@ -55,7 +56,7 @@ def show_table_header() -> rx.Component:
     )
 
 
-@template(route="/handball", title="DJK Saarn", icon="trophy", on_load=State.update_termine)
+@template(route="/handball", title="DJK Saarn", icon="trophy")
 def handball() -> rx.Component:
     return rx.vstack(
         rx.heading("DJK Saarn D-Jugend"),
@@ -66,9 +67,9 @@ def handball() -> rx.Component:
                     State.d_jugend, show_game
                 ),
             ),
+            on_mount=State.update_termine,
             variant="surface",
             size="3",
         ),
-        align="center",
         width="100%",
     )
