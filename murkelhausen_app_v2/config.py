@@ -9,8 +9,4 @@ class Config(BaseModel):
     mheg: Mheg
 
 
-config = Config(
-    mheg=Mheg(
-        alert_days=5
-    )
-)
+config = Config(mheg=Mheg(alert_days=5))

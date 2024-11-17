@@ -1,4 +1,5 @@
 """Sidebar component for the app."""
+
 import logging
 
 from murkelhausen_app_v2 import styles

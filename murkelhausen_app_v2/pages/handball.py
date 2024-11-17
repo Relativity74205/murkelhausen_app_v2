@@ -20,7 +20,7 @@ class State(rx.State):
 
 def show_game(game: handballnordrhein.HandballGame) -> rx.Component:
     color = rx.cond(
-        game.game_date_formatted == date.today(),
+        game.game_date == date.today(),
         rx.color("yellow"),
         rx.color("gray"),
     )
@@ -33,7 +33,11 @@ def show_game(game: handballnordrhein.HandballGame) -> rx.Component:
         rx.table.cell(
             rx.cond(
                 game.link_to_spielbericht is not None and game.result != "WH",
-                rx.link(game.result, href=BASE_URL + game.link_to_spielbericht, is_external=True),
+                rx.link(
+                    game.result,
+                    href=BASE_URL + game.link_to_spielbericht,
+                    is_external=True,
+                ),
                 rx.text(game.result),
             ),
             align="center",
@@ -63,9 +67,7 @@ def handball() -> rx.Component:
         rx.table.root(
             show_table_header(),
             rx.table.body(
-                rx.foreach(
-                    State.d_jugend, show_game
-                ),
+                rx.foreach(State.d_jugend, show_game),
             ),
             on_mount=State.update_termine,
             variant="surface",

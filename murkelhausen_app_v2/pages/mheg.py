@@ -23,7 +23,10 @@ class State(rx.State):
     termine: list[Termin]
 
     def update_termine(self):
-        self.termine = [Termin.from_muelltermine(termin) for termin in mheg.get_muelltermine_for_home()]
+        self.termine = [
+            Termin.from_muelltermine(termin)
+            for termin in mheg.get_muelltermine_for_home()
+        ]
 
 
 def show_termin(termin: Termin):
@@ -55,9 +58,7 @@ def mheg_page() -> rx.Component:
                 ),
             ),
             rx.table.body(
-                rx.foreach(
-                    State.termine, show_termin
-                ),
+                rx.foreach(State.termine, show_termin),
             ),
             variant="surface",
             size="3",

@@ -49,40 +49,16 @@ times = {
         TimeBlocks.Fourth: "10:45 - 11:30",
         TimeBlocks.Fifth: "11:45 - 12:30",
         TimeBlocks.Sixth: "12:30 - 13:15",
-    }
+    },
 }
 
 
 timetables = {
     SchoolVisitors.Erik: {
-        TimeBlocks.First: [
-            "x",
-            "x",
-            None,
-            "x",
-            "x"
-        ],
-        TimeBlocks.Second: [
-            "x",
-            "x",
-            "x",
-            "x",
-            "x"
-        ],
-        TimeBlocks.Third: [
-            "x",
-            "x",
-            "x",
-            "Englisch",
-            "Englisch"
-        ],
-        TimeBlocks.Fourth: [
-            "x",
-            "x",
-            "x",
-            "x",
-            "Englisch"
-        ],
+        TimeBlocks.First: ["x", "x", None, "x", "x"],
+        TimeBlocks.Second: ["x", "x", "x", "x", "x"],
+        TimeBlocks.Third: ["x", "x", "x", "Englisch", "Englisch"],
+        TimeBlocks.Fourth: ["x", "x", "x", "x", "Englisch"],
         TimeBlocks.Fifth: [
             "Sport",
             "x",
@@ -98,9 +74,7 @@ timetables = {
             None,
         ],
     },
-    SchoolVisitors.Andrea: {
-
-    },
+    SchoolVisitors.Andrea: {},
     SchoolVisitors.Mattis: {
         "odd": {
             TimeBlocks.First: [
@@ -123,7 +97,7 @@ timetables = {
                 "Informatik",
                 "Deutsch",
                 None,
-            ]
+            ],
         },
         "even": {
             TimeBlocks.First: [
@@ -146,7 +120,7 @@ timetables = {
                 "Geschichte",
                 "Kunst",
                 None,
-            ]
+            ],
         },
     },
 }
@@ -179,11 +153,31 @@ def show_block(subject_list: list[str | None], time: str) -> rx.Component:
 
     return rx.table.row(
         rx.table.cell(time, align="right", bg=color),
-        rx.table.cell(_parse_subject_name(subject_list[0]), bg=_get_subject_color(subject_list[0]), align="center"),
-        rx.table.cell(_parse_subject_name(subject_list[1]), bg=_get_subject_color(subject_list[1]), align="center"),
-        rx.table.cell(_parse_subject_name(subject_list[2]), bg=_get_subject_color(subject_list[2]), align="center"),
-        rx.table.cell(_parse_subject_name(subject_list[3]), bg=_get_subject_color(subject_list[3]), align="center"),
-        rx.table.cell(_parse_subject_name(subject_list[4]), bg=_get_subject_color(subject_list[4]), align="center"),
+        rx.table.cell(
+            _parse_subject_name(subject_list[0]),
+            bg=_get_subject_color(subject_list[0]),
+            align="center",
+        ),
+        rx.table.cell(
+            _parse_subject_name(subject_list[1]),
+            bg=_get_subject_color(subject_list[1]),
+            align="center",
+        ),
+        rx.table.cell(
+            _parse_subject_name(subject_list[2]),
+            bg=_get_subject_color(subject_list[2]),
+            align="center",
+        ),
+        rx.table.cell(
+            _parse_subject_name(subject_list[3]),
+            bg=_get_subject_color(subject_list[3]),
+            align="center",
+        ),
+        rx.table.cell(
+            _parse_subject_name(subject_list[4]),
+            bg=_get_subject_color(subject_list[4]),
+            align="center",
+        ),
         bg=color,
         opacity=opacity,
         style={"_hover": {"opacity": 0.5}},
@@ -205,11 +199,23 @@ def show_mattis_timetable(timetable_mattis: dict, times_mattis: dict) -> rx.Comp
             ),
         ),
         rx.table.body(
-            show_block(timetable_mattis.get(TimeBlocks.First, []), times_mattis[TimeBlocks.First]),
-            show_block(timetable_mattis.get(TimeBlocks.Second, []), times_mattis[TimeBlocks.Second]),
-            show_block(timetable_mattis.get(TimeBlocks.Third, []), times_mattis[TimeBlocks.Third]),
+            show_block(
+                timetable_mattis.get(TimeBlocks.First, []),
+                times_mattis[TimeBlocks.First],
+            ),
+            show_block(
+                timetable_mattis.get(TimeBlocks.Second, []),
+                times_mattis[TimeBlocks.Second],
+            ),
+            show_block(
+                timetable_mattis.get(TimeBlocks.Third, []),
+                times_mattis[TimeBlocks.Third],
+            ),
             show_block(lunch_break, times_mattis[TimeBlocks.LunchBreak]),
-            show_block(timetable_mattis.get(TimeBlocks.Fourth, []), times_mattis[TimeBlocks.Fourth]),
+            show_block(
+                timetable_mattis.get(TimeBlocks.Fourth, []),
+                times_mattis[TimeBlocks.Fourth],
+            ),
         ),
         variant="surface",
         size="3",
@@ -229,12 +235,24 @@ def show_erik_timetable(timetable_erik: dict, times_erik: dict) -> rx.Component:
             ),
         ),
         rx.table.body(
-            show_block(timetable_erik.get(TimeBlocks.First, []), times_erik[TimeBlocks.First]),
-            show_block(timetable_erik.get(TimeBlocks.Second, []), times_erik[TimeBlocks.Second]),
-            show_block(timetable_erik.get(TimeBlocks.Third, []), times_erik[TimeBlocks.Third]),
-            show_block(timetable_erik.get(TimeBlocks.Fourth, []), times_erik[TimeBlocks.Fourth]),
-            show_block(timetable_erik.get(TimeBlocks.Fifth, []), times_erik[TimeBlocks.First]),
-            show_block(timetable_erik.get(TimeBlocks.Sixth, []), times_erik[TimeBlocks.Sixth]),
+            show_block(
+                timetable_erik.get(TimeBlocks.First, []), times_erik[TimeBlocks.First]
+            ),
+            show_block(
+                timetable_erik.get(TimeBlocks.Second, []), times_erik[TimeBlocks.Second]
+            ),
+            show_block(
+                timetable_erik.get(TimeBlocks.Third, []), times_erik[TimeBlocks.Third]
+            ),
+            show_block(
+                timetable_erik.get(TimeBlocks.Fourth, []), times_erik[TimeBlocks.Fourth]
+            ),
+            show_block(
+                timetable_erik.get(TimeBlocks.Fifth, []), times_erik[TimeBlocks.First]
+            ),
+            show_block(
+                timetable_erik.get(TimeBlocks.Sixth, []), times_erik[TimeBlocks.Sixth]
+            ),
         ),
         variant="surface",
         size="3",
@@ -260,11 +278,19 @@ def show_mattis() -> rx.Component:
     return rx.vstack(
         rx.spacer(),
         rx.heading("Mattis' timetable"),
-        rx.text(f"Aktuelle Woche (Kalenderwoche {current_week}; {start_of_week_string}-{end_of_week_string})"),
-        show_mattis_timetable(timetables[SchoolVisitors.Mattis][week_type], times_mattis),
+        rx.text(
+            f"Aktuelle Woche (Kalenderwoche {current_week}; {start_of_week_string}-{end_of_week_string})"
+        ),
+        show_mattis_timetable(
+            timetables[SchoolVisitors.Mattis][week_type], times_mattis
+        ),
         rx.spacer(spacing="2"),
-        rx.text(f"Nächste Woche (Kalenderwoche {current_week + 1}; {next_start_of_week_string}-{next_end_of_week_string})"),
-        show_mattis_timetable(timetables[SchoolVisitors.Mattis][other_week_type], times_mattis),
+        rx.text(
+            f"Nächste Woche (Kalenderwoche {current_week + 1}; {next_start_of_week_string}-{next_end_of_week_string})"
+        ),
+        show_mattis_timetable(
+            timetables[SchoolVisitors.Mattis][other_week_type], times_mattis
+        ),
     )
 
 
@@ -290,9 +316,15 @@ def show_andrea() -> rx.Component:
 def school_page() -> rx.Component:
     return rx.tabs.root(
         rx.tabs.list(
-            rx.tabs.trigger(SchoolVisitors.Mattis.capitalize(), value=SchoolVisitors.Mattis),
-            rx.tabs.trigger(SchoolVisitors.Erik.capitalize(), value=SchoolVisitors.Erik),
-            rx.tabs.trigger(SchoolVisitors.Andrea.capitalize(), value=SchoolVisitors.Andrea),
+            rx.tabs.trigger(
+                SchoolVisitors.Mattis.capitalize(), value=SchoolVisitors.Mattis
+            ),
+            rx.tabs.trigger(
+                SchoolVisitors.Erik.capitalize(), value=SchoolVisitors.Erik
+            ),
+            rx.tabs.trigger(
+                SchoolVisitors.Andrea.capitalize(), value=SchoolVisitors.Andrea
+            ),
         ),
         rx.tabs.content(
             show_mattis(),

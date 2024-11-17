@@ -35,9 +35,18 @@ class State(rx.State):
     speldorf: list[FussballGame]
 
     def update_termine(self):
-        self.f1_junioren = [FussballGame.from_dict(game) for game in fussballde.get_erik_f1_junioren_next_games()]
-        self.f3_junioren = [FussballGame.from_dict(game) for game in fussballde.get_erik_f3_junioren_next_games()]
-        self.speldorf = [FussballGame.from_dict(game) for game in fussballde.get_speldorf_next_home_games()]
+        self.f1_junioren = [
+            FussballGame.from_dict(game)
+            for game in fussballde.get_erik_f1_junioren_next_games()
+        ]
+        self.f3_junioren = [
+            FussballGame.from_dict(game)
+            for game in fussballde.get_erik_f3_junioren_next_games()
+        ]
+        self.speldorf = [
+            FussballGame.from_dict(game)
+            for game in fussballde.get_speldorf_next_home_games()
+        ]
 
 
 def show_game(game: FussballGame) -> rx.Component:
@@ -73,16 +82,16 @@ def show_table_header() -> rx.Component:
     )
 
 
-@template(route="/fussball", title="VFB Speldorf", icon="trophy", on_load=State.update_termine)
+@template(
+    route="/fussball", title="VFB Speldorf", icon="trophy", on_load=State.update_termine
+)
 def fussball() -> rx.Component:
     return rx.vstack(
         rx.heading("VFB Speldorf F1-Junioren"),
         rx.table.root(
             show_table_header(),
             rx.table.body(
-                rx.foreach(
-                    State.f1_junioren, show_game
-                ),
+                rx.foreach(State.f1_junioren, show_game),
             ),
             variant="surface",
             size="3",
@@ -91,9 +100,7 @@ def fussball() -> rx.Component:
         rx.table.root(
             show_table_header(),
             rx.table.body(
-                rx.foreach(
-                    State.f3_junioren, show_game
-                ),
+                rx.foreach(State.f3_junioren, show_game),
             ),
             variant="surface",
             size="3",
@@ -102,9 +109,7 @@ def fussball() -> rx.Component:
         rx.table.root(
             show_table_header(),
             rx.table.body(
-                rx.foreach(
-                    State.speldorf, show_game
-                ),
+                rx.foreach(State.speldorf, show_game),
             ),
             variant="surface",
             size="3",

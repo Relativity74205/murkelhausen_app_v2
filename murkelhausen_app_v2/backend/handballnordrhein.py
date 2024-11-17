@@ -52,7 +52,9 @@ def parse_games(html_content: str) -> list[HandballGame]:
 
         game = HandballGame(
             game_date=game_date,
-            game_date_formatted=format_date(game_date, format="EEE, d.M.yyyy", locale="de_DE"),
+            game_date_formatted=format_date(
+                game_date, format="EEE, d.M.yyyy", locale="de_DE"
+            ),
             time=time,
             time_original=time_original,
             home_team=home_team,
