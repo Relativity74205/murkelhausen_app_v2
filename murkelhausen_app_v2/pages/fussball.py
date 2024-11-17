@@ -1,11 +1,9 @@
-from calendar import day_abbr
-from datetime import date, datetime, timedelta
+from datetime import date
 
 import reflex as rx
 from babel.dates import format_date
 
-from murkelhausen_app_v2.backend import mheg, fussballde
-from murkelhausen_app_v2.config import config
+from murkelhausen_app_v2.backend import fussballde
 from murkelhausen_app_v2.templates.template import template
 
 

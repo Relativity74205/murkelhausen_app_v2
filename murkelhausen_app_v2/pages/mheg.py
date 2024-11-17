@@ -1,8 +1,6 @@
-from datetime import date
-
 import reflex as rx
 
-from murkelhausen_app_v2.backend import mheg, fussballde
+from murkelhausen_app_v2.backend import mheg
 from murkelhausen_app_v2.config import config
 from murkelhausen_app_v2.templates.template import template
 
@@ -21,16 +19,11 @@ class Termin(rx.Base):
         )
 
 
-def get_termine():
-    termine = mheg.get_muelltermine_for_home()
-    return [Termin.from_muelltermine(termin) for termin in termine]
-
-
 class State(rx.State):
     termine: list[Termin]
 
     def update_termine(self):
-        self.termine = get_termine()
+        self.termine = [Termin.from_muelltermine(termin) for termin in mheg.get_muelltermine_for_home()]
 
 
 def show_termin(termin: Termin):
@@ -51,7 +44,7 @@ def show_termin(termin: Termin):
 
 
 @template(route="/mheg", title="MHEG", icon="calendar", on_load=State.update_termine)
-def mheg() -> rx.Component:
+def mheg_page() -> rx.Component:
     return rx.vstack(
         rx.table.root(
             rx.table.header(

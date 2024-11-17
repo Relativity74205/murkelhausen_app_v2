@@ -1,8 +1,6 @@
-import logging
 from datetime import datetime
 
 import requests
-from babel.dates import format_date
 from bs4 import BeautifulSoup
 
 
@@ -22,9 +20,9 @@ def parse_next_games(html_content: str) -> list[dict]:
     while next_row is not None:
         game = {}
         meta = next_row.findNext("td").text.split(" | ")
-        gamedate, time = meta[0].split(",")[1].strip().split(" - ")
+        game_date, time = meta[0].split(",")[1].strip().split(" - ")
 
-        game["game_date"] = datetime.strptime(gamedate, "%d.%m.%Y").date()
+        game["game_date"] = datetime.strptime(game_date, "%d.%m.%Y").date()
         # creates a date object from the string
         game["time"] = time
         game["game_type"] = meta[1].strip()
