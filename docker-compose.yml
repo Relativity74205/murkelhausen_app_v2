@@ -5,7 +5,7 @@ services:
     container_name: murkelhausen2
     restart: always
     ports:
-      - "3000:3000"
+      - "3333:3000"
     hostname: murkel2
 #    environment:
 #      - POSTGRES_USER=${POSTGRES_USER}
