@@ -1,7 +1,7 @@
 import os
 import json
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, UTC
 from enum import StrEnum, auto
 
 from github import Github, Auth, Repository
@@ -91,7 +91,7 @@ def get_commit_messages_since_tag(
 ) -> list[str]:
     if last_tag_datetime is None:
         commits_since_tag = repo.get_commits()
-        last_tag_datetime = datetime.fromtimestamp(0)
+        last_tag_datetime = datetime.fromtimestamp(0, tz=UTC)
     else:
         commits_since_tag = repo.get_commits(since=last_tag_datetime)
     return [
