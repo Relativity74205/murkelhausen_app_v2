@@ -29,3 +29,7 @@ docker push ghcr.io/relativity74205/murkel_app2:0.1.0
 - [ ] Dockerfile
   - [ ] get requirements.txt from poetry
   - [ ] write docker build script (local version dump and deploy, only major versions, local push)
+- [ ] create overview page
+- [ ] migrate old pages
+- [ ] openAI Integration
+  - [ ] voice! 
