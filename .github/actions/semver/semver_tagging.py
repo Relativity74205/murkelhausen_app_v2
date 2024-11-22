@@ -91,6 +91,7 @@ def get_commit_messages_since_tag(
 ) -> list[str]:
     if last_tag_datetime is None:
         commits_since_tag = repo.get_commits()
+        last_tag_datetime = datetime.fromtimestamp(0)
     else:
         commits_since_tag = repo.get_commits(since=last_tag_datetime)
     return [
