@@ -88,6 +88,11 @@ def show_table_header() -> rx.Component:
 def fussball() -> rx.Component:
     return rx.vstack(
         rx.heading("VFB Speldorf F1-Junioren"),
+        rx.link(
+            "Link",
+            href="https://www.fussball.de/mannschaft/vfb-speldorf-vfb-speldorf-niederrhein/-/saison/2425/team-id/011MI9USJ8000000VTVG0001VTR8C1K7#!/",
+            is_external=True,
+        ),
         rx.table.root(
             show_table_header(),
             rx.table.body(
@@ -97,6 +102,11 @@ def fussball() -> rx.Component:
             size="3",
         ),
         rx.heading("VFB Speldorf F3-Junioren"),
+        rx.link(
+            "Link",
+            href="https://www.fussball.de/mannschaft/vfb-speldorf-iii-vfb-speldorf-niederrhein/-/saison/2425/team-id/02QRA8CDA4000000VS5489B2VUEKSRPC#!/",
+            is_external=True,
+        ),
         rx.table.root(
             show_table_header(),
             rx.table.body(
@@ -105,7 +115,12 @@ def fussball() -> rx.Component:
             variant="surface",
             size="3",
         ),
-        rx.heading("VFB Speldorf"),
+        rx.heading("VFB Speldorf Heimspiele"),
+        rx.link(
+            "Link",
+            href="https://www.fussball.de/verein/vfb-speldorf-niederrhein/-/id/00ES8GN8VS000030VV0AG08LVUPGND5I#!/",
+            is_external=True,
+        ),
         rx.table.root(
             show_table_header(),
             rx.table.body(

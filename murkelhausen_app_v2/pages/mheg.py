@@ -46,7 +46,7 @@ def show_termin(termin: Termin):
     )
 
 
-@template(route="/mheg", title="MHEG", icon="biohazard", on_load=State.update_termine)
+@template(route="/mheg", title="MHEG", icon="biohazard")
 def mheg_page() -> rx.Component:
     return rx.vstack(
         rx.table.root(
@@ -61,6 +61,7 @@ def mheg_page() -> rx.Component:
                 rx.foreach(State.termine, show_termin),
             ),
             variant="surface",
+            on_mount=State.update_termine,
             size="3",
         ),
         width="100%",

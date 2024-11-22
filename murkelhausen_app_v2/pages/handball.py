@@ -7,15 +7,17 @@ from murkelhausen_app_v2.backend.mheg import BASE_URL
 from murkelhausen_app_v2.templates.template import template
 
 
-BASE_URL = "https://hnr-handball.liga.nu/"
-
-
 class State(rx.State):
     d_jugend: list[handballnordrhein.HandballGame]
+    erste_herren: list[handballnordrhein.HandballGame]
 
     @rx.event
-    def update_termine(self):
+    def update_termine_d_jugend(self):
         self.d_jugend = handballnordrhein.get_djk_saarn_d_jugend()
+
+    @rx.event
+    def update_termine_erste_herren(self):
+        self.erste_herren = handballnordrhein.get_djk_saarn_erste_herren()
 
 
 def show_game(game: handballnordrhein.HandballGame) -> rx.Component:
@@ -60,18 +62,68 @@ def show_table_header() -> rx.Component:
     )
 
 
-@template(route="/handball", title="DJK Saarn", icon="trophy")
-def handball() -> rx.Component:
+def show_d_jugend() -> rx.Component:
     return rx.vstack(
         rx.heading("DJK Saarn D-Jugend"),
+        rx.link(
+            "Zum Handballverband",
+            href=handballnordrhein.get_d_jugend_url(),
+            is_external=True,
+        ),
         rx.table.root(
             show_table_header(),
             rx.table.body(
                 rx.foreach(State.d_jugend, show_game),
             ),
-            on_mount=State.update_termine,
+            on_mount=State.update_termine_d_jugend,
             variant="surface",
             size="3",
         ),
         width="100%",
+    )
+
+
+def show_erste_herren() -> rx.Component:
+    return rx.vstack(
+        rx.heading("DJK Saarn 1. Herren"),
+        rx.link(
+            "Zum Handballverband",
+            href=handballnordrhein.get_erste_herren(),
+            is_external=True,
+        ),
+        rx.table.root(
+            show_table_header(),
+            rx.table.body(
+                rx.foreach(State.erste_herren, show_game),
+            ),
+            on_mount=State.update_termine_erste_herren,
+            variant="surface",
+            size="3",
+        ),
+        width="100%",
+    )
+
+
+@template(route="/handball", title="DJK Saarn", icon="trophy")
+def handball() -> rx.Component:
+    return rx.tabs.root(
+        rx.tabs.list(
+            rx.tabs.trigger(
+                "D-Jugend",
+                value="d_jugend",
+            ),
+            rx.tabs.trigger(
+                "1. Herren",
+                value="herren",
+            ),
+        ),
+        rx.tabs.content(
+            show_d_jugend(),
+            value="d_jugend",
+        ),
+        rx.tabs.content(
+            show_erste_herren(),
+            value="herren",
+        ),
+        default_value="d_jugend",
     )
