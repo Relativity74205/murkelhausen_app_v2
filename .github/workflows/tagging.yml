@@ -1,0 +1,57 @@
+on: [workflow_dispatch]
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    name: A tagging job
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Semver
+        uses: ./.github/actions/semver
+        id: semver
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get the next tag
+        run: echo "The next tag is ${{ steps.semver.outputs.next_tag }}"
+      - name: Get the delta changelog
+        run: echo 'The changelog delta is ${{ steps.semver.outputs.changelog_delta }}'
+      - name: write tag to file for testing
+        id: write_tag
+        if: steps.semver.outputs.next_tag != ''
+        run: |
+          rm semver_result.json  # has to be removed, otherwise git add might cause problems if pyproject.toml and docker-compose.yml is not changed
+          sed -i "s/version = \".*\"/version = \"${{ steps.semver.outputs.next_tag }}\"/g" pyproject.toml
+          sed -i "/image:/ s/:[^:]*$/:${{ steps.semver.outputs.next_tag }}/" docker-compose.yml
+          git config --local user.email "foo@bar.com"
+          git config --local user.name "github-actions[bot]"
+          git add pyproject.toml docker-compose.yml
+          git commit -m "chore: update pyproject.toml and docker-compose.yml" --allow-empty
+          git push
+          echo "NEW_COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+      - name: Test
+        run: echo $NEW_COMMIT_SHA
+      - name: Create tag
+        uses: actions/github-script@v5
+        if: steps.semver.outputs.next_tag != ''
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ steps.semver.outputs.next_tag }}',
+              sha: '${{ env.NEW_COMMIT_SHA }}'
+            })
+      - name: Create Release
+        id: create_release
+        if: steps.semver.outputs.next_tag != ''
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.semver.outputs.next_tag }}
+          generateReleaseNotes: true
+          draft: false
+          prerelease: false
+          makeLatest: true
+          token: ${{ secrets.PAT }}  # This token must have repo permissions and we cannot use GITHUB_TOKEN as it does not trigger the release event https://stackoverflow.com/questions/69063452/github-actions-on-release-created-workflow-trigger-not-working

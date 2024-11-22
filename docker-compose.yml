@@ -1,0 +1,18 @@
+version: '3'
+services:
+  murkel2:
+    image: ghcr.io/relativity74205/murkel_app2:0.1.0
+    container_name: murkelhausen2
+    restart: always
+    ports:
+      - "3000:3000"
+    hostname: murkel2
+#    environment:
+#      - POSTGRES_USER=${POSTGRES_USER}
+#      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+#      - POSTGRES_DBNAME=${POSTGRES_DBNAME}
+#      - DJANGO__SECRET_KEY=${DJANGO__SECRET_KEY}
+#      - DJANGO__DEBUG=${DJANGO__DEBUG}
+#      - DJANGO__ALLOWED_HOSTS=${DJANGO__ALLOWED_HOSTS}
+#      - OPENAI_API_KEY=${OPENAI_API_KEY}
+#      - OPENWEATHERMAP_API_KEY=${OPENWEATHERMAP_API_KEY}

@@ -1,0 +1,5 @@
+babel==2.16.0
+beautifulsoup4==4.12.3
+cachetools==5.5.0
+Rx==3.2.0
+reflex==0.6.4

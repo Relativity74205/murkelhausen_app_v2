@@ -1,0 +1,10 @@
+name: 'Murkel SemVer'
+description: 'Calculates next Tag based on commit history and returns the changelog'
+outputs:
+  next_tag:
+    description: 'The tag of the next release.'
+  changelog_delta:
+    description: 'All commit summaries since the last tag.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

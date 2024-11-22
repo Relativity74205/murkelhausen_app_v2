@@ -6,3 +6,4 @@ assets/external/
 .idea
 .python-version
 requirements.txt
+.env

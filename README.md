@@ -2,13 +2,30 @@
 
 ## icons
 
-            # rx.match(
-            #     text,
-            #     # TODO pass icon to template
-            #     ("Overview", sidebar_item_icon("home")),
-            #     ("Table", sidebar_item_icon("table-2")),
-            #     ("About", sidebar_item_icon("book-open")),
-            #     ("Profile", sidebar_item_icon("user")),
-            #     ("Settings", sidebar_item_icon("settings")),
-            #     sidebar_item_icon("layout-dashboard"),
-            # ),
+https://lucide.dev/icons/trophy?search=waste
+
+
+## docker
+
+build
+```bash
+docker build -t reflex-simple-two-port .
+```
+
+run
+```bash
+docker run -p 3000:3000 -p 8000:8000 reflex-simple-two-port
+```
+
+publish
+```bash
+echo $GITHUB_PAT | docker login ghcr.io -u arkadius@schuchhardt.com --password-stdin
+docker image tag murkel_app2:0.1.0 ghcr.io/relativity74205/murkel_app2:0.1.0
+docker push ghcr.io/relativity74205/murkel_app2:0.1.0
+```
+
+# TODO
+
+- [ ] Dockerfile
+  - [ ] get requirements.txt from poetry
+  - [ ] write docker build script (local version dump and deploy, only major versions, local push)
