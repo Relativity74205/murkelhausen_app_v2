@@ -1,0 +1,2501 @@
+{
+  "requestType": "DepartureRequest",
+  "statusCode": 200,
+  "data": {
+    "parameters": [
+      {
+        "name": "serverID",
+        "value": "EFA2_"
+      },
+      {
+        "name": "requestID",
+        "value": "0"
+      },
+      {
+        "name": "sessionID",
+        "value": "0"
+      },
+      {
+        "name": "calcTime",
+        "value": "211.007"
+      },
+      {
+        "name": "serverTime",
+        "value": "2023-08-12T07:28:23"
+      }
+    ],
+    "dm": {
+      "input": {
+        "input": "20015065"
+      },
+      "points": {
+        "point": {
+          "usage": "dm",
+          "type": "stop",
+          "name": "Mülheim a.d. Ruhr, Lierberg",
+          "stateless": "20015065",
+          "tariffArea": "",
+          "tariffAreaName": "",
+          "tariffLayer1": "",
+          "tariffLayer2": "",
+          "ref": {
+            "id": "20015065",
+            "gid": "de:05117:15065",
+            "omc": "5117000",
+            "placeID": "17",
+            "place": "Mülheim a.d. Ruhr",
+            "coords": "6839547.99447,51422219.23469"
+          },
+          "infos": null
+        }
+      }
+    },
+    "arr": {
+      "input": {
+        "input": ""
+      },
+      "points": null
+    },
+    "dateTime": {
+      "deparr": "dep",
+      "ttpFrom": "20230501",
+      "ttpTo": "20240131",
+      "year": "2023",
+      "month": "8",
+      "day": "12",
+      "hour": "7",
+      "minute": "28"
+    },
+    "dateRange": [
+      {
+        "day": "12",
+        "month": "08",
+        "year": "2023",
+        "weekday": "7"
+      },
+      {
+        "day": "13",
+        "month": "08",
+        "year": "2023",
+        "weekday": "1"
+      },
+      {
+        "day": "14",
+        "month": "08",
+        "year": "2023",
+        "weekday": "2"
+      },
+      {
+        "day": "15",
+        "month": "08",
+        "year": "2023",
+        "weekday": "3"
+      },
+      {
+        "day": "16",
+        "month": "08",
+        "year": "2023",
+        "weekday": "4"
+      },
+      {
+        "day": "17",
+        "month": "08",
+        "year": "2023",
+        "weekday": "5"
+      },
+      {
+        "day": "18",
+        "month": "08",
+        "year": "2023",
+        "weekday": "6"
+      },
+      {
+        "day": "19",
+        "month": "08",
+        "year": "2023",
+        "weekday": "7"
+      },
+      {
+        "day": "20",
+        "month": "08",
+        "year": "2023",
+        "weekday": "1"
+      },
+      {
+        "day": "21",
+        "month": "08",
+        "year": "2023",
+        "weekday": "2"
+      },
+      {
+        "day": "22",
+        "month": "08",
+        "year": "2023",
+        "weekday": "3"
+      },
+      {
+        "day": "23",
+        "month": "08",
+        "year": "2023",
+        "weekday": "4"
+      },
+      {
+        "day": "24",
+        "month": "08",
+        "year": "2023",
+        "weekday": "5"
+      },
+      {
+        "day": "25",
+        "month": "08",
+        "year": "2023",
+        "weekday": "6"
+      },
+      {
+        "day": "26",
+        "month": "08",
+        "year": "2023",
+        "weekday": "7"
+      }
+    ],
+    "option": {
+      "ptOption": {
+        "active": "-1",
+        "maxChanges": "9",
+        "maxTime": "360",
+        "maxWait": "120",
+        "routeType": "LEASTTIME",
+        "changeSpeed": "normal",
+        "lineRestriction": "400",
+        "useProxFootSearch": "0",
+        "useProxFootSearchOrigin": "0",
+        "useProxFootSearchDestination": "0",
+        "bike": "0",
+        "plane": "0",
+        "noCrowded": "0",
+        "noSolidStairs": "0",
+        "noEscalators": "0",
+        "noElevators": "0",
+        "lowPlatformVhcl": "0",
+        "wheelchair": "0",
+        "needElevatedPlt": "0",
+        "assistance": "0",
+        "SOSAvail": "0",
+        "noLonelyTransfer": "0",
+        "illumTransfer": "0",
+        "overgroundTransfer": "0",
+        "noInsecurePlaces": "0",
+        "privateTransport": "0",
+        "excludedMeans": [
+          {
+            "value": "0",
+            "selected": "0"
+          },
+          {
+            "value": "1",
+            "selected": "0"
+          },
+          {
+            "value": "2",
+            "selected": "0"
+          },
+          {
+            "value": "3",
+            "selected": "0"
+          },
+          {
+            "value": "4",
+            "selected": "0"
+          },
+          {
+            "value": "5",
+            "selected": "0"
+          },
+          {
+            "value": "6",
+            "selected": "0"
+          },
+          {
+            "value": "7",
+            "selected": "0"
+          },
+          {
+            "value": "8",
+            "selected": "0"
+          },
+          {
+            "value": "9",
+            "selected": "0"
+          },
+          {
+            "value": "10",
+            "selected": "0"
+          },
+          {
+            "value": "11",
+            "selected": "0"
+          },
+          {
+            "value": "12",
+            "selected": "0"
+          },
+          {
+            "value": "13",
+            "selected": "0"
+          },
+          {
+            "value": "14",
+            "selected": "0"
+          },
+          {
+            "value": "15",
+            "selected": "0"
+          },
+          {
+            "value": "16",
+            "selected": "0"
+          },
+          {
+            "value": "17",
+            "selected": "0"
+          },
+          {
+            "value": "18",
+            "selected": "0"
+          },
+          {
+            "value": "19",
+            "selected": "0"
+          }
+        ],
+        "activeImp": "-1",
+        "activeCom": "-1",
+        "activeSec": "-1"
+      }
+    },
+    "servingLines": {
+      "lines": [
+        {
+          "mode": {
+            "name": "Niederflurbus 125",
+            "number": "125",
+            "product": "Niederflurbus",
+            "productId": "13",
+            "type": "5",
+            "code": "5",
+            "destination": "Oberhausen Wehrstr.",
+            "destID": "20014052",
+            "desc": "Speldorf - Mülheim Hbf - MH-Dümpten - OB-Wehrstraße",
+            "timetablePeriod": "Jahresfahrplan 2023 (09.01.2023 - 07.01.2024)",
+            "diva": {
+              "branch": "13",
+              "line": "13125",
+              "supplement": " ",
+              "dir": "H",
+              "project": "j23",
+              "network": "btm",
+              "stateless": "btm:13125: :H:j23",
+              "globalId": "de:vrr:btm-13-125:",
+              "tripCode": "0",
+              "operator": "Ruhrbahn Mülheim",
+              "opCode": "13",
+              "vF": "20230109",
+              "vTo": "20240107",
+              "lineDisplay": "line",
+              "isSTT": "1",
+              "isROP": "1",
+              "attrs": []
+            }
+          },
+          "index": "5:0"
+        },
+        {
+          "mode": {
+            "name": "Niederflurbus 125",
+            "number": "125",
+            "product": "Niederflurbus",
+            "productId": "13",
+            "type": "5",
+            "code": "5",
+            "destination": "Mülheim Speldorf Friedhof",
+            "destID": "20015068",
+            "desc": "OB-Wehrstraße - MH-Dümpten - Mülheim Hbf - Speldorf",
+            "timetablePeriod": "Jahresfahrplan 2023 (09.01.2023 - 07.01.2024)",
+            "diva": {
+              "branch": "13",
+              "line": "13125",
+              "supplement": " ",
+              "dir": "R",
+              "project": "j23",
+              "network": "btm",
+              "stateless": "btm:13125: :R:j23",
+              "globalId": "de:vrr:btm-13-125:",
+              "tripCode": "0",
+              "operator": "Ruhrbahn Mülheim",
+              "opCode": "13",
+              "vF": "20230109",
+              "vTo": "20240107",
+              "lineDisplay": "line",
+              "isSTT": "1",
+              "isROP": "1",
+              "attrs": []
+            }
+          },
+          "index": "5:1"
+        },
+        {
+          "mode": {
+            "name": "Niederflurbus 129",
+            "number": "129",
+            "product": "Niederflurbus",
+            "productId": "13",
+            "type": "5",
+            "code": "5",
+            "destination": "Mülheim Broich Friedhof",
+            "destID": "20015007",
+            "desc": "E-Frohnhausen - MH-Heißen - Winkhausen - MH-Styrum - Broich Friedhof",
+            "timetablePeriod": "Jahresfahrplan 2023 (09.01.2023 - 07.01.2024)",
+            "diva": {
+              "branch": "13",
+              "line": "13129",
+              "supplement": " ",
+              "dir": "H",
+              "project": "j23",
+              "network": "btm",
+              "stateless": "btm:13129: :H:j23",
+              "globalId": "de:vrr:btm-13-129:",
+              "tripCode": "0",
+              "operator": "Ruhrbahn Mülheim",
+              "opCode": "13",
+              "vF": "20230109",
+              "vTo": "20240107",
+              "lineDisplay": "line",
+              "isSTT": "1",
+              "isROP": "1",
+              "attrs": []
+            }
+          },
+          "index": "5:2"
+        },
+        {
+          "mode": {
+            "name": "Niederflurbus 129",
+            "number": "129",
+            "product": "Niederflurbus",
+            "productId": "13",
+            "type": "5",
+            "code": "5",
+            "destination": "Frohnhausen Breilsort",
+            "destID": "20009243",
+            "desc": "Broich Friedhof - MH-Styrum - Winkhausen - MH-Heißen - E-Frohnhausen",
+            "timetablePeriod": "Jahresfahrplan 2023 (09.01.2023 - 07.01.2024)",
+            "diva": {
+              "branch": "13",
+              "line": "13129",
+              "supplement": " ",
+              "dir": "R",
+              "project": "j23",
+              "network": "btm",
+              "stateless": "btm:13129: :R:j23",
+              "globalId": "de:vrr:btm-13-129:",
+              "tripCode": "0",
+              "operator": "Ruhrbahn Mülheim",
+              "opCode": "13",
+              "vF": "20230109",
+              "vTo": "20240107",
+              "lineDisplay": "line",
+              "isSTT": "1",
+              "isROP": "1",
+              "attrs": []
+            }
+          },
+          "index": "5:3"
+        },
+        {
+          "mode": {
+            "name": "Niederflurbus NE 9",
+            "number": "NE 9",
+            "product": "Niederflurbus",
+            "productId": "13",
+            "type": "5",
+            "code": "5",
+            "destination": "DU-Hbf Osteingang",
+            "destID": "20016078",
+            "desc": "E-Abzweig Aktienstraße - Mülheim Stadtmitte - MH-Speldorf - Duisburg Hbf",
+            "timetablePeriod": "Jahresfahrplan 2023 (09.01.2023 - 07.01.2024)",
+            "diva": {
+              "branch": "13",
+              "line": "13NE9",
+              "supplement": " ",
+              "dir": "H",
+              "project": "j23",
+              "network": "btm",
+              "stateless": "btm:13NE9: :H:j23",
+              "globalId": "de:vrr:btm-13-NE9:",
+              "tripCode": "0",
+              "operator": "Ruhrbahn Mülheim",
+              "opCode": "13",
+              "vF": "20230109",
+              "vTo": "20240107",
+              "lineDisplay": "line",
+              "isSTT": "1",
+              "isROP": "1",
+              "attrs": []
+            }
+          },
+          "index": "5:4"
+        },
+        {
+          "mode": {
+            "name": "Niederflurbus NE 9",
+            "number": "NE 9",
+            "product": "Niederflurbus",
+            "productId": "13",
+            "type": "5",
+            "code": "5",
+            "destination": "Essen Abzweig Aktienstr.",
+            "destID": "20009101",
+            "desc": "Duisburg Hbf - MH-Speldorf - Mülheim Stadtmitte - E-Abzweig Aktienstraße",
+            "timetablePeriod": "Jahresfahrplan 2023 (09.01.2023 - 07.01.2024)",
+            "diva": {
+              "branch": "13",
+              "line": "13NE9",
+              "supplement": " ",
+              "dir": "R",
+              "project": "j23",
+              "network": "btm",
+              "stateless": "btm:13NE9: :R:j23",
+              "globalId": "de:vrr:btm-13-NE9:",
+              "tripCode": "0",
+              "operator": "Ruhrbahn Mülheim",
+              "opCode": "13",
+              "vF": "20230109",
+              "vTo": "20240107",
+              "lineDisplay": "line",
+              "isSTT": "1",
+              "isROP": "1",
+              "attrs": []
+            }
+          },
+          "index": "5:5"
+        }
+      ]
+    },
+    "departureList": [
+      {
+        "stopID": "20015065",
+        "x": "6839287.48303",
+        "y": "51422336.86987",
+        "mapName": "wgs84",
+        "area": "3",
+        "platform": "1",
+        "platformName": "1",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "19",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "7",
+          "minute": "47"
+        },
+        "servingLine": {
+          "key": "68",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Frohnhausen Breilsort",
+          "directionFrom": "Mülheim Broich Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20009243",
+          "stateless": "btm:13129: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "25",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "7",
+          "minute": "53"
+        },
+        "servingLine": {
+          "key": "173",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Peterstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "34",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "2"
+        },
+        "realDateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "2"
+        },
+        "realtimeTripStatus": "MONITORED",
+        "servingLine": {
+          "key": "9",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "1",
+          "direction": "Mülheim Peterstr.",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "delay": "0",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015071",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        },
+        "attrs": [
+          {
+            "name": "AVMSTripID",
+            "value": "RB_MVG.19632"
+          }
+        ]
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "40",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "8"
+        },
+        "servingLine": {
+          "key": "118",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Speldorf Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "49",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "17"
+        },
+        "servingLine": {
+          "key": "67",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Speldorf Friedhof",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015068",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839287.48303",
+        "y": "51422336.86987",
+        "mapName": "wgs84",
+        "area": "3",
+        "platform": "1",
+        "platformName": "1",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "49",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "17"
+        },
+        "servingLine": {
+          "key": "69",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Frohnhausen Breilsort",
+          "directionFrom": "Mülheim Broich Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20009243",
+          "stateless": "btm:13129: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "55",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "23"
+        },
+        "realDateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "23"
+        },
+        "realtimeTripStatus": "MONITORED",
+        "servingLine": {
+          "key": "175",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "1",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Peterstr.",
+          "name": "Niederflurbus",
+          "delay": "0",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        },
+        "attrs": [
+          {
+            "name": "AVMSTripID",
+            "value": "RB_MVG.19634"
+          }
+        ]
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "64",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "32"
+        },
+        "servingLine": {
+          "key": "11",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Peterstr.",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015071",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "70",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "38"
+        },
+        "servingLine": {
+          "key": "119",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Speldorf Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "70",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "38"
+        },
+        "servingLine": {
+          "key": "6",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Broich Friedhof",
+          "directionFrom": "Frohnhausen Breilsort",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20015007",
+          "stateless": "btm:13129: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839287.48303",
+        "y": "51422336.86987",
+        "mapName": "wgs84",
+        "area": "3",
+        "platform": "1",
+        "platformName": "1",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "79",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "47"
+        },
+        "servingLine": {
+          "key": "70",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Frohnhausen Breilsort",
+          "directionFrom": "Mülheim Broich Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20009243",
+          "stateless": "btm:13129: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "79",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "47"
+        },
+        "servingLine": {
+          "key": "68",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Speldorf Friedhof",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015068",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "85",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "8",
+          "minute": "53"
+        },
+        "servingLine": {
+          "key": "178",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Peterstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "94",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "2"
+        },
+        "servingLine": {
+          "key": "14",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Peterstr.",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015071",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "100",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "8"
+        },
+        "servingLine": {
+          "key": "7",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Broich Friedhof",
+          "directionFrom": "Frohnhausen Breilsort",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20015007",
+          "stateless": "btm:13129: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "100",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "8"
+        },
+        "servingLine": {
+          "key": "120",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Speldorf Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839287.48303",
+        "y": "51422336.86987",
+        "mapName": "wgs84",
+        "area": "3",
+        "platform": "1",
+        "platformName": "1",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "109",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "17"
+        },
+        "servingLine": {
+          "key": "72",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Frohnhausen Breilsort",
+          "directionFrom": "Mülheim Broich Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20009243",
+          "stateless": "btm:13129: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "109",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "17"
+        },
+        "servingLine": {
+          "key": "70",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Speldorf Friedhof",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015068",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "115",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "23"
+        },
+        "servingLine": {
+          "key": "181",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Peterstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "124",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "32"
+        },
+        "servingLine": {
+          "key": "17",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Peterstr.",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015071",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "130",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "38"
+        },
+        "servingLine": {
+          "key": "9",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Broich Friedhof",
+          "directionFrom": "Frohnhausen Breilsort",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20015007",
+          "stateless": "btm:13129: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "130",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "38"
+        },
+        "servingLine": {
+          "key": "122",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Speldorf Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839287.48303",
+        "y": "51422336.86987",
+        "mapName": "wgs84",
+        "area": "3",
+        "platform": "1",
+        "platformName": "1",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "139",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "47"
+        },
+        "servingLine": {
+          "key": "73",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Frohnhausen Breilsort",
+          "directionFrom": "Mülheim Broich Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20009243",
+          "stateless": "btm:13129: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "139",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "47"
+        },
+        "servingLine": {
+          "key": "72",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Speldorf Friedhof",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015068",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "145",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "9",
+          "minute": "53"
+        },
+        "servingLine": {
+          "key": "184",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Peterstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "154",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "2"
+        },
+        "servingLine": {
+          "key": "20",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Peterstr.",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015071",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "160",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "8"
+        },
+        "servingLine": {
+          "key": "124",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Speldorf Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "160",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "8"
+        },
+        "servingLine": {
+          "key": "10",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Broich Friedhof",
+          "directionFrom": "Frohnhausen Breilsort",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20015007",
+          "stateless": "btm:13129: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "169",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "17"
+        },
+        "servingLine": {
+          "key": "74",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Speldorf Friedhof",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015068",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839287.48303",
+        "y": "51422336.86987",
+        "mapName": "wgs84",
+        "area": "3",
+        "platform": "1",
+        "platformName": "1",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "169",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "17"
+        },
+        "servingLine": {
+          "key": "75",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Frohnhausen Breilsort",
+          "directionFrom": "Mülheim Broich Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20009243",
+          "stateless": "btm:13129: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "175",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "23"
+        },
+        "servingLine": {
+          "key": "186",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Peterstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "184",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "32"
+        },
+        "servingLine": {
+          "key": "23",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Peterstr.",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015071",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "190",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "38"
+        },
+        "servingLine": {
+          "key": "12",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Broich Friedhof",
+          "directionFrom": "Frohnhausen Breilsort",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20015007",
+          "stateless": "btm:13129: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "190",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "38"
+        },
+        "servingLine": {
+          "key": "126",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Speldorf Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839287.48303",
+        "y": "51422336.86987",
+        "mapName": "wgs84",
+        "area": "3",
+        "platform": "1",
+        "platformName": "1",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "199",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "47"
+        },
+        "servingLine": {
+          "key": "76",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Frohnhausen Breilsort",
+          "directionFrom": "Mülheim Broich Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20009243",
+          "stateless": "btm:13129: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "199",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "47"
+        },
+        "servingLine": {
+          "key": "76",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Speldorf Friedhof",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015068",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "205",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "10",
+          "minute": "53"
+        },
+        "servingLine": {
+          "key": "188",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Peterstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839206.63466",
+        "y": "51422062.38730",
+        "mapName": "wgs84",
+        "area": "2",
+        "platform": "3",
+        "platformName": "3",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "214",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "11",
+          "minute": "2"
+        },
+        "servingLine": {
+          "key": "25",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Peterstr.",
+          "directionFrom": "Oberhausen Wehrstr.",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "R",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20015071",
+          "stateless": "btm:13125: :R:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "220",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "11",
+          "minute": "8"
+        },
+        "servingLine": {
+          "key": "13",
+          "code": "5",
+          "number": "129",
+          "symbol": "129",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Mülheim Broich Friedhof",
+          "directionFrom": "Frohnhausen Breilsort",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13129",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-129:"
+          },
+          "destID": "20015007",
+          "stateless": "btm:13129: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      },
+      {
+        "stopID": "20015065",
+        "x": "6839997.15211",
+        "y": "51422124.00598",
+        "mapName": "wgs84",
+        "area": "1",
+        "platform": "2",
+        "platformName": "2",
+        "stopName": "Mülheim Lierberg",
+        "nameWO": "Lierberg",
+        "countdown": "220",
+        "dateTime": {
+          "year": "2023",
+          "month": "8",
+          "day": "12",
+          "weekday": "7",
+          "hour": "11",
+          "minute": "8"
+        },
+        "servingLine": {
+          "key": "128",
+          "code": "5",
+          "number": "125",
+          "symbol": "125",
+          "motType": "5",
+          "mtSubcode": "0",
+          "realtime": "0",
+          "direction": "Oberhausen Wehrstr.",
+          "directionFrom": "Mülheim Speldorf Friedhof",
+          "name": "Niederflurbus",
+          "liErgRiProj": {
+            "line": "13125",
+            "project": "j23",
+            "direction": "H",
+            "supplement": " ",
+            "network": "btm",
+            "gid": "de:vrr:btm-13-125:"
+          },
+          "destID": "20014052",
+          "stateless": "btm:13125: :H:j23",
+          "lineDisplay": "line"
+        },
+        "operator": {
+          "code": "13",
+          "name": "Ruhrbahn Mülheim",
+          "publicCode": ""
+        }
+      }
+    ]
+  },
+  "station": {
+    "trafficInfos": [],
+    "elevators": [],
+    "escalators": [],
+    "stops": [
+      {
+        "trafficInfos": [],
+        "elevators": [],
+        "escalators": [],
+        "name": "Bus Ri Raffelberg",
+        "additionalName": "1",
+        "isAccessible": false,
+        "hasTactileStrip": false,
+        "hasRamp": false,
+        "hasMobileRamp": false,
+        "coords": {
+          "lat": "53.036500",
+          "long": "7.613460"
+        }
+      },
+      {
+        "trafficInfos": [],
+        "elevators": [],
+        "escalators": [],
+        "name": "122/124 Ri Broicher Waldweg",
+        "additionalName": "2",
+        "isAccessible": false,
+        "hasTactileStrip": false,
+        "hasRamp": false,
+        "hasMobileRamp": false,
+        "coords": {
+          "lat": "53.036900",
+          "long": "7.614250"
+        }
+      },
+      {
+        "trafficInfos": [],
+        "elevators": [],
+        "escalators": [],
+        "name": "124/135 Ri Brandenberg",
+        "additionalName": "3",
+        "isAccessible": false,
+        "hasTactileStrip": false,
+        "hasRamp": false,
+        "hasMobileRamp": false,
+        "coords": {
+          "lat": "53.037000",
+          "long": "7.613370"
+        }
+      }
+    ],
+    "id": "20015065",
+    "globalID": 20081,
+    "name": "Lierberg",
+    "city": "Mülheim",
+    "coords": {
+      "lat": "51.422062",
+      "long": "6.839207"
+    },
+    "type": "stop",
+    "stationPlanUrl": "https://efa.vrr.de/download/envmaps/vrr/"
+  }
+}

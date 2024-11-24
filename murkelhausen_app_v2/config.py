@@ -19,11 +19,16 @@ class FussballDE(BaseModel):
     request_timeout: int
 
 
+class Ruhrbahn(BaseModel):
+    request_timeout: int
+
+
 class Config(BaseModel):
     mheg: Mheg
     gym_broich: GymBroich
     handball_nordrhein: HandballNordrhein
     fussball_de: FussballDE
+    ruhrbahn: Ruhrbahn
 
 
 config = Config(
@@ -39,6 +44,9 @@ config = Config(
         request_timeout=2,
     ),
     fussball_de=FussballDE(
+        request_timeout=2,
+    ),
+    ruhrbahn=Ruhrbahn(
         request_timeout=2,
     ),
 )

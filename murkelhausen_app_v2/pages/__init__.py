@@ -5,6 +5,7 @@ from murkelhausen_app_v2.pages.handball import handball
 from murkelhausen_app_v2.pages.timetables import school_page
 from murkelhausen_app_v2.pages.gymbroich import gymbroich_page
 from murkelhausen_app_v2.pages.calender import calender
+from murkelhausen_app_v2.pages.ruhrbahn import ruhrbahn_page
 
 __all__ = [
     "index",
@@ -14,4 +15,5 @@ __all__ = [
     "fussball",
     "gymbroich_page",
     "calender",
+    "ruhrbahn_page",
 ]
