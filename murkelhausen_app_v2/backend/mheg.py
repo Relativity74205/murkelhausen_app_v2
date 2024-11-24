@@ -8,6 +8,8 @@ from cachetools import cached, TTLCache
 from dateutil.relativedelta import relativedelta
 from pydantic import BaseModel
 
+from murkelhausen_app_v2.config import config
+
 BASE_URL = "https://muelheim-abfallapp.regioit.de/abfall-app-muelheim/rest/"
 
 logger = logging.getLogger(__name__)
@@ -56,7 +58,7 @@ def get_orte() -> list[dict]:
     Request url: https://muelheim-abfallapp.regioit.de/abfall-app-muelheim/rest/orte
     Example response: [{"id":4546575,"name":"Mülheim"}]
     """
-    orte = requests.get(BASE_URL + "orte").json()
+    orte = requests.get(BASE_URL + "orte", timeout=config.mheg.request_timeout).json()
     logger.info(f"Retrieved {len(orte)} Orte of the MHEG API.")
 
     return orte
@@ -101,7 +103,9 @@ def get_strassen(muelheim_id: int) -> list[dict]:
       },
     ...]
     """
-    strassen = requests.get(BASE_URL + f"orte/{muelheim_id}/strassen").json()
+    strassen = requests.get(
+        BASE_URL + f"orte/{muelheim_id}/strassen", timeout=config.mheg.request_timeout
+    ).json()
     logger.info(
         f"Retrieved {len(strassen)} Straßen for {muelheim_id=} of the MHEG API."
     )
@@ -154,7 +158,9 @@ def get_hausnummern(strassen_id: int) -> list[dict]:
         }
     }
     """
-    strassen = requests.get(BASE_URL + f"strassen/{strassen_id}").json()
+    strassen = requests.get(
+        BASE_URL + f"strassen/{strassen_id}", timeout=config.mheg.request_timeout
+    ).json()
     logger.info(
         f"Retrieved {len(strassen['hausNrList'])} Hausnummern for {strassen_id=} of the MHEG API."
     )
@@ -199,7 +205,10 @@ def get_termine(hausnummer_id: int) -> list[dict]:
     ...
     ]
     """
-    termine = requests.get(BASE_URL + f"hausnummern/{hausnummer_id}/termine").json()
+    termine = requests.get(
+        BASE_URL + f"hausnummern/{hausnummer_id}/termine",
+        timeout=config.mheg.request_timeout,
+    ).json()
     logger.info(
         f"Retrieved {len(termine)} Termine for {hausnummer_id=} of the MHEG API."
     )

@@ -1,9 +1,9 @@
 *.db
 *.py[cod]
+.env
+.idea
+.python-version
 .web
 __pycache__/
 assets/external/
-.idea
-.python-version
 requirements.txt
-.env

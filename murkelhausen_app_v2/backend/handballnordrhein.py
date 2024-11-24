@@ -5,7 +5,12 @@ import requests
 from babel.dates import format_date
 from bs4 import BeautifulSoup
 
-TEAM_PORTRAIT_BASE_URL = "https://hnr-handball.liga.nu/cgi-bin/WebObjects/nuLigaHBDE.woa/wa/teamPortrait"
+from murkelhausen_app_v2.config import config
+
+
+TEAM_PORTRAIT_BASE_URL = (
+    "https://hnr-handball.liga.nu/cgi-bin/WebObjects/nuLigaHBDE.woa/wa/teamPortrait"
+)
 TEAM_D_JUGEND = "1993128"
 TEAM_ERSTE_HERREN = "1986091"
 
@@ -83,6 +88,7 @@ def get_djk_saarn_d_jugend() -> list[HandballGame]:
     r = requests.get(
         TEAM_PORTRAIT_BASE_URL,
         params={"teamtable": TEAM_D_JUGEND},
+        timeout=config.handball_nordrhein.request_timeout,
     )
 
     return parse_games(r.text)
@@ -92,6 +98,7 @@ def get_djk_saarn_erste_herren() -> list[HandballGame]:
     r = requests.get(
         TEAM_PORTRAIT_BASE_URL,
         params={"teamtable": TEAM_ERSTE_HERREN},
+        timeout=config.handball_nordrhein.request_timeout,
     )
 
     return parse_games(r.text)

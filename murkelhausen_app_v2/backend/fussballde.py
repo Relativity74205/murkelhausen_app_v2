@@ -3,6 +3,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
+from murkelhausen_app_v2.config import config
 
 VFB_SPELDORF_ID = "00ES8GN8VS000030VV0AG08LVUPGND5I"
 F1_JUNIOREN = "011MI9USJ8000000VTVG0001VTR8C1K7"
@@ -44,7 +45,8 @@ def parse_next_games(html_content: str) -> list[dict]:
 
 def get_speldorf_next_games() -> list[dict]:
     r = requests.get(
-        f"https://www.fussball.de/ajax.club.next.games/-/id/{VFB_SPELDORF_ID}/"
+        f"https://www.fussball.de/ajax.club.next.games/-/id/{VFB_SPELDORF_ID}/",
+        timeout=config.fussball_de.request_timeout,
     )
 
     return parse_next_games(r.text)
@@ -52,7 +54,8 @@ def get_speldorf_next_games() -> list[dict]:
 
 def get_erik_f1_junioren_next_games() -> list[dict]:
     r = requests.get(
-        f"https://www.fussball.de/ajax.team.next.games/-/mode/PAGE/team-id/{F1_JUNIOREN}"
+        f"https://www.fussball.de/ajax.team.next.games/-/mode/PAGE/team-id/{F1_JUNIOREN}",
+        timeout=config.fussball_de.request_timeout,
     )
 
     return parse_next_games(r.text)
@@ -60,7 +63,8 @@ def get_erik_f1_junioren_next_games() -> list[dict]:
 
 def get_erik_f3_junioren_next_games() -> list[dict]:
     r = requests.get(
-        f"https://www.fussball.de/ajax.team.next.games/-/mode/PAGE/team-id/{F3_JUNIOREN}"
+        f"https://www.fussball.de/ajax.team.next.games/-/mode/PAGE/team-id/{F3_JUNIOREN}",
+        timeout=config.fussball_de.request_timeout,
     )
 
     return parse_next_games(r.text)

@@ -1,9 +1,13 @@
-
 import reflex as rx
 
 from murkelhausen_app_v2.templates.template import template
-from murkelhausen_app_v2.backend.gymbroich import Vertretungsplan, get_vertretungsplan_dates, \
-    VertretungsplanEvent, get_vertretungsplan_mattis, get_vertretungsplan
+from murkelhausen_app_v2.backend.gymbroich import (
+    Vertretungsplan,
+    get_vertretungsplan_dates,
+    VertretungsplanEvent,
+    get_vertretungsplan_mattis,
+    get_vertretungsplan,
+)
 
 
 class State(rx.State):
@@ -15,17 +19,19 @@ class State(rx.State):
     def dates_present(self):
         self.dates = len(self.vertretungsplaene_mattis) > 0
 
-    def get_dates(self):
-        vertretungsplan_dates = get_vertretungsplan_dates()
-        self.vertretungsplaene_all = {
-            datum.isoformat(): get_vertretungsplan(datum)
-            for datum in vertretungsplan_dates
-        }
-        self.vertretungsplaene_mattis = {
-            datum.isoformat(): get_vertretungsplan_mattis(datum)
-            for datum in vertretungsplan_dates
-        }
-        self.dates_present()
+    @rx.event(background=True)
+    async def get_dates(self):
+        async with self:
+            vertretungsplan_dates = get_vertretungsplan_dates()
+            self.vertretungsplaene_all = {
+                datum.isoformat(): get_vertretungsplan(datum)
+                for datum in vertretungsplan_dates
+            }
+            self.vertretungsplaene_mattis = {
+                datum.isoformat(): get_vertretungsplan_mattis(datum)
+                for datum in vertretungsplan_dates
+            }
+            self.dates_present()
 
 
 def show_table_header() -> rx.Component:
@@ -51,11 +57,9 @@ def show_table_row(event: VertretungsplanEvent) -> rx.Component:
         rx.table.cell(event.previousRoom),
         rx.table.cell(
             rx.cond(
-                event.canceled == "true",
-                rx.text("X", color="red", weight="bold"),
-                None
+                event.canceled == "true", rx.text("X", color="red", weight="bold"), None
             ),
-            align="center"
+            align="center",
         ),
         rx.table.cell(event.subject),
         rx.table.cell(event.room),
@@ -68,19 +72,13 @@ def show_table(vertretungsplan_tuple) -> rx.Component:
         rx.heading(f"Vertretungsplan für {vertretungsplan_tuple[0]}"),
         rx.heading("Infos", size="3"),
         rx.list.unordered(
-            rx.foreach(
-                vertretungsplan_tuple[1].infos,
-                lambda info: rx.list.item(info)
-            ),
+            rx.foreach(vertretungsplan_tuple[1].infos, lambda info: rx.list.item(info)),
         ),
         rx.heading("Vertretungen", size="3"),
         rx.table.root(
             show_table_header(),
-            rx.foreach(
-                vertretungsplan_tuple[1].events,
-                show_table_row
-            ),
-        )
+            rx.foreach(vertretungsplan_tuple[1].events, show_table_row),
+        ),
     )
 
 
@@ -89,27 +87,23 @@ def show_tab_content(state_var, tab_name: str) -> rx.Component:
         rx.vstack(
             rx.cond(
                 State.dates,
-                rx.foreach(
-                    state_var, show_table
-                ),
+                rx.foreach(state_var, show_table),
             )
         ),
         value=tab_name,
     )
 
 
-@template(route="/gymbroich", title="Gym. Broich", icon="school", on_load=State.get_dates())
+@template(
+    route="/gymbroich", title="Gym. Broich", icon="school", on_load=State.get_dates()
+)
 def gymbroich_page() -> rx.Component:
     return rx.tabs.root(
         rx.tabs.list(
-            rx.tabs.trigger(
-                "Mattis", value="mattis"
-            ),
-            rx.tabs.trigger(
-                "Komplett", value="all"
-            ),
+            rx.tabs.trigger("Mattis", value="mattis"),
+            rx.tabs.trigger("Komplett", value="all"),
         ),
         show_tab_content(State.vertretungsplaene_mattis, "mattis"),
         show_tab_content(State.vertretungsplaene_all, "all"),
-        default_value="mattis"
+        default_value="mattis",
     )

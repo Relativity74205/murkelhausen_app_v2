@@ -33,7 +33,7 @@ class Vertretungsplan(rx.Base):
 @cached(cache=TTLCache(maxsize=1, ttl=60))  # 1 minute
 def get_vertretungsplan_dates() -> tuple[date, ...]:
     url = "https://assets.gymnasium-broich.de/vplan/api/dates"
-    data = requests.get(url).json()
+    data = requests.get(url, timeout=config.gym_broich.request_timeout).json()
     logger.info(
         f"Retrieved {len(data)} dates of the Vertretungsplan API for which Vertretungsplaene exist."
     )
@@ -67,7 +67,7 @@ def get_vertretungsplan(datum: date) -> Vertretungsplan:
             subject=replace_empty_str_with_none(event["subject"]),
             teacher=replace_empty_str_with_none(event["teacher"]),
             comment=text,
-            canceled="true" if canceled else "no"
+            canceled="true" if canceled else "no",
         )
         events.append(event)
 
@@ -98,10 +98,14 @@ def get_vertretungsplan(datum: date) -> Vertretungsplan:
 
 def get_vertretungsplan_mattis(datum: date) -> Vertretungsplan:
     vertretungsplan = get_vertretungsplan(datum)
-    filtered_events = [event for event in vertretungsplan.events if config.gym_broich.class_of_mattis in event.classes]
+    filtered_events = [
+        event
+        for event in vertretungsplan.events
+        if config.gym_broich.class_of_mattis in event.classes
+    ]
     return Vertretungsplan(
         datum=vertretungsplan.datum,
         version=vertretungsplan.version,
         infos=vertretungsplan.infos,
-        events=filtered_events
+        events=filtered_events,
     )
