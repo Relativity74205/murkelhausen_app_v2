@@ -1,0 +1,1219 @@
+{
+    "date": "2023-12-20",
+    "version": "2023-12-20T15:10:00",
+    "infos": [
+        "ab 8.00 Uhr: Nachschreibtermin für die Jgst. Q2 (N3.20)",
+        "Die Koop-Lk's der Q1 und Q2 fallen heute aus!",
+        "Das Bistro (Schollin) bleibt geschlossen!"
+    ],
+    "events": [
+        {
+            "classes": [
+                "05B"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "SP",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Sport fällt aus!",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "05C"
+            ],
+            "lessons": [
+                3,
+                4
+            ],
+            "previousSubject": "",
+            "subject": "SP",
+            "previousRoom": "TH4",
+            "room": "N2.23",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Klassenraum",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "06B"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "D",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "erteilt am 7.12.23",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "06C"
+            ],
+            "lessons": [
+                1,
+                2
+            ],
+            "previousSubject": "",
+            "subject": "KU",
+            "previousRoom": "",
+            "room": "N2.13",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Weihnachtsfeier",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "06D"
+            ],
+            "lessons": [
+                3
+            ],
+            "previousSubject": "",
+            "subject": "IF",
+            "previousRoom": "",
+            "room": "131",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Aufgaben im Fach KT!",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "06D"
+            ],
+            "lessons": [
+                4
+            ],
+            "previousSubject": "",
+            "subject": "IF",
+            "previousRoom": "",
+            "room": "131",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Schüler haben Aufgaben!",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "06D"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "",
+            "subject": "PH",
+            "previousRoom": "N2.11",
+            "room": "137",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Schüler haben Aufgaben!",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "07A"
+            ],
+            "lessons": [
+                1
+            ],
+            "previousSubject": "",
+            "subject": "M",
+            "previousRoom": "",
+            "room": "N1.21",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Mathearbeit",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "07A"
+            ],
+            "lessons": [
+                2
+            ],
+            "previousSubject": "",
+            "subject": "M",
+            "previousRoom": "",
+            "room": "N1.21",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Mathearbeit",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "07A"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "",
+            "subject": "CH",
+            "previousRoom": "36",
+            "room": "131",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Computerraum",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "07C"
+            ],
+            "lessons": [
+                1,
+                2
+            ],
+            "previousSubject": "",
+            "subject": "CH",
+            "previousRoom": "36",
+            "room": "N1.23",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Klassenraum",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "07D"
+            ],
+            "lessons": [
+                1
+            ],
+            "previousSubject": "",
+            "subject": "MU",
+            "previousRoom": "",
+            "room": "235",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Unterricht beginnt um 8.10",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                " "
+            ],
+            "lessons": [
+                0
+            ],
+            "previousSubject": "",
+            "subject": " ",
+            "previousRoom": "",
+            "room": " ",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Uhr!",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "08A"
+            ],
+            "lessons": [
+                1,
+                2
+            ],
+            "previousSubject": "",
+            "subject": "BI",
+            "previousRoom": "",
+            "room": "23",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Biologieraum",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "08B"
+            ],
+            "lessons": [
+                1
+            ],
+            "previousSubject": "MU",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "nur 2. Std. findet statt!",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "08B"
+            ],
+            "lessons": [
+                3,
+                4
+            ],
+            "previousSubject": "",
+            "subject": "GE",
+            "previousRoom": "",
+            "room": "N1.14",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Klassenraum",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "08C"
+            ],
+            "lessons": [
+                3,
+                4
+            ],
+            "previousSubject": "",
+            "subject": "GE",
+            "previousRoom": "N1.15",
+            "room": "N2.25",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Raumwechsel",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "08C"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "",
+            "subject": "BI",
+            "previousRoom": "26",
+            "room": "02",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Raumwechsel",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "09A"
+            ],
+            "lessons": [
+                3
+            ],
+            "previousSubject": "",
+            "subject": "F7",
+            "previousRoom": "",
+            "room": "N3.21",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                " ",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "09A",
+                " 09B"
+            ],
+            "lessons": [
+                3,
+                4
+            ],
+            "previousSubject": "",
+            "subject": "L7",
+            "previousRoom": "N2.23",
+            "room": "N2.11",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Raumwechsel",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "09A"
+            ],
+            "lessons": [
+                4
+            ],
+            "previousSubject": "",
+            "subject": "F7",
+            "previousRoom": "",
+            "room": "N3.21",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                " ",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "09E"
+            ],
+            "lessons": [
+                1
+            ],
+            "previousSubject": "F7",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "nur 2. Std. findet statt!",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "09E"
+            ],
+            "lessons": [
+                2
+            ],
+            "previousSubject": "",
+            "subject": "F7",
+            "previousRoom": "",
+            "room": "N3.25",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                " ",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "IKs"
+            ],
+            "lessons": [
+                3,
+                4
+            ],
+            "previousSubject": "",
+            "subject": "SP",
+            "previousRoom": "TH2",
+            "room": "128",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Klassenraum",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "IKx"
+            ],
+            "lessons": [
+                3
+            ],
+            "previousSubject": "",
+            "subject": "SP",
+            "previousRoom": "TH2",
+            "room": "127",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Klassenraum",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "IKx"
+            ],
+            "lessons": [
+                4
+            ],
+            "previousSubject": "",
+            "subject": "SP",
+            "previousRoom": "TH2",
+            "room": "127",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Klassenraum",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "10A",
+                " 10C"
+            ],
+            "lessons": [
+                1,
+                2
+            ],
+            "previousSubject": "",
+            "subject": "EDG",
+            "previousRoom": "N3.20",
+            "room": "N2.11",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Raumwechsel",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "10D"
+            ],
+            "lessons": [
+                7
+            ],
+            "previousSubject": "SP",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Sport fällt aus!",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q1"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "x_E_Lk1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q1"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "x_SWLk1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q1"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "x_GELk1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q1"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "x_PHLk1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q1"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "x_D_Lk1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q1"
+            ],
+            "lessons": [
+                7,
+                8
+            ],
+            "previousSubject": "g_CHGk1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q1"
+            ],
+            "lessons": [
+                7,
+                8
+            ],
+            "previousSubject": "",
+            "subject": "g_GEGK3",
+            "previousRoom": "",
+            "room": "24",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Unterricht beginnt um 13.",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                " "
+            ],
+            "lessons": [
+                0
+            ],
+            "previousSubject": "",
+            "subject": " ",
+            "previousRoom": "",
+            "room": " ",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "30 Uhr!",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q1"
+            ],
+            "lessons": [
+                7,
+                8
+            ],
+            "previousSubject": "",
+            "subject": "g_BIGk3",
+            "previousRoom": "23",
+            "room": "131",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Raumwechsel",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+            ],
+            "previousSubject": "",
+            "subject": " ",
+            "previousRoom": "",
+            "room": "123",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "mdl. Prüfung Spanisch",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                1,
+                2
+            ],
+            "previousSubject": "",
+            "subject": "y_D_Lk2",
+            "previousRoom": "123",
+            "room": "02",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Raumwechsel",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+            ],
+            "previousSubject": "",
+            "subject": " ",
+            "previousRoom": "",
+            "room": "123",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "mdl. Prüfung Spanisch",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                1
+            ],
+            "previousSubject": "",
+            "subject": "S",
+            "previousRoom": "",
+            "room": "25",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Vorbereitungsraum",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                1,
+                2
+            ],
+            "previousSubject": "",
+            "subject": "y_BILk1",
+            "previousRoom": "25",
+            "room": "125",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Raumwechsel",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                1,
+                2
+            ],
+            "previousSubject": "",
+            "subject": " ",
+            "previousRoom": "",
+            "room": "N3.20",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Nachschreibtermin Q2",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                1,
+                2
+            ],
+            "previousSubject": "",
+            "subject": "y_E_Lk2",
+            "previousRoom": "",
+            "room": "124",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Unterricht beginnt um 8.20",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                " "
+            ],
+            "lessons": [
+                0
+            ],
+            "previousSubject": "",
+            "subject": " ",
+            "previousRoom": "",
+            "room": " ",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Uhr!",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                1,
+                2
+            ],
+            "previousSubject": "",
+            "subject": "y_M_Lk2",
+            "previousRoom": "137",
+            "room": "132",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Raumwechsel",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                2
+            ],
+            "previousSubject": "",
+            "subject": "S",
+            "previousRoom": "",
+            "room": "25",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Vorbereitungsraum",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                3,
+                4,
+                5
+            ],
+            "previousSubject": "",
+            "subject": "S",
+            "previousRoom": "",
+            "room": "25",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Vorbereitungsraum",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                3
+            ],
+            "previousSubject": "",
+            "subject": " ",
+            "previousRoom": "",
+            "room": "N3.20",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Nachschreibtermin Q2",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                3,
+                4
+            ],
+            "previousSubject": "d_CHGk2",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                4
+            ],
+            "previousSubject": "",
+            "subject": " ",
+            "previousRoom": "",
+            "room": "N3.20",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Nachschreibtermin Q2",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "x_E_Lk1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "x_EKLk1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "x_M_Lk1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "x_PHLk1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "x_SWLk1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "EVA: siehe Moodle",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "",
+            "subject": "z_SWNK1",
+            "previousRoom": "",
+            "room": "N2.10",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Extratermin",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                5,
+                6
+            ],
+            "previousSubject": "",
+            "subject": "z_GENK1",
+            "previousRoom": "",
+            "room": "124",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Extratermin",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                5
+            ],
+            "previousSubject": "",
+            "subject": " ",
+            "previousRoom": "",
+            "room": "N3.20",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Nachschreibtermin Q2",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                7,
+                8
+            ],
+            "previousSubject": "z_SWNK1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "verlegt i. d. 5.\/6. Std.!",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                "Q2"
+            ],
+            "lessons": [
+                7,
+                8
+            ],
+            "previousSubject": "z_GENK1",
+            "subject": "",
+            "previousRoom": "",
+            "room": "",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "verlegt i. d. 5.\/6. Std.!",
+                "x"
+            ]
+        },
+        {
+            "classes": [
+                " "
+            ],
+            "lessons": [
+                3,
+                4
+            ],
+            "previousSubject": "",
+            "subject": "L7",
+            "previousRoom": "",
+            "room": "N1.13",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Nachschreibtermin SI",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                " "
+            ],
+            "lessons": [
+                4,
+                5
+            ],
+            "previousSubject": "",
+            "subject": " ",
+            "previousRoom": "",
+            "room": "Hof2 Aula",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Pausenaufsicht",
+                " "
+            ]
+        },
+        {
+            "classes": [
+                " "
+            ],
+            "lessons": [
+                7,
+                8
+            ],
+            "previousSubject": "",
+            "subject": "SP",
+            "previousRoom": "",
+            "room": "TH1",
+            "previousTeacher": "",
+            "teacher": "",
+            "texts": [
+                "Badminton AG",
+                " "
+            ]
+        }
+    ]
+}

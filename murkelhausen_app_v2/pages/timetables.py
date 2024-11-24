@@ -312,7 +312,7 @@ def show_andrea() -> rx.Component:
     )
 
 
-@template(route="/school", title="School", icon="school")
+@template(route="/school", title="Stundenpläne", icon="school")
 def school_page() -> rx.Component:
     return rx.tabs.root(
         rx.tabs.list(
