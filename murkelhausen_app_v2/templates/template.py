@@ -5,7 +5,6 @@ from typing import Callable
 
 from murkelhausen_app_v2 import styles
 from murkelhausen_app_v2.components.sidebar import sidebar
-from murkelhausen_app_v2.components.navbar import navbar
 
 import reflex as rx
 
@@ -83,10 +82,10 @@ def template(
 
         def templated_page():
             return rx.flex(
-                navbar(),
                 sidebar(),
                 rx.flex(
                     rx.vstack(
+                        # navbar(),
                         page_content(),
                         width="100%",
                         **styles.template_content_style,
@@ -96,20 +95,9 @@ def template(
                     max_width=[
                         "100%",
                         "100%",
-                        "100%",
-                        "100%",
-                        "100%",
                         styles.max_width,
                     ],
                 ),
-                flex_direction=[
-                    "column",
-                    "column",
-                    "column",
-                    "column",
-                    "column",
-                    "row",
-                ],
                 width="100%",
                 margin="auto",
                 position="relative",

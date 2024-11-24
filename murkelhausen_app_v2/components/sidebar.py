@@ -1,24 +1,24 @@
 """Sidebar component for the app."""
 
-import logging
+import reflex as rx
 
 from murkelhausen_app_v2 import styles
 
-import reflex as rx
+
+class State(rx.State):
+    version: str
+
+    def load_pyproject_toml(self):
+        with open("pyproject.toml") as f:
+            lines = f.readlines()
+            try:
+                self.version = lines[2].split("=")[1].strip().replace('"', "")
+            except (IndexError, TypeError):
+                self.version = "unknown"
 
 
 def sidebar_header() -> rx.Component:
-    """Sidebar header.
-
-    Returns:
-        The sidebar header component.
-    """
     return rx.hstack(
-        # The logo.
-        # rx.color_mode_cond(
-        #     rx.image(src="/reflex_black.svg", height="1.5em"),
-        #     rx.image(src="/reflex_white.svg", height="1.5em"),
-        # ),
         rx.spacer(),
         align="center",
         width="100%",
@@ -28,49 +28,19 @@ def sidebar_header() -> rx.Component:
 
 
 def sidebar_footer() -> rx.Component:
-    """Sidebar footer.
-
-    Returns:
-        The sidebar footer component.
-    """
     return rx.hstack(
-        # rx.link(
-        #     rx.text("Docs", size="3"),
-        #     href="https://reflex.dev/docs/getting-started/introduction/",
-        #     color_scheme="gray",
-        #     underline="none",
-        # ),
-        # rx.link(
-        #     rx.text("Blog", size="3"),
-        #     href="https://reflex.dev/blog/",
-        #     color_scheme="gray",
-        #     underline="none",
-        # ),
-        # rx.spacer(),
         rx.color_mode.button(style={"opacity": "0.8", "scale": "0.95"}),
+        rx.spacer(),
+        rx.text(f"version {State.version}"),
         justify="start",
         align="center",
         width="100%",
         padding="0.35em",
+        on_mount=State.load_pyproject_toml,
     )
 
 
-def sidebar_item_icon(icon: str) -> rx.Component:
-    return rx.icon(icon, size=18)
-
-
 def sidebar_item(text: str, url: str, icon: str) -> rx.Component:
-    """Sidebar item.
-
-    Args:
-        text: The text of the item.
-        url: The URL of the item.
-        icon: The icon of the item.
-
-    Returns:
-        rx.Component: The sidebar item component.
-    """
-    # Whether the item is active.
     active = (rx.State.router.page.path == url.lower()) | (
         (rx.State.router.page.path == "/") & text == "Overview"
     )
@@ -79,7 +49,7 @@ def sidebar_item(text: str, url: str, icon: str) -> rx.Component:
 
     return rx.link(
         rx.hstack(
-            sidebar_item_icon(icon),
+            rx.icon(icon, size=18),
             rx.text(text, size="3", weight="regular"),
             color=rx.cond(
                 active,
@@ -119,12 +89,6 @@ def sidebar_item(text: str, url: str, icon: str) -> rx.Component:
 
 
 def sidebar() -> rx.Component:
-    """The sidebar.
-
-    Returns:
-        The sidebar component.
-    """
-    # Get all the decorated pages and add them to the sidebar.
     from reflex.page import get_decorated_pages
 
     # The ordered page routes.
