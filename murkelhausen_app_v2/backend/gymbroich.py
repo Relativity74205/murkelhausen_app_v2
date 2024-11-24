@@ -5,6 +5,8 @@ import reflex as rx
 import requests
 from cachetools import TTLCache, cached
 
+from murkelhausen_app_v2.config import config
+
 logger = logging.getLogger(__name__)
 
 
@@ -95,9 +97,8 @@ def get_vertretungsplan(datum: date) -> Vertretungsplan:
 
 
 def get_vertretungsplan_mattis(datum: date) -> Vertretungsplan:
-    class_of_mattis = "6A"
     vertretungsplan = get_vertretungsplan(datum)
-    filtered_events = [event for event in vertretungsplan.events if class_of_mattis in event.classes]
+    filtered_events = [event for event in vertretungsplan.events if config.gym_broich.class_of_mattis in event.classes]
     return Vertretungsplan(
         datum=vertretungsplan.datum,
         version=vertretungsplan.version,
