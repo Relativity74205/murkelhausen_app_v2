@@ -3,6 +3,7 @@ import logging
 
 import reflex as rx
 import requests
+from babel.dates import format_date
 from cachetools import TTLCache, cached
 
 from murkelhausen_app_v2.config import config
@@ -24,8 +25,8 @@ class VertretungsplanEvent(rx.Base):
 
 
 class Vertretungsplan(rx.Base):
-    datum: date
-    version: datetime
+    datum: str
+    timestamp_aktualisiert: str
     infos: list[str]
     events: list[VertretungsplanEvent]
 
@@ -89,8 +90,8 @@ def get_vertretungsplan(datum: date) -> Vertretungsplan:
         event_index += 1
 
     return Vertretungsplan(
-        datum=date.fromisoformat(data["date"]),
-        version=datetime.fromisoformat(data["version"]),
+        datum=format_date(date.fromisoformat(data["date"]), format="EEE, d.M.yyyy", locale="de_DE"),
+        timestamp_aktualisiert=datetime.fromisoformat(data["version"]).strftime("%d.%m.%Y %H:%M:%S"),
         infos=data["infos"],
         events=events_parsed,
     )
@@ -105,7 +106,7 @@ def get_vertretungsplan_mattis(datum: date) -> Vertretungsplan:
     ]
     return Vertretungsplan(
         datum=vertretungsplan.datum,
-        version=vertretungsplan.version,
+        timestamp_aktualisiert=vertretungsplan.timestamp_aktualisiert,
         infos=vertretungsplan.infos,
         events=filtered_events,
     )

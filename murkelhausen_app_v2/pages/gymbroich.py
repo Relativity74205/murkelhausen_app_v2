@@ -72,17 +72,18 @@ def show_table_row(event: VertretungsplanEvent) -> rx.Component:
 
 def show_table(vertretungsplan_tuple) -> rx.Component:
     return rx.vstack(
-        rx.heading(f"Vertretungsplan für {vertretungsplan_tuple[0]}"),
-        rx.heading("Infos", size="3"),
+        rx.heading(f"Vertretungsplan für {vertretungsplan_tuple[1].datum}"),
+        rx.text(f"Stand: {vertretungsplan_tuple[1].timestamp_aktualisiert}"),
+        rx.heading("Infos", size="4"),
         rx.list.unordered(
             rx.foreach(vertretungsplan_tuple[1].infos, lambda info: rx.list.item(info)),
         ),
-        rx.heading("Vertretungen", size="3"),
+        rx.heading("Vertretungen", size="4"),
         rx.table.root(
             show_table_header(),
             rx.foreach(vertretungsplan_tuple[1].events, show_table_row),
             variant="surface",
-            size="3",
+            size="2",
         ),
     )
 
