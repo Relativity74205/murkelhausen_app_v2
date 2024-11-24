@@ -50,6 +50,7 @@ def show_table_header() -> rx.Component:
 
 
 def show_table_row(event: VertretungsplanEvent) -> rx.Component:
+    color = rx.color("gray")
     return rx.table.row(
         rx.table.cell(event.classes),
         rx.table.cell(event.lessons),
@@ -64,6 +65,8 @@ def show_table_row(event: VertretungsplanEvent) -> rx.Component:
         rx.table.cell(event.subject),
         rx.table.cell(event.room),
         rx.table.cell(event.comment),
+        bg=color,
+        style={"_hover": {"bg": color, "opacity": 0.5}},
     )
 
 
@@ -78,6 +81,8 @@ def show_table(vertretungsplan_tuple) -> rx.Component:
         rx.table.root(
             show_table_header(),
             rx.foreach(vertretungsplan_tuple[1].events, show_table_row),
+            variant="surface",
+            size="3",
         ),
     )
 
