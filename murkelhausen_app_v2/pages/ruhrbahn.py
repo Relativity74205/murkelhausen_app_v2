@@ -11,7 +11,7 @@ class State(rx.State):
         self.departures = get_lierberg_departure_data()
 
 
-def show_departures(departure: Departure):
+def show_departure(departure: Departure):
     color = rx.cond(
         departure.delay >= 5,  # TODO(arkadius): move to config
         rx.color("orange"),
@@ -53,7 +53,7 @@ def ruhrbahn_page() -> rx.Component:
                 ),
             ),
             rx.table.body(
-                rx.foreach(State.departures, show_departures),
+                rx.foreach(State.departures, show_departure),
             ),
             variant="surface",
             on_mount=State.get_departures,

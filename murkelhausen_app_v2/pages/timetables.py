@@ -126,6 +126,13 @@ timetables = {
 }
 
 
+def _get_header_bg_color(weekday_number: int) -> Color:
+    if datetime.now().isoweekday() == weekday_number:
+        return rx.color("yellow")
+    else:
+        return rx.color("gray", 3)
+
+
 def _parse_subject_name(subject_name: str | None) -> str:
     return subject_name if subject_name is not None else ""
 
@@ -187,15 +194,16 @@ def show_block(subject_list: list[str | None], time: str) -> rx.Component:
 
 def show_mattis_timetable(timetable_mattis: dict, times_mattis: dict) -> rx.Component:
     lunch_break = ["", "", "Mittagspause", "", ""]
+
     return rx.table.root(
         rx.table.header(
             rx.table.row(
                 rx.table.column_header_cell("Zeit", align="right"),
-                rx.table.column_header_cell("Montag"),
-                rx.table.column_header_cell("Dienstag"),
-                rx.table.column_header_cell("Mittwoch"),
-                rx.table.column_header_cell("Donnerstag"),
-                rx.table.column_header_cell("Freitag"),
+                rx.table.column_header_cell("Montag", bg=_get_header_bg_color(1)),
+                rx.table.column_header_cell("Dienstag", bg=_get_header_bg_color(2)),
+                rx.table.column_header_cell("Mittwoch", bg=_get_header_bg_color(3)),
+                rx.table.column_header_cell("Donnerstag", bg=_get_header_bg_color(4)),
+                rx.table.column_header_cell("Freitag", bg=_get_header_bg_color(5)),
             ),
         ),
         rx.table.body(
@@ -227,11 +235,11 @@ def show_erik_timetable(timetable_erik: dict, times_erik: dict) -> rx.Component:
         rx.table.header(
             rx.table.row(
                 rx.table.column_header_cell("Zeit", align="right"),
-                rx.table.column_header_cell("Montag"),
-                rx.table.column_header_cell("Dienstag"),
-                rx.table.column_header_cell("Mittwoch"),
-                rx.table.column_header_cell("Donnerstag"),
-                rx.table.column_header_cell("Freitag"),
+                rx.table.column_header_cell("Montag", bg=_get_header_bg_color(1)),
+                rx.table.column_header_cell("Dienstag", bg=_get_header_bg_color(2)),
+                rx.table.column_header_cell("Mittwoch", bg=_get_header_bg_color(3)),
+                rx.table.column_header_cell("Donnerstag", bg=_get_header_bg_color(4)),
+                rx.table.column_header_cell("Freitag", bg=_get_header_bg_color(5)),
             ),
         ),
         rx.table.body(

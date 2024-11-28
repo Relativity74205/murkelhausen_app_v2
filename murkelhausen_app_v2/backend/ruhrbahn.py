@@ -29,10 +29,6 @@ class Departure(rx.Base):
     line: str
     platform: str
 
-    @rx.var
-    def delay_string(self) -> str:
-        return f"+{self.delay}" if self.delay > 0 else ""
-
 
 @cached(cache=TTLCache(maxsize=1, ttl=60))  # 1 minute
 def get_departure_data(station_id: str, _: int = None) -> DepartureModel:
