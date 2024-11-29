@@ -13,6 +13,7 @@ requests = "^2.32.3"
 cachetools = "^5.5.0"
 babel = "^2.16.0"
 beautifulsoup4 = "^4.12.3"
+gcsa = "^2.5.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
