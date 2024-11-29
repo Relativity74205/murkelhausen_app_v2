@@ -3,6 +3,7 @@
 from __future__ import annotations
 from typing import Callable
 
+from murkelhausen_app_v2.components.navbar import navbar
 from murkelhausen_app_v2 import styles
 from murkelhausen_app_v2.components.sidebar import sidebar
 
@@ -85,7 +86,7 @@ def template(
                 sidebar(),
                 rx.flex(
                     rx.vstack(
-                        # navbar(),
+                        navbar(),
                         page_content(),
                         width="100%",
                         **styles.template_content_style,
