@@ -3,7 +3,6 @@ from datetime import date
 import reflex as rx
 
 from murkelhausen_app_v2.backend import handballnordrhein
-from murkelhausen_app_v2.backend.mheg import BASE_URL
 from murkelhausen_app_v2.templates.template import template
 
 
@@ -37,7 +36,7 @@ def show_game(game: handballnordrhein.HandballGame) -> rx.Component:
                 game.link_to_spielbericht is not None and game.result != "WH",
                 rx.link(
                     game.result,
-                    href=BASE_URL + game.link_to_spielbericht,
+                    href=handballnordrhein.BASE_URL + game.link_to_spielbericht,
                     is_external=True,
                 ),
                 rx.text(game.result),
