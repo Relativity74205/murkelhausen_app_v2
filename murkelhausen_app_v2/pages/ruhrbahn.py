@@ -19,18 +19,13 @@ def show_departure(departure: Departure):
             departure.delay > 1,
             rx.color("yellow"),
             rx.color("gray"),
-        )
+        ),
     )
 
     return rx.table.row(
         rx.table.cell(departure.line),
         rx.table.cell(departure.departure_time),
-        rx.table.cell(rx.cond(
-                departure.delay == 0,
-                "",
-                departure.delay
-            )
-),
+        rx.table.cell(rx.cond(departure.delay == 0, "", departure.delay)),
         rx.table.cell(departure.platform),
         rx.table.cell(departure.richtung),
         bg=color,
@@ -49,7 +44,7 @@ def ruhrbahn_page() -> rx.Component:
                     rx.table.column_header_cell("Abfahrt"),
                     rx.table.column_header_cell("Verspätung"),
                     rx.table.column_header_cell("Gleis"),
-                    rx.table.column_header_cell("Richtung")
+                    rx.table.column_header_cell("Richtung"),
                 ),
             ),
             rx.table.body(

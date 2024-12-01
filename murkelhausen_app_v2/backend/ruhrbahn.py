@@ -32,7 +32,9 @@ class Departure(rx.Base):
 
 @cached(cache=TTLCache(maxsize=1, ttl=60))  # 1 minute
 def get_departure_data(station_id: str, _: int = None) -> DepartureModel:
-    json_data = requests.get(URLS["departure"] + station_id, timeout=config.ruhrbahn.request_timeout).json()
+    json_data = requests.get(
+        URLS["departure"] + station_id, timeout=config.ruhrbahn.request_timeout
+    ).json()
     logger.info(
         f"Retrieved departure data from the Ruhrbahn API for station {station_id}."
     )
@@ -41,7 +43,9 @@ def get_departure_data(station_id: str, _: int = None) -> DepartureModel:
 
 @cached(cache=TTLCache(maxsize=1, ttl=60))  # 1 minute
 def get_stations(_: int = None) -> StationModel:
-    json_data = requests.get(URLS["stations"], timeout=config.ruhrbahn.request_timeout).json()
+    json_data = requests.get(
+        URLS["stations"], timeout=config.ruhrbahn.request_timeout
+    ).json()
     data = {"stations": json_data}
     logger.info("Retrieved stations data from the Ruhrbahn API.")
     return StationModel(**data)
@@ -58,17 +62,17 @@ def get_lierberg_departure_data() -> list[Departure]:
 
     departures = []
     for raw_departure in raw_departures:
-        departures.append(Departure(
-            richtung=raw_departure.richtung,
-            departure_time=raw_departure.planned_departure_time,
-            delay=raw_departure.delay,
-            line=raw_departure.servingLine.number,
-            platform=raw_departure.platform,
-        )
+        departures.append(
+            Departure(
+                richtung=raw_departure.richtung,
+                departure_time=raw_departure.planned_departure_time,
+                delay=raw_departure.delay,
+                line=raw_departure.servingLine.number,
+                platform=raw_departure.platform,
+            )
         )
 
     return departures
-
 
 
 def debug():

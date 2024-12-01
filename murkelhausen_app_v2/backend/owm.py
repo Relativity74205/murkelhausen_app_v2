@@ -7,6 +7,7 @@ name = "Mülheim"
 gps_lat = 51.4300
 gps_lon = 6.8264
 """
+
 import os
 from dataclasses import dataclass
 from logging import getLogger
@@ -76,7 +77,7 @@ def _query_owm(url: str, city: City, api_key: str, units: str) -> dict:
 
 
 @cached(cache=TTLCache(maxsize=1, ttl=120))  # 2 minutes
-def get_weather_data_muelheim() -> OWMOneCall:
+def get_weather_data_muelheim() -> tuple[OWMOneCall | None, str | None]:
     # TODO: move to config
     owm_config = OWMConfig(
         url_weather="https://api.openweathermap.org/data/2.5/weather",
@@ -85,5 +86,9 @@ def get_weather_data_muelheim() -> OWMOneCall:
         api_key=os.environ.get("OPENWEATHERMAP_API_KEY"),
     )
 
-    data = query_one_call_api(MUELHEIM, owm_config)
-    return data
+    try:
+        data = query_one_call_api(MUELHEIM, owm_config)
+    except Exception as e:
+        return None, str(e)
+
+    return data, ""

@@ -90,8 +90,12 @@ def get_vertretungsplan(datum: date) -> Vertretungsplan:
         event_index += 1
 
     return Vertretungsplan(
-        datum=format_date(date.fromisoformat(data["date"]), format="EEE, d.M.yyyy", locale="de_DE"),
-        timestamp_aktualisiert=datetime.fromisoformat(data["version"]).strftime("%d.%m.%Y %H:%M:%S"),
+        datum=format_date(
+            date.fromisoformat(data["date"]), format="EEE, d.M.yyyy", locale="de_DE"
+        ),
+        timestamp_aktualisiert=datetime.fromisoformat(data["version"]).strftime(
+            "%d.%m.%Y %H:%M:%S"
+        ),
         infos=data["infos"],
         events=events_parsed,
     )

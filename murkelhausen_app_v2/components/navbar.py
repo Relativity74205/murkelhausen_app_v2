@@ -1,6 +1,5 @@
 """Navbar component for the app."""
 
-
 import reflex as rx
 
 

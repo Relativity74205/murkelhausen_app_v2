@@ -30,16 +30,12 @@ class CalendarState(rx.State):
 
 
 # TODO: how to set time input to use 24 hour format?
-def form_field(
-    label: str, placeholder: str, type: str, name: str
-) -> rx.Component:
+def form_field(label: str, placeholder: str, type: str, name: str) -> rx.Component:
     return rx.form.field(
         rx.flex(
             rx.form.label(label),
             rx.form.control(
-                rx.input(
-                    placeholder=placeholder, type=type
-                ),
+                rx.input(placeholder=placeholder, type=type),
                 as_child=True,
             ),
             direction="column",
@@ -53,9 +49,7 @@ def form_field(
 def termin_form() -> rx.Component:
     def foo_temp(form_data: dict) -> rx.Component:
         CalendarState.handle_add_termin_submit(form_data)
-        return rx.window_alert(
-            form_data.to_string()
-        )
+        return rx.window_alert(form_data.to_string())
 
     return rx.card(
         rx.flex(
@@ -85,15 +79,9 @@ def termin_form() -> rx.Component:
                         "event_name",
                     ),
                     rx.flex(
-                        form_field(
-                            "Datum", "", "date", "event_date"
-                        ),
-                        form_field(
-                            "Startzeit", "", "time", "start_time"
-                        ),
-                        form_field(
-                            "Endzeit", "", "time", "end_time"
-                        ),
+                        form_field("Datum", "", "date", "event_date"),
+                        form_field("Startzeit", "", "time", "start_time"),
+                        form_field("Endzeit", "", "time", "end_time"),
                         spacing="3",
                         flex_direction="row",
                     ),
@@ -152,7 +140,10 @@ def show_termin_table_header() -> rx.Component:
 
 
 @template(
-    route="/cal", title="Kalender", icon="calendar", on_load=CalendarState.get_appointments
+    route="/cal",
+    title="Kalender",
+    icon="calendar",
+    on_load=CalendarState.get_appointments,
 )
 def calender() -> rx.Component:
     return rx.vstack(
@@ -163,5 +154,5 @@ def calender() -> rx.Component:
                 show_appointment,
             ),
         ),
-        termin_form()
+        termin_form(),
     )

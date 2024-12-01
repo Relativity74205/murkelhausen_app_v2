@@ -56,4 +56,11 @@ docker push ghcr.io/relativity74205/murkel_app2:0.1.0
   - [ ] move constants in backend to config file
   - [ ] change dto classes to rx.Base; replace tuple with list
 - [ ] openAI Integration
-  - [ ] voice! 
+  - [ ] voice!
+
+## Google Authentification
+
+- [google project](https://console.cloud.google.com/apis/dashboard?project=murkelhausen)
+- [service account](https://console.cloud.google.com/iam-admin/serviceaccounts/details/100602016701161296682;edit=true?previousPage=%2Fapis%2Fcredentials%3Fproject%3Dmurkelhausen&project=murkelhausen)
+  - service account id/email: murkelhausen2@murkelhausen.iam.gserviceaccount.com
+- [medium article](https://medium.com/iceapple-tech-talks/integration-with-google-calendar-api-using-service-account-1471e6e102c8)

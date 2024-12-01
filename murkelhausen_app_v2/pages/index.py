@@ -17,12 +17,16 @@ def index() -> rx.Component:
                     rx.data_list.root(
                         rx.data_list.item(
                             rx.data_list.label("Temperatur", color_scheme="tomato"),
-                            rx.data_list.value(f"{WeatherState.owm_weather.current.temp} °C"),
+                            rx.data_list.value(
+                                f"{WeatherState.owm_weather.current.temp} °C"
+                            ),
                             align="center",
                         ),
                         rx.data_list.item(
                             rx.data_list.label("Temperatur gefühlt"),
-                            rx.data_list.value(f"{WeatherState.owm_weather.current.feels_like} °C"),
+                            rx.data_list.value(
+                                f"{WeatherState.owm_weather.current.feels_like} °C"
+                            ),
                             align="end",
                         ),
                         size="3",

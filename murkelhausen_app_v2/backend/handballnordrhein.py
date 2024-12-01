@@ -8,9 +8,7 @@ from bs4 import BeautifulSoup
 from murkelhausen_app_v2.config import config
 
 BASE_URL = "https://hnr-handball.liga.nu"
-TEAM_PORTRAIT_BASE_URL = (
-    f"{BASE_URL}/cgi-bin/WebObjects/nuLigaHBDE.woa/wa/teamPortrait"
-)
+TEAM_PORTRAIT_BASE_URL = f"{BASE_URL}/cgi-bin/WebObjects/nuLigaHBDE.woa/wa/teamPortrait"
 TEAM_D_JUGEND = "1993128"
 TEAM_ERSTE_HERREN = "1986091"
 
