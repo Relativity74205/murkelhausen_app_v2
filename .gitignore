@@ -6,4 +6,3 @@
 .web
 __pycache__/
 assets/external/
-requirements.txt
