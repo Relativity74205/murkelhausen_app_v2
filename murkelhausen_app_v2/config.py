@@ -1,3 +1,5 @@
+import os
+
 from pydantic import BaseModel
 
 
@@ -24,12 +26,20 @@ class Ruhrbahn(BaseModel):
     request_timeout: int
 
 
+class PiHole(BaseModel):
+    request_timeout: int
+    token: str
+    disable_for_in_seconds: int
+    pihole_urls: list[str]
+
+
 class Config(BaseModel):
     mheg: Mheg
     gym_broich: GymBroich
     handball_nordrhein: HandballNordrhein
     fussball_de: FussballDE
     ruhrbahn: Ruhrbahn
+    pihole: PiHole
 
 
 config = Config(
@@ -50,5 +60,14 @@ config = Config(
     ),
     ruhrbahn=Ruhrbahn(
         request_timeout=2,
+    ),
+    pihole=PiHole(
+        request_timeout=2,
+        token=os.environ.get("PI_HOLE_TOKEN"),
+        disable_for_in_seconds=300,
+        pihole_urls=[
+            "http://192.168.1.18/admin/api.php",  # rasp1.local
+            "http://192.168.1.28/admin/api.php",  # rasp2.local
+        ],
     ),
 )

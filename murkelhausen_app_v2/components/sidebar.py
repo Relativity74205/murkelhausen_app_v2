@@ -3,6 +3,7 @@
 import reflex as rx
 
 from murkelhausen_app_v2 import styles
+from murkelhausen_app_v2.pages.pihole import PiHoleState
 
 
 class State(rx.State):
@@ -129,14 +130,15 @@ def sidebar() -> rx.Component:
                 width="100%",
             ),
             rx.spacer(),
+            rx.button("deactivate PiHole", on_click=PiHoleState.run_pihole_deactivate),
+            # rx.text(PiHoleState.deactivated_for_text),
             sidebar_footer(),
             justify="end",
-            align="end",
+            align="start",
             width=styles.sidebar_content_width,
             height="100dvh",
             padding="1em",
         ),
-        # display=["none", "none", "none", "none", "none", "flex"],
         max_width=styles.sidebar_width,
         width="auto",
         height="100%",
