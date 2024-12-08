@@ -7,7 +7,8 @@ class Mheg(BaseModel):
 
 
 class GymBroich(BaseModel):
-    class_of_mattis: str
+    class_suffix_mattis: str
+    year_started_mattis: int
     request_timeout: int
 
 
@@ -37,8 +38,9 @@ config = Config(
         request_timeout=2,
     ),
     gym_broich=GymBroich(
-        class_of_mattis="6A",
-        request_timeout=2,
+        class_suffix_mattis="B",
+        year_started_mattis=2023,
+        request_timeout=5,
     ),
     handball_nordrhein=HandballNordrhein(
         request_timeout=2,

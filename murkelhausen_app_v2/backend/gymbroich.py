@@ -28,7 +28,9 @@ class Vertretungsplan(rx.Base):
     datum: str
     timestamp_aktualisiert: str
     infos: list[str]
+    infos_present: bool
     events: list[VertretungsplanEvent]
+    events_present: bool
 
 
 @cached(cache=TTLCache(maxsize=1, ttl=60))  # 1 minute
@@ -49,10 +51,10 @@ def replace_empty_str_with_none(v: str) -> str | None:
 
 
 @cached(cache=TTLCache(maxsize=1, ttl=60))  # 1 minute
-def get_vertretungsplan(datum: date) -> Vertretungsplan:
+def get_vertretungsplan(vertretungsplan_date: date) -> Vertretungsplan:
     base_url = "https://assets.gymnasium-broich.de/vplan/api/"
-    data: dict = requests.get(base_url + datum.isoformat()).json()
-    logger.info(f"Retrieved Vertretungsplan for {datum}.")
+    data: dict = requests.get(base_url + vertretungsplan_date.isoformat()).json()
+    logger.info(f"Retrieved Vertretungsplan for {vertretungsplan_date}.")
 
     events = []
     for event in data["events"]:
@@ -97,20 +99,34 @@ def get_vertretungsplan(datum: date) -> Vertretungsplan:
             "%d.%m.%Y %H:%M:%S"
         ),
         infos=data["infos"],
+        infos_present=len(data["infos"]) > 0,
         events=events_parsed,
+        events_present=len(events_parsed) > 0,
     )
 
 
-def get_vertretungsplan_mattis(datum: date) -> Vertretungsplan:
-    vertretungsplan = get_vertretungsplan(datum)
+def get_full_class_of_mattis() -> str:
+    current_year = datetime.now().year
+    current_month = datetime.now().month
+    if current_month < 7:
+        current_year -= 1
+
+    current_jahrgang = current_year - config.gym_broich.year_started_mattis + 5
+    return f"{current_jahrgang}{config.gym_broich.class_suffix_mattis}"
+
+
+def get_vertretungsplan_mattis(vertretungsplan_date: date) -> Vertretungsplan:
+    vertretungsplan = get_vertretungsplan(vertretungsplan_date)
     filtered_events = [
         event
         for event in vertretungsplan.events
-        if config.gym_broich.class_of_mattis in event.classes
+        if get_full_class_of_mattis() in event.classes
     ]
     return Vertretungsplan(
         datum=vertretungsplan.datum,
         timestamp_aktualisiert=vertretungsplan.timestamp_aktualisiert,
         infos=vertretungsplan.infos,
+        infos_present=vertretungsplan.infos_present,
         events=filtered_events,
+        events_present=len(filtered_events) > 0,
     )
