@@ -6,20 +6,15 @@ from murkelhausen_app_v2.backend.google_calendar import get_list_of_appointments
 from murkelhausen_app_v2.templates.template import template
 
 
-# @template(
-#     route="/cal", title="Kalender", icon="calendar"
-# )
-# def calender() -> rx.Component:
-#     return rx.vstack(
-#         rx.html(
-#             """<iframe src="https://calendar.google.com/calendar/embed?src=arkadius.schuchhardt%40gmail.com&ctz=Europe%2FBerlin" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>"""
-#         ),
-#     )
-
-
 class CalendarState(rx.State):
     appointments: list[Termin] = []
     new_appointment_form: dict = {}
+    whole_day: bool = False
+
+    @rx.event
+    def change_whole_day(self):
+        self.whole_day = not self.whole_day
+        rx.toast(f"foo={self.whole_day}")
 
     @rx.event
     def handle_add_termin_submit(self, form_data: dict):
@@ -80,22 +75,26 @@ def termin_form() -> rx.Component:
                     ),
                     rx.flex(
                         form_field("Datum", "", "date", "event_date"),
-                        form_field("Startzeit", "", "time", "start_time"),
-                        form_field("Endzeit", "", "time", "end_time"),
+                        rx.checkbox("Ganztägig", name="whole_day", on_click=CalendarState.change_whole_day),
                         spacing="3",
                         flex_direction="row",
+                        align="center",
                     ),
-                    # form_field(
-                    #     "Description",
-                    #     "Optional",
-                    #     "text",
-                    #     "description",
-                    # ),
+                    rx.cond(
+                        CalendarState.whole_day,
+                        rx.box(),
+                        rx.flex(
+                            form_field("Startzeit", "", "time", "start_time"),
+                            form_field("Endzeit", "", "time", "end_time"),
+                            spacing="3",
+                            flex_direction="row",
+                        ),
+                    ),
                     direction="column",
                     spacing="2",
                 ),
                 rx.form.submit(
-                    rx.button("Create"),
+                    rx.button("Erstellen"),
                     as_child=True,
                     width="100%",
                 ),
@@ -119,7 +118,7 @@ def show_appointment(appointment: Termin) -> rx.Component:
 
     return rx.table.row(
         rx.table.cell(appointment.event_name),
-        rx.table.cell(appointment.start_day),
+        rx.table.cell(appointment.start_day_string),
         rx.table.cell(appointment.start_time),
         rx.table.cell(appointment.end_time),
         bg=color,
@@ -147,12 +146,20 @@ def show_termin_table_header() -> rx.Component:
 )
 def calender() -> rx.Component:
     return rx.vstack(
-        rx.table.root(
-            show_termin_table_header(),
-            rx.foreach(
-                CalendarState.appointments,
-                show_appointment,
+        rx.heading("Termine in den nächsten 2 Wochen"),
+        rx.hstack(
+            rx.table.root(
+                show_termin_table_header(),
+                rx.foreach(
+                    CalendarState.appointments,
+                    show_appointment,
+                ),
+                variant="surface",
+                size="3",
             ),
+            rx.spacer(),
+            termin_form(),
+            justify="between",
+            width="100%",
         ),
-        termin_form(),
     )

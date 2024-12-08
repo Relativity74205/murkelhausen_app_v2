@@ -2,6 +2,8 @@ import os
 from datetime import date, datetime
 
 import reflex as rx
+from babel.dates import format_date
+from dateutil.relativedelta import relativedelta
 
 from gcsa.google_calendar import GoogleCalendar
 from google.oauth2 import service_account
@@ -9,12 +11,14 @@ from google.oauth2 import service_account
 
 class Termin(rx.Base):
     event_name: str
-    start_timestamp: datetime
+    start_timestamp: datetime | None
     start_day: date
-    start_time: str
-    end_timestamp: datetime
+    start_day_string: str
+    start_time: str | None
+    end_timestamp: datetime | None
     end_day: date
-    end_time: str
+    end_time: str | None
+    whole_day: bool
 
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
@@ -50,23 +54,41 @@ def get_google_calendar_client() -> GoogleCalendar:
 
 def get_list_of_appointments() -> list[Termin]:
     gc = get_google_calendar_client()
-    raw_events = gc.get_events(time_min=date(2024, 11, 18), time_max=date(2024, 12, 19))
+    today = date.today()
+    raw_events = gc.get_events(time_min=today, time_max=today + relativedelta(weeks=2))
 
     events = []
     for event in raw_events:
-        events.append(
-            Termin(
+        start_day_string = format_date(event.start, format="dd.M.yyyy (EEE)", locale="de_DE")
+        if type(event.start) == date:
+            termin = Termin(
+                event_name=event.summary,
+                start_timestamp=None,
+                start_day=event.start,
+                start_day_string=start_day_string,
+                start_time=None,
+                end_timestamp=None,
+                end_day=event.end,
+                end_time=None,
+                whole_day=True,
+            )
+        else:
+            termin = Termin(
                 event_name=event.summary,
                 start_timestamp=event.start,
                 start_day=event.start.date(),
-                start_time=str(event.start.time()),
+                start_time=str(event.start.strftime("%H:%M")),
+                start_day_string=start_day_string,
                 end_timestamp=event.end,
                 end_day=event.end.date(),
-                end_time=str(event.end.time()),
+                end_time=str(event.end.strftime("%H:%M")),
+                whole_day=False,
             )
+        events.append(
+            termin
         )
 
-    return events
+    return sorted(events, key=lambda x: (x.start_day, x.start_time is not None, x.start_time))
 
 
 if __name__ == "__main__":
