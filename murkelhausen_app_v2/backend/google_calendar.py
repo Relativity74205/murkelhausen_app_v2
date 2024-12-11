@@ -3,6 +3,7 @@ from datetime import date, datetime
 import reflex as rx
 from babel.dates import format_date
 from dateutil.relativedelta import relativedelta
+from gcsa.event import Event
 
 from gcsa.google_calendar import GoogleCalendar
 from google.oauth2 import service_account
@@ -11,10 +12,11 @@ from murkelhausen_app_v2.config import config
 
 
 class Termin(rx.Base):
+    id: str
     event_name: str
     start_timestamp: datetime | None
     start_day: date
-    start_day_string: str
+    start_day_string: str | None
     start_time: str | None
     end_timestamp: datetime | None
     end_day: date
@@ -53,6 +55,16 @@ def get_google_calendar_client() -> GoogleCalendar:
     return gc
 
 
+def create_appointment(event: Event):
+    gc = get_google_calendar_client()
+    gc.add_event(event)
+
+
+def delete_appointment(event: Event):
+    gc = get_google_calendar_client()
+    gc.delete_event(event)
+
+
 def get_list_of_appointments() -> list[Termin]:
     gc = get_google_calendar_client()
     today = date.today()
@@ -63,6 +75,7 @@ def get_list_of_appointments() -> list[Termin]:
         start_day_string = format_date(event.start, format="dd.M.yyyy (EEE)", locale="de_DE")
         if type(event.start) is date:
             termin = Termin(
+                id=event.id,
                 event_name=event.summary,
                 start_timestamp=None,
                 start_day=event.start,
@@ -75,6 +88,7 @@ def get_list_of_appointments() -> list[Termin]:
             )
         else:
             termin = Termin(
+                id=event.id,
                 event_name=event.summary,
                 start_timestamp=event.start,
                 start_day=event.start.date(),

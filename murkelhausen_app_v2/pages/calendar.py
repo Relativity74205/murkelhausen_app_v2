@@ -1,8 +1,10 @@
-from datetime import date
+from datetime import date, datetime
 
 import reflex as rx
+from gcsa.event import Event
 
-from murkelhausen_app_v2.backend.google_calendar import get_list_of_appointments, Termin
+from murkelhausen_app_v2.backend.google_calendar import get_list_of_appointments, Termin, create_appointment, \
+    delete_appointment
 from murkelhausen_app_v2.templates.template import template
 
 
@@ -18,19 +20,40 @@ class CalendarState(rx.State):
 
     @rx.event
     def handle_add_termin_submit(self, form_data: dict):
-        self.new_appointment_form = form_data
+        if "whole_day" in form_data.keys():
+            event = Event(
+                summary=form_data["event_name"],
+                start=date.fromisoformat(form_data["event_date"]),
+                end=date.fromisoformat(form_data["event_date"]),
+            )
+        else:
+            event = Event(
+                summary=form_data["event_name"],
+                start=datetime.fromisoformat(f"{form_data['event_date']}T{form_data['start_time']}:00"),
+                end=datetime.fromisoformat(f"{form_data['event_date']}T{form_data['end_time']}:00"),
+            )
+        create_appointment(event)
+        yield rx.toast(f"Event erstellt: {event}")
+        self.get_appointments()
 
+    @rx.event
     def get_appointments(self):
         self.appointments = get_list_of_appointments()
 
+    @rx.event
+    def delete_appointment(self, event_id: id):
+        delete_appointment(Event(summary=None, start=date(1970,1,1), event_id=event_id))
+        yield rx.toast(f"Event {event_id} gelöscht")
+        self.get_appointments()
+
 
 # TODO: how to set time input to use 24 hour format?
-def form_field(label: str, placeholder: str, type: str, name: str) -> rx.Component:
+def form_field(label: str, placeholder: str, data_type: str, name: str) -> rx.Component:
     return rx.form.field(
         rx.flex(
             rx.form.label(label),
             rx.form.control(
-                rx.input(placeholder=placeholder, type=type),
+                rx.input(placeholder=placeholder, type=data_type),
                 as_child=True,
             ),
             direction="column",
@@ -42,10 +65,6 @@ def form_field(label: str, placeholder: str, type: str, name: str) -> rx.Compone
 
 
 def termin_form() -> rx.Component:
-    def foo_temp(form_data: dict) -> rx.Component:
-        CalendarState.handle_add_termin_submit(form_data)
-        return rx.window_alert(form_data.to_string())
-
     return rx.card(
         rx.flex(
             rx.hstack(
@@ -75,7 +94,7 @@ def termin_form() -> rx.Component:
                     ),
                     rx.flex(
                         form_field("Datum", "", "date", "event_date"),
-                        rx.checkbox("Ganztägig", name="whole_day", on_click=CalendarState.change_whole_day),
+                        rx.checkbox("Ganztägig", name="whole_day", on_change=CalendarState.set_whole_day),
                         spacing="3",
                         flex_direction="row",
                         align="center",
@@ -98,8 +117,8 @@ def termin_form() -> rx.Component:
                     as_child=True,
                     width="100%",
                 ),
-                on_submit=foo_temp,
-                reset_on_submit=False,
+                on_submit=CalendarState.handle_add_termin_submit,
+                reset_on_submit=True,
             ),
             width="100%",
             direction="column",
@@ -121,6 +140,29 @@ def show_appointment(appointment: Termin) -> rx.Component:
         rx.table.cell(appointment.start_day_string),
         rx.table.cell(appointment.start_time),
         rx.table.cell(appointment.end_time),
+        # TODO make nice: https://reflex.dev/docs/library/overlay/alert-dialog/
+        rx.table.cell(
+            rx.alert_dialog.root(
+                rx.alert_dialog.trigger(
+                    rx.badge(rx.icon(tag="delete")),
+                ),
+                rx.alert_dialog.content(
+                    rx.alert_dialog.title("Revoke access"),
+                    rx.alert_dialog.description(
+                        "Are you sure? This application will no longer be accessible and any existing sessions will be expired.",
+                    ),
+                    rx.flex(
+                        rx.alert_dialog.cancel(
+                            rx.button("Cancel"),
+                        ),
+                        rx.alert_dialog.action(
+                            rx.button("Revoke access", on_click=CalendarState.delete_appointment(appointment.id)),
+                            spacing="3",
+                        ),
+                    ),
+                )
+            )
+        ),
         bg=color,
         style={"_hover": {"bg": color, "opacity": 0.5}},
         align="center",
@@ -134,6 +176,7 @@ def show_termin_table_header() -> rx.Component:
             rx.table.column_header_cell("Tag"),
             rx.table.column_header_cell("Start"),
             rx.table.column_header_cell("Ende"),
+            rx.table.column_header_cell("Löschen"),
         ),
     )
 
@@ -144,7 +187,7 @@ def show_termin_table_header() -> rx.Component:
     icon="calendar",
     on_load=CalendarState.get_appointments,
 )
-def calender() -> rx.Component:
+def calendar_page() -> rx.Component:
     return rx.vstack(
         rx.heading("Termine in den nächsten 2 Wochen"),
         rx.hstack(
