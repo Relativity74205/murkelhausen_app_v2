@@ -10,7 +10,7 @@ def _deactivate_pihole(base_url: str, pi_hole_number: int) -> tuple[str, bool]:
     Returns a string and an indicator if the deactivation attempt was an error.
     """
     params = {
-        "auth": config.pihole.token,
+        "auth": config.pihole.token.get_secret_value(),
         "disable": config.pihole.disable_for_in_seconds,
     }
     try:

@@ -1,4 +1,3 @@
-import os
 from datetime import date, datetime
 
 import reflex as rx
@@ -7,6 +6,8 @@ from dateutil.relativedelta import relativedelta
 
 from gcsa.google_calendar import GoogleCalendar
 from google.oauth2 import service_account
+
+from murkelhausen_app_v2.config import config
 
 
 class Termin(rx.Base):
@@ -21,22 +22,22 @@ class Termin(rx.Base):
     whole_day: bool
 
 
-SCOPES = ["https://www.googleapis.com/auth/calendar"]
-SERVICE_ACCOUNT_KEY_FILE = "/home/arkadius/.credentials/murkelhausen-3824b92878ca.json"
+SCOPES = [
+    "https://www.googleapis.com/auth/calendar",
+]
 
 
 def get_google_calendar_client() -> GoogleCalendar:
-    # TODO: move to config
-    private_key = os.environ.get("GOOGLE_PRIVATE_KEY").replace("\\n", "\n")
+    private_key = config.google.api_key.replace("\\n", "\n")
     info = {
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-        "client_email": "murkelhausen2@murkelhausen.iam.gserviceaccount.com",
-        "client_id": "100602016701161296682",
-        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/murkelhausen2%40murkelhausen.iam.gserviceaccount.com",
+        "client_email": config.google.client_email,
+        "client_id": config.google.client_id,
+        "client_x509_cert_url": config.google.client_x509_cert_url,
         "private_key": private_key,
-        "private_key_id": "3824b92878cacd7dbdca0ad9000a0d76962f697f",
-        "project_id": "murkelhausen",
+        "private_key_id": config.google.private_key_id,
+        "project_id": config.google.project_id,
         "token_uri": "https://oauth2.googleapis.com/token",
         "type": "service_account",
         "universe_domain": "googleapis.com",
@@ -60,7 +61,7 @@ def get_list_of_appointments() -> list[Termin]:
     events = []
     for event in raw_events:
         start_day_string = format_date(event.start, format="dd.M.yyyy (EEE)", locale="de_DE")
-        if type(event.start) == date:
+        if type(event.start) is date:
             termin = Termin(
                 event_name=event.summary,
                 start_timestamp=None,
@@ -92,4 +93,5 @@ def get_list_of_appointments() -> list[Termin]:
 
 
 if __name__ == "__main__":
-    print(get_list_of_appointments())
+    for ele in get_list_of_appointments():
+        print(ele.event_name, ele.start_day, ele.whole_day)

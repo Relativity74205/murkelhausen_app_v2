@@ -8,7 +8,6 @@ gps_lat = 51.4300
 gps_lon = 6.8264
 """
 
-import os
 from dataclasses import dataclass
 from logging import getLogger
 
@@ -16,6 +15,7 @@ import requests
 from cachetools import TTLCache, cached
 
 from murkelhausen_app_v2.backend.owm_models import OWMOneCall
+from murkelhausen_app_v2.config import config
 
 log = getLogger(__name__)
 
@@ -60,8 +60,8 @@ def _query_owm(url: str, city: City, api_key: str, units: str) -> dict:
         "units": units,
         "lang": "de",
     }
-    # TODO: move timeout to config
-    r = requests.get(url, params=query_params, timeout=2)
+
+    r = requests.get(url, params=query_params, timeout=config.owm.request_timeout)
 
     if r.status_code == 200:
         return_dict: dict = r.json()
@@ -70,7 +70,7 @@ def _query_owm(url: str, city: City, api_key: str, units: str) -> dict:
         raise RuntimeError(f"Authentication error, {api_key=}.")
     else:
         raise RuntimeError(
-            f"Query to openweatherapi one call api returned non 200 status code for city {city.name} with {api_key=}: "
+            f"Query to openweatherapi one call api returned non 200 status code for city {city.name} with api_key={api_key[:6]}: "
             f"status_code: {r.status_code}"
             f"response_text: {r.text}"
         )
@@ -78,12 +78,11 @@ def _query_owm(url: str, city: City, api_key: str, units: str) -> dict:
 
 @cached(cache=TTLCache(maxsize=1, ttl=120))  # 2 minutes
 def get_weather_data_muelheim() -> tuple[OWMOneCall | None, str | None]:
-    # TODO: move to config
     owm_config = OWMConfig(
         url_weather="https://api.openweathermap.org/data/2.5/weather",
         url_onecall="https://api.openweathermap.org/data/3.0/onecall",
         units="metric",
-        api_key=os.environ.get("OPENWEATHERMAP_API_KEY"),
+        api_key=config.owm.api_key.get_secret_value(),
     )
 
     try:
