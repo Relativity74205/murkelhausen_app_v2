@@ -63,7 +63,7 @@ config = Config(
     ),
     pihole=PiHole(
         request_timeout=2,
-        token=os.environ.get("PI_HOLE_TOKEN"),
+        token=os.environ.get("PI_HOLE_TOKEN", "placeholder"),
         disable_for_in_seconds=300,
         pihole_urls=[
             "http://192.168.1.18/admin/api.php",  # rasp1.local
