@@ -7,6 +7,7 @@ from murkelhausen_app_v2.pages.gymbroich import gymbroich_page
 from murkelhausen_app_v2.pages.calendar import calendar_page
 from murkelhausen_app_v2.pages.ruhrbahn import ruhrbahn_page
 from murkelhausen_app_v2.pages.weather import weather_page
+from murkelhausen_app_v2.pages.llm import llm_page
 
 __all__ = [
     "index",
@@ -18,4 +19,5 @@ __all__ = [
     "calendar_page",
     "ruhrbahn_page",
     "weather_page",
+    "llm_page",
 ]

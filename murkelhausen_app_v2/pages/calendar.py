@@ -252,7 +252,8 @@ def calendar_page() -> rx.Component:
             justify="between",
             width="100%",
         ),
-        #
-        # rx.el.Iframe(src="https://calendar.google.com/calendar/embed?src=d8vonkqtg15pf4en7eluh5kk1egdrm0t%40import.calendar.google.com&ctz=Europe%2FBerlin", witdh="100%", height="600", style={"border": "0"}, frameborder="0", scrolling="no"),
-        rx.html('<iframe src="https://calendar.google.com/calendar/embed?src=d8vonkqtg15pf4en7eluh5kk1egdrm0t%40import.calendar.google.com&ctz=Europe%2FBerlin" style="border: 0" width="1200" height="800" frameborder="0" scrolling="no"></iframe>')
+        rx.el.Iframe(
+            src="https://calendar.google.com/calendar/embed?src=d8vonkqtg15pf4en7eluh5kk1egdrm0t%40import.calendar.google.com&ctz=Europe%2FBerlin",
+            width="100%", height=600, style={"border": "0"}, frameborder="0", scrolling="no"
+        ),
     )
