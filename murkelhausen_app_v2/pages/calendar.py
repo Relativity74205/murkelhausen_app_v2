@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from turtle import width
 
 import reflex as rx
 from gcsa.event import Event
@@ -236,24 +237,51 @@ def show_termin_table_header() -> rx.Component:
 )
 def calendar_page() -> rx.Component:
     return rx.vstack(
-        rx.heading("Termine in den nächsten 2 Wochen"),
-        rx.hstack(
-            rx.table.root(
-                show_termin_table_header(),
-                rx.foreach(
-                    CalendarState.appointments,
-                    show_appointment,
+        rx.tabs.root(
+            rx.vstack(
+                rx.tabs.list(
+                    rx.tabs.trigger("Liste", value="liste"),
+                    rx.tabs.trigger("Kalender Papa Arbeit", value="kalender_work"),
                 ),
-                variant="surface",
-                size="3",
+                rx.tabs.content(
+                    rx.vstack(
+                        rx.heading("Termine in den nächsten 2 Wochen"),
+                        rx.hstack(
+                            rx.table.root(
+                                show_termin_table_header(),
+                                rx.foreach(
+                                    CalendarState.appointments,
+                                    show_appointment,
+                                ),
+                                variant="surface",
+                                size="3",
+                            ),
+                            termin_form(),
+                        ),
+                        spacing="4",
+                    ),
+                    value="liste"
+                ),
+                rx.tabs.content(
+                    rx.vstack(
+                        rx.el.Iframe(
+                            src="https://calendar.google.com/calendar/embed?src=d8vonkqtg15pf4en7eluh5kk1egdrm0t%40import.calendar.google.com&ctz=Europe%2FBerlin",
+                            width="100%",
+                            height=600,
+                            style={"border": "0"},
+                            frameborder="0",
+                            scrolling="no"
+                        ),
+                        width="100%",
+                    ),
+                    value="kalender_work",
+                    width="100%",
+                ),
+                width="100%",
+                spacing='5',
             ),
-            rx.spacer(),
-            termin_form(),
-            justify="between",
+            default_value="liste",
             width="100%",
         ),
-        rx.el.Iframe(
-            src="https://calendar.google.com/calendar/embed?src=d8vonkqtg15pf4en7eluh5kk1egdrm0t%40import.calendar.google.com&ctz=Europe%2FBerlin",
-            width="100%", height=600, style={"border": "0"}, frameborder="0", scrolling="no"
-        ),
+        width="100%",
     )
