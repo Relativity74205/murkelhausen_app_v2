@@ -13,7 +13,7 @@ def llm_page() -> rx.Component:
     return rx.vstack(
         rx.heading("ChatGPT"),
         rx.el.Iframe(
-            src="http://192.168.1.69:3000/",
+            src="http://beowulf.lan:3000/",
             width="100%", height=600, style={"border": "0"}, frameborder="0", scrolling="yes"
         ),
         width="100%",
