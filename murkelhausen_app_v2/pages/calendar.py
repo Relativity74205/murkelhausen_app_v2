@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from enum import Enum
 
 import reflex as rx
 from gcsa.event import Event
@@ -8,82 +9,141 @@ from murkelhausen_app_v2.backend.google_calendar import (
     Appointment,
     create_appointment,
     delete_appointment,
+    update_appointment,
 )
 from murkelhausen_app_v2.config import config
 from murkelhausen_app_v2.templates.template import template
 
 
+class FormState(Enum):
+    ADD = "Erstellen"
+    EDIT = "Ändern"
+
+
 class CalendarState(rx.State):
     appointments: list[Appointment]
     new_appointment_form: dict
-    whole_day: bool = False
-    form_appointment_name: str = ""
+    form_event_id: str
+    form_event_name: str
+    form_event_date: str
+    form_start_time: str
+    form_end_time: str
+    form_whole_day: bool
+    form_button_text: str = FormState.ADD.value
     current_calendar: str = next(iter(config.google.calendars.keys()))
 
     @rx.event
-    def change_whole_day(self):
-        self.whole_day = not self.whole_day
-        rx.toast(f"foo={self.whole_day}")
-
-    @rx.event
     def handle_add_termin_submit(self, form_data: dict):
-        if self.form_appointment_name == "":
+        print(
+            f"{self.form_event_id=}; {self.form_event_name=}; {self.form_event_date=}; {self.form_start_time=}; {self.form_end_time=}; {self.form_whole_day=}"
+        )
+        if self.form_event_name == "" or self.form_event_date == "":
+            yield rx.toast("Bitte Terminname und Datum angeben")
             return
 
-        if "whole_day" in form_data.keys():
-            event = Event(
-                summary=self.form_appointment_name,
-                start=date.fromisoformat(form_data["event_date"]),
-                end=date.fromisoformat(form_data["event_date"]),
+        if (
+            (self.form_whole_day is False or self.form_whole_day == 0)
+            and (self.form_start_time is None or self.form_start_time == "")
+            and (self.form_end_time is None or self.form_end_time == "")
+        ):
+            yield rx.toast("Bitte Start- und Endzeit angeben")
+            return
+
+        if self.form_whole_day is True:
+            event_start = date.fromisoformat(form_data["event_date"])
+            event_end = date.fromisoformat(form_data["event_date"])
+        else:
+            event_start = datetime.fromisoformat(
+                f"{form_data['event_date']}T{form_data['start_time']}:00"
             )
+            event_end = datetime.fromisoformat(
+                f"{form_data['event_date']}T{form_data['end_time']}:00"
+            )
+
+        if self.form_button_text == FormState.EDIT.value:
+            event = Event(
+                event_id=self.form_event_id,
+                summary=self.form_event_name,
+                start=event_start,
+                end=event_end,
+            )
+            print(f"Updating event: {event}; end_time {event.end}")
+            update_appointment(event, calendar_id=self._get_calendar_id())
+            yield rx.toast(f"Event geändert: {event}")
         else:
             event = Event(
-                summary=self.form_appointment_name,
-                start=datetime.fromisoformat(
-                    f"{form_data['event_date']}T{form_data['start_time']}:00"
-                ),
-                end=datetime.fromisoformat(
-                    f"{form_data['event_date']}T{form_data['end_time']}:00"
-                ),
+                summary=self.form_event_name,
+                start=event_start,
+                end=event_end,
             )
-        create_appointment(event)
-        self.form_appointment_name = ""
-        yield rx.toast(f"Event erstellt: {event}")
+            create_appointment(event, calendar_id=self._get_calendar_id())
+            yield rx.toast(f"Event erstellt: {event}")
+
+        self._clear_form()
         self.get_appointments()
 
     @rx.event
-    def get_appointments(self):
+    def init(self):
         if self.appointments is None:
             self.appointments = []
         if self.new_appointment_form is None:
             self.new_appointment_form = {}
 
-        calendar_id = config.google.calendars[self.current_calendar]
+        self.get_appointments()
+
+    @rx.event
+    def get_appointments(self):
+        calendar_id = self._get_calendar_id()
         self.appointments = get_list_of_appointments(calendar_id=calendar_id)
 
     @rx.event
     def delete_appointment(self, appointment: dict):
         """Appointment is a termin object as dict"""
         delete_appointment(
-            Event(summary=None, start=date(1970, 1, 1), event_id=appointment["id"])
+            Event(
+                event_id=appointment["id"],
+                summary=None,
+                start=date(1970, 1, 1),
+            ),
+            calendar_id=self._get_calendar_id(),
         )
         yield rx.toast(f"Event '{appointment['event_name']}' gelöscht")
         self.get_appointments()
 
     @rx.event
-    def show_appointment(self, appointment: Appointment):
-        self.form_appointment_name = appointment.event_name
-        yield rx.toast(f"Event '{self.form_appointment_name}' wird angezeigt")
+    def prepare_appointment_for_change(self, appointment: Appointment):
+        self.form_event_id = appointment.id
+        self.form_event_name = appointment.event_name
+        self.form_event_date = appointment.start_timestamp.date().isoformat()
+        self.form_whole_day = appointment.whole_day
+        self.form_button_text = FormState.EDIT.value
+        if appointment.whole_day is False:
+            self.form_start_time = appointment.start_timestamp.strftime("%H:%M")
+            yield rx.set_value("start_time", self.form_start_time)
+            self.form_end_time = appointment.end_timestamp.strftime("%H:%M")
+            yield rx.set_value("end_time", self.form_end_time)
 
     @rx.event
     def clear_form(self):
+        self._clear_form()
         yield rx.toast("Formular zurückgesetzt")
-        self.form_appointment_name = ""
+
+    def _clear_form(self):
+        self.form_event_id = ""
+        self.form_event_name = ""
+        self.form_event_date = ""
+        self.form_start_time = ""
+        self.form_end_time = ""
+        self.form_whole_day = False
+        self.form_button_text = FormState.ADD.value
 
     @rx.event
     def set_new_calendar(self, calendar: str):
         self.current_calendar = calendar
         self.get_appointments()
+
+    def _get_calendar_id(self) -> str:
+        return config.google.calendars[self.current_calendar]
 
 
 # TODO: how to set time input to use 24 hour format?
@@ -116,7 +176,7 @@ def termin_form() -> rx.Component:
                     padding="0.65rem",
                 ),
                 rx.heading(
-                    "Erstelle einen Termin",
+                    f"Termin {CalendarState.form_button_text}",
                     size="4",
                     weight="bold",
                 ),
@@ -132,42 +192,89 @@ def termin_form() -> rx.Component:
                             rx.form.label("Name des Termins"),
                             rx.form.control(
                                 rx.input(
-                                    placeholder="Termin name",
+                                    placeholder="Terminname",
                                     type="text",
-                                    value=CalendarState.form_appointment_name,
-                                    on_change=CalendarState.set_form_appointment_name,
+                                    value=CalendarState.form_event_name,
+                                    on_change=CalendarState.set_form_event_name,
+                                    id="event_name",
                                 ),
                                 as_child=True,
                             ),
                             direction="column",
                             spacing="1",
                         ),
-                        name="event_name",
                         width="100%",
                     ),
                     rx.flex(
-                        form_field("Datum", "", "date", "event_date"),
+                        rx.form.field(
+                            rx.flex(
+                                rx.form.label("Datum"),
+                                rx.form.control(
+                                    rx.input(
+                                        type="date",
+                                        value=CalendarState.form_event_date,
+                                        on_change=CalendarState.set_form_event_date,
+                                        id="event_date",
+                                    ),
+                                    as_child=True,
+                                ),
+                                direction="column",
+                                spacing="1",
+                            ),
+                        ),
                         rx.checkbox(
                             "Ganztägig",
                             name="whole_day",
-                            on_change=CalendarState.set_whole_day,
+                            checked=CalendarState.form_whole_day,
+                            on_change=CalendarState.set_form_whole_day,
+                            id="whole_day",
                         ),
                         spacing="3",
                         flex_direction="row",
                         align="center",
                     ),
                     rx.cond(
-                        CalendarState.whole_day,
+                        CalendarState.form_whole_day,
                         rx.box(),
                         rx.flex(
-                            form_field("Startzeit", "", "time", "start_time"),
-                            form_field("Endzeit", "", "time", "end_time"),
+                            rx.form.field(
+                                rx.flex(
+                                    rx.form.label("Startzeit"),
+                                    rx.form.control(
+                                        rx.input(
+                                            type="time",
+                                            # value=CalendarState.form_start_time,
+                                            on_change=CalendarState.set_form_start_time,
+                                            id="start_time",
+                                        ),
+                                        as_child=True,
+                                    ),
+                                    direction="column",
+                                    spacing="1",
+                                ),
+                            ),
+                            rx.form.field(
+                                rx.flex(
+                                    rx.form.label("Endzeit"),
+                                    rx.form.control(
+                                        rx.input(
+                                            type="time",
+                                            # value=CalendarState.form_end_time,
+                                            on_change=CalendarState.set_form_end_time,
+                                            id="end_time",
+                                        ),
+                                        as_child=True,
+                                    ),
+                                    direction="column",
+                                    spacing="1",
+                                ),
+                            ),
                             spacing="3",
                             flex_direction="row",
                         ),
                     ),
                     rx.form.submit(
-                        rx.button("Erstellen"),
+                        rx.button(CalendarState.form_button_text, type="submit"),
                         as_child=True,
                         width="100%",
                     ),
@@ -213,7 +320,7 @@ def show_appointment(appointment: Appointment) -> rx.Component:
                 rx.icon(
                     tag="pencil",
                     style=rx.Style({"_hover": {"color": "blue", "opacity": 0.5}}),
-                    on_click=CalendarState.show_appointment(appointment),
+                    on_click=CalendarState.prepare_appointment_for_change(appointment),
                 )
             ),
             align="center",
@@ -301,7 +408,7 @@ def show_appointment_list():
     route="/cal",
     title="Kalender",
     icon="calendar",
-    on_load=CalendarState.get_appointments,
+    on_load=CalendarState.init,
 )
 def calendar_page() -> rx.Component:
     return rx.vstack(

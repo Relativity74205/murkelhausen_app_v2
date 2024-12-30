@@ -69,14 +69,19 @@ def get_google_calendar_client() -> GoogleCalendar:
     return gc
 
 
-def create_appointment(event: Event):
+def create_appointment(event: Event, calendar_id: str):
     gc = get_google_calendar_client()
-    gc.add_event(event)
+    gc.add_event(event, calendar_id=calendar_id)
 
 
-def delete_appointment(event: Event):
+def update_appointment(event: Event, calendar_id: str):
     gc = get_google_calendar_client()
-    gc.delete_event(event)
+    gc.update_event(event, calendar_id=calendar_id)
+
+
+def delete_appointment(event: Event, calendar_id: str):
+    gc = get_google_calendar_client()
+    gc.delete_event(event, calendar_id=calendar_id)
 
 
 def get_list_of_appointments(calendar_id: str) -> list[Appointment]:
