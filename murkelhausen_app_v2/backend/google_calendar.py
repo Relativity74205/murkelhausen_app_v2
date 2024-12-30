@@ -4,7 +4,6 @@ import reflex as rx
 from babel.dates import format_date
 from dateutil.relativedelta import relativedelta
 from gcsa.event import Event
-
 from gcsa.google_calendar import GoogleCalendar
 from google.oauth2 import service_account
 
@@ -65,14 +64,23 @@ def delete_appointment(event: Event):
     gc.delete_event(event)
 
 
-def get_list_of_appointments() -> list[Termin]:
+def get_list_of_appointments(calendar_id: str) -> list[Termin]:
     gc = get_google_calendar_client()
     today = date.today()
-    raw_events = gc.get_events(time_min=today, time_max=today + relativedelta(weeks=2))
+
+    # TODO: Configure timeframe for retrieving events
+    time_min = today
+    time_max = today + relativedelta(weeks=2)
+    raw_events = gc.get_events(
+        calendar_id=calendar_id, time_min=time_min, time_max=time_max
+    )
 
     events = []
     for event in raw_events:
-        start_day_string = format_date(event.start, format="dd.M.yyyy (EEE)", locale="de_DE")
+        start_day_string = format_date(
+            event.start, format="dd.M.yyyy (EEE)", locale="de_DE"
+        )
+        # TODO: add recurrence
         if type(event.start) is date:
             termin = Termin(
                 id=event.id,
@@ -99,13 +107,16 @@ def get_list_of_appointments() -> list[Termin]:
                 end_time=str(event.end.strftime("%H:%M")),
                 whole_day=False,
             )
-        events.append(
-            termin
-        )
+        events.append(termin)
 
-    return sorted(events, key=lambda x: (x.start_day, x.start_time is not None, x.start_time))
+    return sorted(
+        events, key=lambda x: (x.start_day, x.start_time is not None, x.start_time)
+    )
 
 
-if __name__ == "__main__":
-    for ele in get_list_of_appointments():
-        print(ele.event_name, ele.start_day, ele.whole_day)
+#
+#
+# if __name__ == "__main__":
+#     calendar_id = "7c7bc54db5badb0d5bcd0f42a52349bf0ef407033b7bf9308df3731e29a38c3d@group.calendar.google.com"
+#     events = [event for event in get_list_of_appointments(calendar_id)]
+#     print(len(events))

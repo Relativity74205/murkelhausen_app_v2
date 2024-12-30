@@ -2,6 +2,7 @@
 *.py[cod]
 .env
 .idea
+.vscode
 .python-version
 .web
 __pycache__/

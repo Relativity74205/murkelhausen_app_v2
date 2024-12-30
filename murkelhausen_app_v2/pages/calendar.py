@@ -1,19 +1,24 @@
 from datetime import date, datetime
-from turtle import width
 
 import reflex as rx
 from gcsa.event import Event
 
-from murkelhausen_app_v2.backend.google_calendar import get_list_of_appointments, Termin, create_appointment, \
-    delete_appointment
+from murkelhausen_app_v2.backend.google_calendar import (
+    get_list_of_appointments,
+    Termin,
+    create_appointment,
+    delete_appointment,
+)
+from murkelhausen_app_v2.config import config
 from murkelhausen_app_v2.templates.template import template
 
 
 class CalendarState(rx.State):
-    appointments: list[Termin] = []
-    new_appointment_form: dict = {}
+    appointments: list[Termin]
+    new_appointment_form: dict
     whole_day: bool = False
     form_appointment_name: str = ""
+    current_calendar: str = next(iter(config.google.calendars.keys()))
 
     @rx.event
     def change_whole_day(self):
@@ -34,8 +39,12 @@ class CalendarState(rx.State):
         else:
             event = Event(
                 summary=self.form_appointment_name,
-                start=datetime.fromisoformat(f"{form_data['event_date']}T{form_data['start_time']}:00"),
-                end=datetime.fromisoformat(f"{form_data['event_date']}T{form_data['end_time']}:00"),
+                start=datetime.fromisoformat(
+                    f"{form_data['event_date']}T{form_data['start_time']}:00"
+                ),
+                end=datetime.fromisoformat(
+                    f"{form_data['event_date']}T{form_data['end_time']}:00"
+                ),
             )
         create_appointment(event)
         self.form_appointment_name = ""
@@ -44,12 +53,20 @@ class CalendarState(rx.State):
 
     @rx.event
     def get_appointments(self):
-        self.appointments = get_list_of_appointments()
+        if self.appointments is None:
+            self.appointments = []
+        if self.new_appointment_form is None:
+            self.new_appointment_form = {}
+
+        calendar_id = config.google.calendars[self.current_calendar]
+        self.appointments = get_list_of_appointments(calendar_id=calendar_id)
 
     @rx.event
     def delete_appointment(self, appointment: dict):
         """Appointment is a termin object as dict"""
-        delete_appointment(Event(summary=None, start=date(1970, 1, 1), event_id=appointment["id"]))
+        delete_appointment(
+            Event(summary=None, start=date(1970, 1, 1), event_id=appointment["id"])
+        )
         yield rx.toast(f"Event '{appointment['event_name']}' gelöscht")
         self.get_appointments()
 
@@ -63,9 +80,16 @@ class CalendarState(rx.State):
         yield rx.toast("Formular zurückgesetzt")
         self.form_appointment_name = ""
 
+    @rx.event
+    def set_new_calendar(self, calendar: str):
+        self.current_calendar = calendar
+        self.get_appointments()
+
 
 # TODO: how to set time input to use 24 hour format?
-def form_field(label: str, placeholder: str, data_type: str, name: str, value: str | None = None) -> rx.Component:
+def form_field(
+    label: str, placeholder: str, data_type: str, name: str, value: str | None = None
+) -> rx.Component:
     return rx.form.field(
         rx.flex(
             rx.form.label(label),
@@ -103,19 +127,16 @@ def termin_form() -> rx.Component:
             ),
             rx.form.root(
                 rx.flex(
-                    # form_field(
-                    #     "Name des Termins",
-                    #     "Termin name",
-                    #     "text",
-                    #     "event_name",
-                    #     value=CalendarState.form_appointment_name,
-                    #     on_value_change=CalendarState.form_appointment_name,
-                    # ),
                     rx.form.field(
                         rx.flex(
                             rx.form.label("Name des Termins"),
                             rx.form.control(
-                                rx.input(placeholder="Termin name", type="text", value=CalendarState.form_appointment_name, on_change=CalendarState.set_form_appointment_name,),
+                                rx.input(
+                                    placeholder="Termin name",
+                                    type="text",
+                                    value=CalendarState.form_appointment_name,
+                                    on_change=CalendarState.set_form_appointment_name,
+                                ),
                                 as_child=True,
                             ),
                             direction="column",
@@ -126,7 +147,11 @@ def termin_form() -> rx.Component:
                     ),
                     rx.flex(
                         form_field("Datum", "", "date", "event_date"),
-                        rx.checkbox("Ganztägig", name="whole_day", on_change=CalendarState.set_whole_day),
+                        rx.checkbox(
+                            "Ganztägig",
+                            name="whole_day",
+                            on_change=CalendarState.set_whole_day,
+                        ),
                         spacing="3",
                         flex_direction="row",
                         align="center",
@@ -191,7 +216,14 @@ def show_appointment(appointment: Termin) -> rx.Component:
         rx.table.cell(
             rx.alert_dialog.root(
                 rx.alert_dialog.trigger(
-                    rx.badge(rx.icon(tag="trash-2", style=rx.Style({"_hover": {"color": "red", "opacity": 0.5}}))),
+                    rx.badge(
+                        rx.icon(
+                            tag="trash-2",
+                            style=rx.Style(
+                                {"_hover": {"color": "red", "opacity": 0.5}}
+                            ),
+                        )
+                    ),
                 ),
                 rx.alert_dialog.content(
                     rx.alert_dialog.title("Termin wirklich löschen?"),
@@ -200,13 +232,16 @@ def show_appointment(appointment: Termin) -> rx.Component:
                             rx.button("Abbruch"),
                         ),
                         rx.alert_dialog.action(
-                            rx.button("Löschen", on_click=CalendarState.delete_appointment(appointment)),
+                            rx.button(
+                                "Löschen",
+                                on_click=CalendarState.delete_appointment(appointment),
+                            ),
                             spacing="12",
                         ),
                         direction="row",
                         justify="between",
                     ),
-                )
+                ),
             ),
             align="center",
         ),
@@ -229,6 +264,34 @@ def show_termin_table_header() -> rx.Component:
     )
 
 
+def show_appointment_list():
+    return (
+        rx.vstack(
+            rx.select(
+                config.google.calendars.keys(),
+                value=CalendarState.current_calendar,
+                on_change=CalendarState.set_new_calendar,
+            ),
+            rx.heading(
+                f"Termine in den nächsten 2 Wochen für {CalendarState.current_calendar}"
+            ),
+            rx.hstack(
+                rx.table.root(
+                    show_termin_table_header(),
+                    rx.foreach(
+                        CalendarState.appointments,
+                        show_appointment,
+                    ),
+                    variant="surface",
+                    size="3",
+                ),
+                termin_form(),
+            ),
+            spacing="4",
+        ),
+    )
+
+
 @template(
     route="/cal",
     title="Kalender",
@@ -244,23 +307,8 @@ def calendar_page() -> rx.Component:
                     rx.tabs.trigger("Kalender Papa Arbeit", value="kalender_work"),
                 ),
                 rx.tabs.content(
-                    rx.vstack(
-                        rx.heading("Termine in den nächsten 2 Wochen"),
-                        rx.hstack(
-                            rx.table.root(
-                                show_termin_table_header(),
-                                rx.foreach(
-                                    CalendarState.appointments,
-                                    show_appointment,
-                                ),
-                                variant="surface",
-                                size="3",
-                            ),
-                            termin_form(),
-                        ),
-                        spacing="4",
-                    ),
-                    value="liste"
+                    show_appointment_list(),
+                    value="liste",
                 ),
                 rx.tabs.content(
                     rx.vstack(
@@ -270,7 +318,7 @@ def calendar_page() -> rx.Component:
                             height=600,
                             style={"border": "0"},
                             frameborder="0",
-                            scrolling="no"
+                            scrolling="no",
                         ),
                         width="100%",
                     ),
@@ -278,7 +326,7 @@ def calendar_page() -> rx.Component:
                     width="100%",
                 ),
                 width="100%",
-                spacing='5',
+                spacing="5",
             ),
             default_value="liste",
             width="100%",

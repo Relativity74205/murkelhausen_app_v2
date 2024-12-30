@@ -45,6 +45,7 @@ class Google(BaseModel):
     client_email: str
     client_id: str
     client_x509_cert_url: str
+    calendars: dict[str, str]
 
 
 class Config(BaseModel):
@@ -97,5 +98,9 @@ config = Config(
         client_email="murkelhausen2@murkelhausen.iam.gserviceaccount.com",
         client_id="100602016701161296682",
         client_x509_cert_url="https://www.googleapis.com/robot/v1/metadata/x509/murkelhausen2%40murkelhausen.iam.gserviceaccount.com",
+        calendars={
+            "Arkadius": "arkadius.schuchhardt@gmail.com",
+            "Familie": "7c7bc54db5badb0d5bcd0f42a52349bf0ef407033b7bf9308df3731e29a38c3d@group.calendar.google.com",
+        },
     ),
 )
