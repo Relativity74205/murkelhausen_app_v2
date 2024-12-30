@@ -1,5 +1,7 @@
 from datetime import date, datetime
+from enum import Enum
 
+import pytz
 import reflex as rx
 from babel.dates import format_date
 from dateutil.relativedelta import relativedelta
@@ -10,17 +12,30 @@ from google.oauth2 import service_account
 from murkelhausen_app_v2.config import config
 
 
-class Termin(rx.Base):
-    id: str
+class AppointmentRecurrenceType(Enum):
+    DAILY = "daily"
+    WEEKLY = "weekly"
+    MONTHLY = "monthly"
+    YEARLY = "yearly"
+
+
+class AppointmentRecurrence(rx.Base):
+    recurrence_type: AppointmentRecurrenceType
+    recurrence_interval: int
+    recurrence_end: datetime | None
+
+
+class Appointment(rx.Base):
+    id: str | None
     event_name: str
-    start_timestamp: datetime | None
-    start_day: date
-    start_day_string: str | None
-    start_time: str | None
-    end_timestamp: datetime | None
-    end_day: date
-    end_time: str | None
+    start_timestamp: datetime
+    start_day_string: str
+    start_time: str
+    end_timestamp: datetime
+    end_day_string: str
+    end_time: str
     whole_day: bool
+    recurring: AppointmentRecurrence | None
 
 
 SCOPES = [
@@ -64,7 +79,7 @@ def delete_appointment(event: Event):
     gc.delete_event(event)
 
 
-def get_list_of_appointments(calendar_id: str) -> list[Termin]:
+def get_list_of_appointments(calendar_id: str) -> list[Appointment]:
     gc = get_google_calendar_client()
     today = date.today()
 
@@ -78,45 +93,44 @@ def get_list_of_appointments(calendar_id: str) -> list[Termin]:
     events = []
     for event in raw_events:
         start_day_string = format_date(
-            event.start, format="dd.M.yyyy (EEE)", locale="de_DE"
+            event.start, format="dd.MM.yyyy (EEE)", locale="de_DE"
+        )
+        end_day_string = format_date(
+            event.end, format="dd.MM.yyyy (EEE)", locale="de_DE"
         )
         # TODO: add recurrence
         if type(event.start) is date:
-            termin = Termin(
-                id=event.id,
-                event_name=event.summary,
-                start_timestamp=None,
-                start_day=event.start,
-                start_day_string=start_day_string,
-                start_time=None,
-                end_timestamp=None,
-                end_day=event.end,
-                end_time=None,
-                whole_day=True,
+            start_timestamp = datetime.combine(
+                event.start, datetime.min.time()
+            ).astimezone(pytz.timezone("Europe/Berlin"))
+            end_timestamp = datetime.combine(event.end, datetime.min.time()).astimezone(
+                pytz.timezone("Europe/Berlin")
             )
+            whole_day = True
         else:
-            termin = Termin(
-                id=event.id,
-                event_name=event.summary,
-                start_timestamp=event.start,
-                start_day=event.start.date(),
-                start_time=str(event.start.strftime("%H:%M")),
-                start_day_string=start_day_string,
-                end_timestamp=event.end,
-                end_day=event.end.date(),
-                end_time=str(event.end.strftime("%H:%M")),
-                whole_day=False,
-            )
+            start_timestamp = event.start
+            end_timestamp = event.end
+            whole_day = False
+
+        termin = Appointment(
+            id=event.id,
+            event_name=event.summary,
+            start_timestamp=start_timestamp,
+            start_day_string=start_day_string,
+            start_time=str(start_timestamp.strftime("%H:%M")),
+            end_timestamp=end_timestamp,
+            end_day_string=end_day_string,
+            end_time=str(end_timestamp.strftime("%H:%M")),
+            whole_day=whole_day,
+            recurring=None,
+        )
         events.append(termin)
 
-    return sorted(
-        events, key=lambda x: (x.start_day, x.start_time is not None, x.start_time)
-    )
+    return sorted(events, key=lambda x: x.start_timestamp)
 
 
-#
-#
-# if __name__ == "__main__":
-#     calendar_id = "7c7bc54db5badb0d5bcd0f42a52349bf0ef407033b7bf9308df3731e29a38c3d@group.calendar.google.com"
-#     events = [event for event in get_list_of_appointments(calendar_id)]
-#     print(len(events))
+if __name__ == "__main__":
+    events = [
+        event for event in get_list_of_appointments(config.google.calendars["Arkadius"])
+    ]
+    print(len(events))

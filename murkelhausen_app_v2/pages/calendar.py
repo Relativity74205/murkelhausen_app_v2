@@ -5,7 +5,7 @@ from gcsa.event import Event
 
 from murkelhausen_app_v2.backend.google_calendar import (
     get_list_of_appointments,
-    Termin,
+    Appointment,
     create_appointment,
     delete_appointment,
 )
@@ -14,7 +14,7 @@ from murkelhausen_app_v2.templates.template import template
 
 
 class CalendarState(rx.State):
-    appointments: list[Termin]
+    appointments: list[Appointment]
     new_appointment_form: dict
     whole_day: bool = False
     form_appointment_name: str = ""
@@ -71,7 +71,7 @@ class CalendarState(rx.State):
         self.get_appointments()
 
     @rx.event
-    def show_appointment(self, appointment: Termin):
+    def show_appointment(self, appointment: Appointment):
         self.form_appointment_name = appointment.event_name
         yield rx.toast(f"Event '{self.form_appointment_name}' wird angezeigt")
 
@@ -191,9 +191,10 @@ def termin_form() -> rx.Component:
     )
 
 
-def show_appointment(appointment: Termin) -> rx.Component:
+def show_appointment(appointment: Appointment) -> rx.Component:
     color = rx.cond(
-        appointment.start_day == date.today(),
+        appointment.start_timestamp
+        == datetime.combine(date.today(), datetime.min.time()),
         rx.color("yellow"),
         rx.color("gray"),
     )
@@ -201,8 +202,12 @@ def show_appointment(appointment: Termin) -> rx.Component:
     return rx.table.row(
         rx.table.cell(appointment.event_name),
         rx.table.cell(appointment.start_day_string),
-        rx.table.cell(appointment.start_time),
-        rx.table.cell(appointment.end_time),
+        rx.table.cell(
+            rx.cond(appointment.start_time == "00:00", "", appointment.start_time)
+        ),
+        rx.table.cell(
+            rx.cond(appointment.end_time == "00:00", "", appointment.end_time)
+        ),
         rx.table.cell(
             rx.badge(
                 rx.icon(
