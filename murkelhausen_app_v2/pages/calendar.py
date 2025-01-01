@@ -25,7 +25,8 @@ class CalendarState(rx.State):
     new_appointment_form: dict
     form_event_id: str
     form_event_name: str
-    form_event_date: str
+    form_event_start_date: str
+    form_event_end_date: str
     form_start_time: str
     form_end_time: str
     form_whole_day: bool
@@ -33,11 +34,8 @@ class CalendarState(rx.State):
     current_calendar: str = next(iter(config.google.calendars.keys()))
 
     @rx.event
-    def handle_add_termin_submit(self, form_data: dict):
-        print(
-            f"{self.form_event_id=}; {self.form_event_name=}; {self.form_event_date=}; {self.form_start_time=}; {self.form_end_time=}; {self.form_whole_day=}"
-        )
-        if self.form_event_name == "" or self.form_event_date == "":
+    def handle_add_termin_submit(self, _: dict):
+        if self.form_event_name == "" or self.form_event_start_date == "":
             yield rx.toast("Bitte Terminname und Datum angeben")
             return
 
@@ -50,14 +48,14 @@ class CalendarState(rx.State):
             return
 
         if self.form_whole_day is True:
-            event_start = date.fromisoformat(form_data["event_date"])
-            event_end = date.fromisoformat(form_data["event_date"])
+            event_start = self.form_event_start_date
+            event_end = self.form_event_end_date
         else:
             event_start = datetime.fromisoformat(
-                f"{form_data['event_date']}T{form_data['start_time']}:00"
+                f"{self.form_event_start_date}T{self.form_start_time}:00"
             )
             event_end = datetime.fromisoformat(
-                f"{form_data['event_date']}T{form_data['end_time']}:00"
+                f"{self.form_event_start_date}T{self.form_end_time}:00"
             )
 
         if self.form_button_text == FormState.EDIT.value:
@@ -67,7 +65,6 @@ class CalendarState(rx.State):
                 start=event_start,
                 end=event_end,
             )
-            print(f"Updating event: {event}; end_time {event.end}")
             update_appointment(event, calendar_id=self._get_calendar_id())
             yield rx.toast(f"Event geändert: {event}")
         else:
@@ -114,10 +111,12 @@ class CalendarState(rx.State):
     def prepare_appointment_for_change(self, appointment: Appointment):
         self.form_event_id = appointment.id
         self.form_event_name = appointment.event_name
-        self.form_event_date = appointment.start_timestamp.date().isoformat()
-        self.form_whole_day = appointment.whole_day
+        self.form_whole_day = appointment.is_whole_day
+        self.form_event_start_date = appointment.start_timestamp.date().isoformat()
+        self.form_event_end_date = appointment.end_timestamp.date().isoformat()
+
         self.form_button_text = FormState.EDIT.value
-        if appointment.whole_day is False:
+        if appointment.is_whole_day is False:
             self.form_start_time = appointment.start_timestamp.strftime("%H:%M")
             yield rx.set_value("start_time", self.form_start_time)
             self.form_end_time = appointment.end_timestamp.strftime("%H:%M")
@@ -131,7 +130,8 @@ class CalendarState(rx.State):
     def _clear_form(self):
         self.form_event_id = ""
         self.form_event_name = ""
-        self.form_event_date = ""
+        self.form_event_start_date = ""
+        self.form_event_end_date = ""
         self.form_start_time = ""
         self.form_end_time = ""
         self.form_whole_day = False
@@ -165,7 +165,7 @@ def form_field(
     )
 
 
-def termin_form() -> rx.Component:
+def show_appointment_form() -> rx.Component:
     return rx.card(
         rx.flex(
             rx.hstack(
@@ -205,33 +205,51 @@ def termin_form() -> rx.Component:
                         ),
                         width="100%",
                     ),
+                    rx.checkbox(
+                        "Ganztägig?",
+                        name="is_whole_day",
+                        checked=CalendarState.form_whole_day,
+                        on_change=CalendarState.set_form_whole_day,
+                        id="is_whole_day",
+                    ),
                     rx.flex(
                         rx.form.field(
                             rx.flex(
-                                rx.form.label("Datum"),
+                                rx.form.label("Start Datum"),
                                 rx.form.control(
                                     rx.input(
                                         type="date",
-                                        value=CalendarState.form_event_date,
-                                        on_change=CalendarState.set_form_event_date,
-                                        id="event_date",
+                                        value=CalendarState.form_event_start_date,
+                                        on_change=CalendarState.set_form_event_start_date,
+                                        id="event_start_date",
                                     ),
                                     as_child=True,
                                 ),
                                 direction="column",
                                 spacing="1",
                             ),
-                        ),
-                        rx.checkbox(
-                            "Ganztägig",
-                            name="whole_day",
-                            checked=CalendarState.form_whole_day,
-                            on_change=CalendarState.set_form_whole_day,
-                            id="whole_day",
+                            rx.form.field(
+                                rx.flex(
+                                    rx.form.label(
+                                        "End Datum",
+                                    ),
+                                    rx.form.control(
+                                        rx.input(
+                                            type="date",
+                                            value=CalendarState.form_event_end_date,
+                                            on_change=CalendarState.set_form_event_end_date,
+                                            id="event_end_date",
+                                        ),
+                                        as_child=True,
+                                    ),
+                                    direction="column",
+                                    spacing="1",
+                                ),
+                                hidden=True,
+                            ),
                         ),
                         spacing="3",
                         flex_direction="row",
-                        align="center",
                     ),
                     rx.cond(
                         CalendarState.form_whole_day,
@@ -298,7 +316,7 @@ def termin_form() -> rx.Component:
     )
 
 
-def show_appointment(appointment: Appointment) -> rx.Component:
+def show_appointment_table_row(appointment: Appointment) -> rx.Component:
     color = rx.cond(
         appointment.start_timestamp
         == datetime.combine(date.today(), datetime.min.time()),
@@ -308,12 +326,18 @@ def show_appointment(appointment: Appointment) -> rx.Component:
 
     return rx.table.row(
         rx.table.cell(appointment.event_name),
-        rx.table.cell(appointment.start_day_string),
         rx.table.cell(
-            rx.cond(appointment.start_time == "00:00", "", appointment.start_time)
+            rx.cond(
+                appointment.is_whole_day,
+                appointment.start_day_string + " - " + appointment.end_day_string,
+                appointment.start_day_string,
+            )
         ),
+        rx.table.cell(rx.cond(appointment.is_whole_day, "", appointment.start_time)),
+        rx.table.cell(rx.cond(appointment.is_whole_day, "", appointment.end_time)),
         rx.table.cell(
-            rx.cond(appointment.end_time == "00:00", "", appointment.end_time)
+            rx.cond(appointment.is_recurring, "Ja", "Nein"),
+            align="center",
         ),
         rx.table.cell(
             rx.badge(
@@ -363,13 +387,14 @@ def show_appointment(appointment: Appointment) -> rx.Component:
     )
 
 
-def show_termin_table_header() -> rx.Component:
+def show_appointment_table_header() -> rx.Component:
     return rx.table.header(
         rx.table.row(
             rx.table.column_header_cell("Termin"),
             rx.table.column_header_cell("Tag"),
             rx.table.column_header_cell("Start"),
             rx.table.column_header_cell("Ende"),
+            rx.table.column_header_cell("Serie"),
             rx.table.column_header_cell("Bearbeiten"),
             rx.table.column_header_cell("Löschen"),
         ),
@@ -389,15 +414,15 @@ def show_appointment_list():
             ),
             rx.hstack(
                 rx.table.root(
-                    show_termin_table_header(),
+                    show_appointment_table_header(),
                     rx.foreach(
                         CalendarState.appointments,
-                        show_appointment,
+                        show_appointment_table_row,
                     ),
                     variant="surface",
                     size="3",
                 ),
-                termin_form(),
+                show_appointment_form(),
             ),
             spacing="4",
         ),
