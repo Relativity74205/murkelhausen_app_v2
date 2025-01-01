@@ -189,6 +189,8 @@ def get_list_of_appointments(calendar_id: str) -> list[Appointment]:
             event_ends = [event.end]
 
         for event_start, event_end in zip(event_starts, event_ends):
+            event_end = event_end - relativedelta(days=1)
+            # TODO: create day_string for start and end dates
             start_day_string = format_date(
                 event_start, format="dd.MM.yyyy (EEE)", locale="de_DE"
             )
@@ -228,6 +230,6 @@ def get_list_of_appointments(calendar_id: str) -> list[Appointment]:
 
 if __name__ == "__main__":
     events = [
-        event for event in get_list_of_appointments(config.google.calendars["Familie"])
+        event for event in get_list_of_appointments(config.google.calendars["Arkadius"])
     ]
     print(len(events))
