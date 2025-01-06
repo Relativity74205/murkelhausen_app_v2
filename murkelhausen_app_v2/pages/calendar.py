@@ -32,6 +32,8 @@ class CalendarState(rx.State):
     form_whole_day: bool
     form_button_text: str = FormState.ADD.value
     current_calendar: str = next(iter(config.google.calendars.keys()))
+    # TODO: make configurable
+    amount_of_weeks_to_show: int = 2
 
     @rx.event
     def handle_add_termin_submit(self):
@@ -94,7 +96,10 @@ class CalendarState(rx.State):
     @rx.event
     def get_appointments(self):
         calendar_id = self._get_calendar_id()
-        self.appointments = get_list_of_appointments(calendar_id=calendar_id)
+        self.appointments = get_list_of_appointments(
+            calendar_id=calendar_id,
+            amount_of_weeks_to_show=self.amount_of_weeks_to_show,
+        )
 
     @rx.event
     def delete_appointment(self, appointment: dict):
@@ -308,28 +313,25 @@ def show_appointment_form() -> rx.Component:
 
 
 def show_appointment_table_row(appointment: Appointment) -> rx.Component:
-    color = rx.cond(
-        appointment.start_timestamp
-        == datetime.combine(date.today(), datetime.min.time()),
-        rx.color("yellow"),
-        rx.color("gray"),
+    row_color = rx.cond(
+        appointment.start_date == date.today(),
+        rx.color("red"),
+        rx.cond(
+            appointment.start_date == date.today() + timedelta(days=1),
+            rx.color("yellow"),
+            rx.color("gray"),
+        ),
     )
 
     return rx.table.row(
-        rx.table.cell(appointment.event_name),
         rx.table.cell(
-            rx.cond(
-                appointment.is_whole_day,
-                appointment.start_day_string + " - " + appointment.end_day_string,
-                appointment.start_day_string,
-            )
-        ),
-        rx.table.cell(rx.cond(appointment.is_whole_day, "", appointment.start_time)),
-        rx.table.cell(rx.cond(appointment.is_whole_day, "", appointment.end_time)),
-        rx.table.cell(
-            rx.cond(appointment.is_recurring, "Ja", "Nein"),
+            rx.cond(appointment.is_recurring, rx.icon("repeat"), None),
             align="center",
         ),
+        rx.table.cell(appointment.event_name),
+        rx.table.cell(appointment.days_string),
+        rx.table.cell(rx.cond(appointment.is_whole_day, "", appointment.start_time)),
+        rx.table.cell(rx.cond(appointment.is_whole_day, "", appointment.end_time)),
         rx.table.cell(
             rx.badge(
                 rx.icon(
@@ -374,7 +376,7 @@ def show_appointment_table_row(appointment: Appointment) -> rx.Component:
             ),
             align="center",
         ),
-        bg=color,
+        bg=row_color,
         # style={"_hover": {"bg": color, "opacity": 0.5}},
         align="center",
     )
@@ -383,11 +385,11 @@ def show_appointment_table_row(appointment: Appointment) -> rx.Component:
 def show_appointment_table_header() -> rx.Component:
     return rx.table.header(
         rx.table.row(
+            rx.table.column_header_cell(""),
             rx.table.column_header_cell("Termin"),
             rx.table.column_header_cell("Tag"),
             rx.table.column_header_cell("Start"),
             rx.table.column_header_cell("Ende"),
-            rx.table.column_header_cell("Serie"),
             rx.table.column_header_cell("Bearbeiten"),
             rx.table.column_header_cell("Löschen"),
         ),
@@ -403,7 +405,7 @@ def show_appointment_list():
                 on_change=CalendarState.set_new_calendar,
             ),
             rx.heading(
-                f"Termine in den nächsten 2 Wochen für {CalendarState.current_calendar}"
+                f"Termine in den nächsten {CalendarState.amount_of_weeks_to_show} Wochen für {CalendarState.current_calendar}"
             ),
             rx.hstack(
                 rx.table.root(

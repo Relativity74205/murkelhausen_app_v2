@@ -28,17 +28,21 @@ class AppointmentRecurrence:
     count: int | None
 
     def get_event_timestamps(
-        self, event_timestamp: datetime, date_min: date, date_max: date
+        self, event_timestamp: datetime | date, date_min: date, date_max: date
     ) -> list[datetime]:
         """
         Get all event timestamps for the given recurrence type, interval and end date.
         """
-        timestamp_min = datetime.combine(date_min, datetime.min.time()).astimezone(
-            pytz.UTC
-        )
-        timestamp_max = datetime.combine(date_max, datetime.min.time()).astimezone(
-            pytz.UTC
-        )
+        if type(event_timestamp) is datetime:
+            timestamp_min = datetime.combine(date_min, datetime.min.time()).astimezone(
+                pytz.UTC
+            )
+            timestamp_max = datetime.combine(date_max, datetime.min.time()).astimezone(
+                pytz.UTC
+            )
+        else:
+            timestamp_min = date_min
+            timestamp_max = date_max
 
         event_timestamps = []
         current_event_timestamp = event_timestamp
@@ -105,11 +109,12 @@ class Appointment(rx.Base):
     id: str | None
     event_name: str
     start_timestamp: datetime
-    start_day_string: str
+    start_date: date
     start_time: str
     end_timestamp: datetime
-    end_day_string: str
+    end_date: date
     end_time: str
+    days_string: str
     is_whole_day: bool
     is_recurring: bool
 
@@ -160,13 +165,13 @@ def delete_appointment(event: Event, calendar_id: str):
     gc.delete_event(event, calendar_id=calendar_id)
 
 
-def get_list_of_appointments(calendar_id: str) -> list[Appointment]:
+def get_list_of_appointments(
+    calendar_id: str, amount_of_weeks_to_show: int
+) -> list[Appointment]:
     gc = get_google_calendar_client()
-    today = date.today()
 
-    time_min = today
-    # TODO: make amount of weeks configurable
-    time_max = today + relativedelta(weeks=2)
+    time_min = date.today()
+    time_max = date.today() + relativedelta(weeks=amount_of_weeks_to_show)
     raw_events = gc.get_events(
         calendar_id=calendar_id, time_min=time_min, time_max=time_max
     )
@@ -189,16 +194,8 @@ def get_list_of_appointments(calendar_id: str) -> list[Appointment]:
             event_ends = [event.end]
 
         for event_start, event_end in zip(event_starts, event_ends):
-            event_end = event_end - relativedelta(days=1)
-            # TODO: create day_string for start and end dates
-            start_day_string = format_date(
-                event_start, format="dd.MM.yyyy (EEE)", locale="de_DE"
-            )
-            end_day_string = format_date(
-                event_end, format="dd.MM.yyyy (EEE)", locale="de_DE"
-            )
-
             if type(event_start) is date:
+                event_end = event_end - relativedelta(days=1)
                 start_timestamp = datetime.combine(
                     event_start, datetime.min.time()
                 ).astimezone(pytz.timezone("Europe/Berlin"))
@@ -211,15 +208,28 @@ def get_list_of_appointments(calendar_id: str) -> list[Appointment]:
                 end_timestamp = event_end
                 is_whole_day = False
 
+            days_string = format_date(
+                event_start, format="dd.MM.yyyy (EEE)", locale="de_DE"
+            )
+            end_day_string = format_date(
+                event_end, format="dd.MM.yyyy (EEE)", locale="de_DE"
+            )
+
+            if days_string == end_day_string:
+                days_string = days_string
+            else:
+                days_string = f"{days_string} - {end_day_string}"
+
             termin = Appointment(
                 id=event.id,
                 event_name=event.summary,
                 start_timestamp=start_timestamp,
-                start_day_string=start_day_string,
+                start_date=start_timestamp.date(),
                 start_time=str(start_timestamp.strftime("%H:%M")),
                 end_timestamp=end_timestamp,
-                end_day_string=end_day_string,
+                end_date=end_timestamp.date(),
                 end_time=str(end_timestamp.strftime("%H:%M")),
+                days_string=days_string,
                 is_whole_day=is_whole_day,
                 is_recurring=is_recurring,
             )
@@ -230,6 +240,9 @@ def get_list_of_appointments(calendar_id: str) -> list[Appointment]:
 
 if __name__ == "__main__":
     events = [
-        event for event in get_list_of_appointments(config.google.calendars["Arkadius"])
+        event
+        for event in get_list_of_appointments(
+            config.google.calendars["Arkadius"], amount_of_weeks_to_show=2
+        )
     ]
     print(len(events))
