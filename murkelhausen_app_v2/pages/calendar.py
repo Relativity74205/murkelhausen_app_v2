@@ -27,7 +27,6 @@ ALL_CALENDARS = "ALL_CALENDARS"
 class CalendarState(rx.State):
     appointments: list[Appointment]
     new_appointment_form: dict
-    form_calendar_name: str = next(iter(config.google.calendars.keys()))
     form_event_id: str
     form_event_name: str
     form_event_start_date: str
@@ -37,8 +36,7 @@ class CalendarState(rx.State):
     form_whole_day: bool
     form_button_text: str = FormState.ADD.value
     current_calendar_name: str = next(iter(config.google.calendars.keys()))
-    # TODO: make configurable in UI
-    amount_of_weeks_to_show: int = 2
+    amount_of_weeks_to_show: str = "2"
 
     @rx.event
     def handle_add_termin_submit(self):
@@ -61,10 +59,12 @@ class CalendarState(rx.State):
             event_start = datetime.fromisoformat(
                 f"{self.form_event_start_date}T{self.form_start_time}:00"
             )
-            # TODO: check if form_end_time is after midnight
+
             event_end = datetime.fromisoformat(
                 f"{self.form_event_start_date}T{self.form_end_time}:00"
             )
+            if self.form_end_time < self.form_start_time:
+                event_end = event_end + timedelta(days=1)
 
         if self.form_button_text == FormState.EDIT.value:
             event = Event(
@@ -75,7 +75,7 @@ class CalendarState(rx.State):
             )
             update_appointment(
                 event=event,
-                calendar_id=self._get_calendar_id(self.form_calendar_name),
+                calendar_id=self._get_calendar_id(self.current_calendar_name),
             )
             yield rx.toast(f"Event geändert: {event}")
         else:
@@ -89,7 +89,7 @@ class CalendarState(rx.State):
             )
             create_appointment(
                 event=event,
-                calendar_id=self._get_calendar_id(self.form_calendar_name),
+                calendar_id=self._get_calendar_id(self.current_calendar_name),
             )
 
         self._clear_form()
@@ -113,7 +113,7 @@ class CalendarState(rx.State):
                 *[
                     get_list_of_appointments(
                         calendar_id=calendar_id,
-                        amount_of_weeks_to_show=self.amount_of_weeks_to_show,
+                        amount_of_weeks_to_show=int(self.amount_of_weeks_to_show),
                     )
                     for calendar_id in calendar_ids
                 ]
@@ -137,7 +137,6 @@ class CalendarState(rx.State):
     @rx.event
     def prepare_appointment_for_change(self, appointment: Appointment):
         self.form_event_id = appointment.id
-        self.form_calendar_name = self._get_calender_name(appointment.calendar_id)
         self.form_event_name = appointment.event_name
         self.form_whole_day = appointment.is_whole_day
         self.form_event_start_date = appointment.start_timestamp.date().isoformat()
@@ -166,6 +165,11 @@ class CalendarState(rx.State):
     @rx.event
     def set_new_calendar(self, calendar: str):
         self.current_calendar_name = calendar
+        self.get_appointments()
+
+    @rx.event
+    def set_new_amount_of_weeks_to_show(self, amount_of_weeks: str):
+        self.amount_of_weeks_to_show = amount_of_weeks
         self.get_appointments()
 
     def _get_calendar_ids(self) -> tuple[str, ...]:
@@ -207,19 +211,6 @@ def show_appointment_form_header() -> rx.Component:
         spacing="4",
         align_items="center",
         width="100%",
-    )
-
-
-def show_appointment_form_calendar() -> rx.Component:
-    return rx.flex(
-        # rx.text("Name des Termins"),
-        rx.select(
-            config.google.calendars.keys(),
-            value=CalendarState.form_calendar_name,
-            on_change=CalendarState.set_form_calendar_name,
-        ),
-        direction="column",
-        spacing="3",
     )
 
 
@@ -331,7 +322,6 @@ def show_appointment_form() -> rx.Component:
         rx.flex(
             show_appointment_form_header(),
             rx.flex(
-                show_appointment_form_calendar(),
                 show_appointment_form_name(),
                 rx.checkbox(
                     "Ganztägig?",
@@ -448,8 +438,8 @@ def show_appointment_table_header() -> rx.Component:
     )
 
 
-def show_appointment_list():
-    return (
+def show_appointment_list() -> rx.Component:
+    return rx.card(
         rx.vstack(
             rx.select(
                 config.google.calendars.keys(),
@@ -459,20 +449,33 @@ def show_appointment_list():
             rx.heading(
                 f"Termine in den nächsten {CalendarState.amount_of_weeks_to_show} Wochen für {CalendarState.current_calendar_name}"
             ),
-            rx.hstack(
-                rx.table.root(
-                    show_appointment_table_header(),
-                    rx.foreach(
-                        CalendarState.appointments,
-                        show_appointment_table_row,
-                    ),
-                    variant="surface",
-                    size="3",
+            rx.table.root(
+                show_appointment_table_header(),
+                rx.foreach(
+                    CalendarState.appointments,
+                    show_appointment_table_row,
                 ),
-                show_appointment_form(),
+                variant="surface",
+                size="3",
+            ),
+            rx.hstack(
+                rx.text("Zeige Termine der nächsten Wochen:"),
+                rx.select(
+                    [str(i) for i in range(1, 11)],
+                    value=CalendarState.amount_of_weeks_to_show,
+                    on_change=CalendarState.set_new_amount_of_weeks_to_show,
+                ),
+                align="center",
             ),
             spacing="4",
         ),
+    )
+
+
+def show_appointment_page() -> rx.Component:
+    return rx.hstack(
+        show_appointment_list(),
+        show_appointment_form(),
     )
 
 
@@ -491,7 +494,7 @@ def calendar_page() -> rx.Component:
                     rx.tabs.trigger("Kalender Papa Arbeit", value="kalender_work"),
                 ),
                 rx.tabs.content(
-                    show_appointment_list(),
+                    show_appointment_page(),
                     value="liste",
                 ),
                 rx.tabs.content(
