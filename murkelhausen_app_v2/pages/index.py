@@ -1,8 +1,8 @@
 import reflex as rx
 
 from murkelhausen_app_v2 import styles
-from murkelhausen_app_v2.templates.template import template
 from murkelhausen_app_v2.pages.weather import WeatherState
+from murkelhausen_app_v2.templates.template import template
 
 
 @template(route="/", title="Startpage", on_load=WeatherState.update_weather)
@@ -11,8 +11,10 @@ def index() -> rx.Component:
         rx.heading("Murkelhausen V2"),
         rx.card(
             rx.flex(
-                rx.text("Today"),
-                rx.spacer(),
+                rx.text("Heute"),
+                rx.card(
+                    # show_appointment_list(),
+                ),
                 rx.card(
                     rx.data_list.root(
                         rx.data_list.item(
@@ -34,28 +36,37 @@ def index() -> rx.Component:
                     width="100%",
                 ),
                 direction="column",
+                spacing="4",
             ),
             box_shadow=styles.box_shadow_style,
             size="3",
             width="100%",
         ),
         rx.card(
-            rx.text("Tomorrow"),
-            rx.card(
-                rx.text("Morning"),
-                size="3",
-                width="100%",
+            rx.flex(
+                rx.text("Morgen"),
+                rx.card(
+                    rx.text("..."),
+                    size="3",
+                    width="100%",
+                ),
+                direction="column",
+                spacing="4",
             ),
             box_shadow=styles.box_shadow_style,
             size="3",
             width="100%",
         ),
         rx.card(
-            rx.text("This week"),
-            rx.card(
-                rx.text("Morning"),
-                size="3",
-                width="100%",
+            rx.flex(
+                rx.text("Diese Woche"),
+                rx.card(
+                    rx.text("..."),
+                    size="3",
+                    width="100%",
+                ),
+                direction="column",
+                spacing="4",
             ),
             box_shadow=styles.box_shadow_style,
             size="3",

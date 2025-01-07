@@ -21,7 +21,7 @@ class FormState(Enum):
     EDIT = "Ändern"
 
 
-ALL_CALENDARS = "ALL_CALENDARS"
+ALL_CALENDARS = "Alle"
 
 
 class CalendarState(rx.State):
@@ -35,7 +35,7 @@ class CalendarState(rx.State):
     form_end_time: str
     form_whole_day: bool
     form_button_text: str = FormState.ADD.value
-    current_calendar_name: str = next(iter(config.google.calendars.keys()))
+    current_calendar_name: str = ALL_CALENDARS
     amount_of_weeks_to_show: str = "2"
 
     @rx.event
@@ -113,12 +113,14 @@ class CalendarState(rx.State):
                 *[
                     get_list_of_appointments(
                         calendar_id=calendar_id,
-                        amount_of_weeks_to_show=int(self.amount_of_weeks_to_show),
+                        calendar_name=self._get_calender_name(calendar_id),
+                        amount_of_days_to_show=int(self.amount_of_weeks_to_show) * 7,
                     )
                     for calendar_id in calendar_ids
                 ]
             )
         )
+        self.appointments.sort(key=lambda x: x.start_timestamp)
 
     @rx.event
     def delete_appointment(self, appointment: dict):
@@ -202,10 +204,17 @@ def show_appointment_form_header() -> rx.Component:
             radius="full",
             padding="0.65rem",
         ),
-        rx.heading(
-            f"Termin {CalendarState.form_button_text}",
-            size="4",
-            weight="bold",
+        rx.vstack(
+            rx.heading(
+                f"Termin {CalendarState.form_button_text}",
+                size="4",
+                weight="bold",
+            ),
+            rx.heading(
+                f"für '{CalendarState.current_calendar_name}'",
+                size="4",
+                weight="bold",
+            ),
         ),
         height="100%",
         spacing="4",
@@ -370,6 +379,11 @@ def show_appointment_table_row(appointment: Appointment) -> rx.Component:
             rx.cond(appointment.is_recurring, rx.icon("repeat"), None),
             align="center",
         ),
+        rx.cond(
+            CalendarState.current_calendar_name == ALL_CALENDARS,
+            rx.table.cell(appointment.calendar_name),
+            None,
+        ),
         rx.table.cell(appointment.event_name),
         rx.table.cell(appointment.days_string),
         rx.table.cell(rx.cond(appointment.is_whole_day, "", appointment.start_time)),
@@ -428,6 +442,11 @@ def show_appointment_table_header() -> rx.Component:
     return rx.table.header(
         rx.table.row(
             rx.table.column_header_cell(""),
+            rx.cond(
+                CalendarState.current_calendar_name == ALL_CALENDARS,
+                rx.table.column_header_cell("Kalender"),
+                None,
+            ),
             rx.table.column_header_cell("Termin"),
             rx.table.column_header_cell("Tag"),
             rx.table.column_header_cell("Start"),
@@ -441,11 +460,6 @@ def show_appointment_table_header() -> rx.Component:
 def show_appointment_list() -> rx.Component:
     return rx.card(
         rx.vstack(
-            rx.select(
-                config.google.calendars.keys(),
-                value=CalendarState.current_calendar_name,
-                on_change=CalendarState.set_new_calendar,
-            ),
             rx.heading(
                 f"Termine in den nächsten {CalendarState.amount_of_weeks_to_show} Wochen für {CalendarState.current_calendar_name}"
             ),
@@ -473,9 +487,20 @@ def show_appointment_list() -> rx.Component:
 
 
 def show_appointment_page() -> rx.Component:
-    return rx.hstack(
-        show_appointment_list(),
-        show_appointment_form(),
+    return rx.vstack(
+        rx.select(
+            [ALL_CALENDARS] + list(config.google.calendars.keys()),
+            value=CalendarState.current_calendar_name,
+            on_change=CalendarState.set_new_calendar,
+        ),
+        rx.hstack(
+            show_appointment_list(),
+            rx.cond(
+                CalendarState.current_calendar_name != ALL_CALENDARS,
+                show_appointment_form(),
+                None,
+            ),
+        ),
     )
 
 

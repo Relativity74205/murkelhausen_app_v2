@@ -108,6 +108,7 @@ class AppointmentRecurrence:
 class Appointment(rx.Base):
     id: str | None
     calendar_id: str
+    calendar_name: str
     event_name: str
     start_timestamp: datetime
     start_date: date
@@ -167,12 +168,12 @@ def delete_appointment(event: Event, calendar_id: str):
 
 
 def get_list_of_appointments(
-    calendar_id: str, amount_of_weeks_to_show: int
+    calendar_id: str, calendar_name: str, amount_of_days_to_show: int
 ) -> list[Appointment]:
     gc = get_google_calendar_client()
 
     time_min = date.today()
-    time_max = date.today() + relativedelta(weeks=amount_of_weeks_to_show)
+    time_max = date.today() + relativedelta(days=amount_of_days_to_show)
     raw_events = gc.get_events(
         calendar_id=calendar_id, time_min=time_min, time_max=time_max
     )
@@ -224,6 +225,7 @@ def get_list_of_appointments(
             termin = Appointment(
                 id=event.id,
                 calendar_id=calendar_id,
+                calendar_name=calendar_name,
                 event_name=event.summary,
                 start_timestamp=start_timestamp,
                 start_date=start_timestamp.date(),
@@ -244,7 +246,7 @@ if __name__ == "__main__":
     events = [
         event
         for event in get_list_of_appointments(
-            config.google.calendars["Arkadius"], amount_of_weeks_to_show=2
+            config.google.calendars["Arkadius"], "Arkadius", amount_of_days_to_show=14
         )
     ]
     print(len(events))
