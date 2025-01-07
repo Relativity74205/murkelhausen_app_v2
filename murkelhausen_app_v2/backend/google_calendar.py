@@ -107,6 +107,7 @@ class AppointmentRecurrence:
 
 class Appointment(rx.Base):
     id: str | None
+    calendar_id: str
     event_name: str
     start_timestamp: datetime
     start_date: date
@@ -222,6 +223,7 @@ def get_list_of_appointments(
 
             termin = Appointment(
                 id=event.id,
+                calendar_id=calendar_id,
                 event_name=event.summary,
                 start_timestamp=start_timestamp,
                 start_date=start_timestamp.date(),

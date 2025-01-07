@@ -1,3 +1,4 @@
+import itertools
 from datetime import date, datetime, timedelta
 from enum import Enum
 
@@ -20,9 +21,13 @@ class FormState(Enum):
     EDIT = "Ändern"
 
 
+ALL_CALENDARS = "ALL_CALENDARS"
+
+
 class CalendarState(rx.State):
     appointments: list[Appointment]
     new_appointment_form: dict
+    form_calendar_name: str = next(iter(config.google.calendars.keys()))
     form_event_id: str
     form_event_name: str
     form_event_start_date: str
@@ -31,8 +36,8 @@ class CalendarState(rx.State):
     form_end_time: str
     form_whole_day: bool
     form_button_text: str = FormState.ADD.value
-    current_calendar: str = next(iter(config.google.calendars.keys()))
-    # TODO: make configurable
+    current_calendar_name: str = next(iter(config.google.calendars.keys()))
+    # TODO: make configurable in UI
     amount_of_weeks_to_show: int = 2
 
     @rx.event
@@ -68,7 +73,10 @@ class CalendarState(rx.State):
                 start=event_start,
                 end=event_end,
             )
-            update_appointment(event, calendar_id=self._get_calendar_id())
+            update_appointment(
+                event=event,
+                calendar_id=self._get_calendar_id(self.form_calendar_name),
+            )
             yield rx.toast(f"Event geändert: {event}")
         else:
             event = Event(
@@ -79,7 +87,10 @@ class CalendarState(rx.State):
             yield rx.toast(
                 f"Event erstellt: {event.summary=}; {event.start=}; {event.end=}"
             )
-            create_appointment(event, calendar_id=self._get_calendar_id())
+            create_appointment(
+                event=event,
+                calendar_id=self._get_calendar_id(self.form_calendar_name),
+            )
 
         self._clear_form()
         self.get_appointments()
@@ -95,10 +106,18 @@ class CalendarState(rx.State):
 
     @rx.event
     def get_appointments(self):
-        calendar_id = self._get_calendar_id()
-        self.appointments = get_list_of_appointments(
-            calendar_id=calendar_id,
-            amount_of_weeks_to_show=self.amount_of_weeks_to_show,
+        calendar_ids = self._get_calendar_ids()
+
+        self.appointments = list(
+            itertools.chain(
+                *[
+                    get_list_of_appointments(
+                        calendar_id=calendar_id,
+                        amount_of_weeks_to_show=self.amount_of_weeks_to_show,
+                    )
+                    for calendar_id in calendar_ids
+                ]
+            )
         )
 
     @rx.event
@@ -110,7 +129,7 @@ class CalendarState(rx.State):
                 summary=None,
                 start=date(1970, 1, 1),
             ),
-            calendar_id=self._get_calendar_id(),
+            calendar_id=appointment["calendar_id"],
         )
         yield rx.toast(f"Event '{appointment['event_name']}' gelöscht")
         self.get_appointments()
@@ -118,6 +137,7 @@ class CalendarState(rx.State):
     @rx.event
     def prepare_appointment_for_change(self, appointment: Appointment):
         self.form_event_id = appointment.id
+        self.form_calendar_name = self._get_calender_name(appointment.calendar_id)
         self.form_event_name = appointment.event_name
         self.form_whole_day = appointment.is_whole_day
         self.form_event_start_date = appointment.start_timestamp.date().isoformat()
@@ -145,11 +165,29 @@ class CalendarState(rx.State):
 
     @rx.event
     def set_new_calendar(self, calendar: str):
-        self.current_calendar = calendar
+        self.current_calendar_name = calendar
         self.get_appointments()
 
-    def _get_calendar_id(self) -> str:
-        return config.google.calendars[self.current_calendar]
+    def _get_calendar_ids(self) -> tuple[str, ...]:
+        if self.current_calendar_name == ALL_CALENDARS:
+            return tuple(config.google.calendars.values())
+
+        return (self._get_calendar_id(self.current_calendar_name),)
+
+    @staticmethod
+    def _get_calender_name(searched_calendar_id: str) -> str:
+        return next(
+            (
+                name
+                for name, calendar_id in config.google.calendars.items()
+                if calendar_id == searched_calendar_id
+            ),
+            None,
+        )
+
+    @staticmethod
+    def _get_calendar_id(searched_calendar_name: str) -> str:
+        return config.google.calendars[searched_calendar_name]
 
 
 def show_appointment_form_header() -> rx.Component:
@@ -169,6 +207,19 @@ def show_appointment_form_header() -> rx.Component:
         spacing="4",
         align_items="center",
         width="100%",
+    )
+
+
+def show_appointment_form_calendar() -> rx.Component:
+    return rx.flex(
+        # rx.text("Name des Termins"),
+        rx.select(
+            config.google.calendars.keys(),
+            value=CalendarState.form_calendar_name,
+            on_change=CalendarState.set_form_calendar_name,
+        ),
+        direction="column",
+        spacing="3",
     )
 
 
@@ -280,6 +331,7 @@ def show_appointment_form() -> rx.Component:
         rx.flex(
             show_appointment_form_header(),
             rx.flex(
+                show_appointment_form_calendar(),
                 show_appointment_form_name(),
                 rx.checkbox(
                     "Ganztägig?",
@@ -401,11 +453,11 @@ def show_appointment_list():
         rx.vstack(
             rx.select(
                 config.google.calendars.keys(),
-                value=CalendarState.current_calendar,
+                value=CalendarState.current_calendar_name,
                 on_change=CalendarState.set_new_calendar,
             ),
             rx.heading(
-                f"Termine in den nächsten {CalendarState.amount_of_weeks_to_show} Wochen für {CalendarState.current_calendar}"
+                f"Termine in den nächsten {CalendarState.amount_of_weeks_to_show} Wochen für {CalendarState.current_calendar_name}"
             ),
             rx.hstack(
                 rx.table.root(

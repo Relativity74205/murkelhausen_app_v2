@@ -100,7 +100,7 @@ config = Config(
         client_x509_cert_url="https://www.googleapis.com/robot/v1/metadata/x509/murkelhausen2%40murkelhausen.iam.gserviceaccount.com",
         calendars={
             "Arkadius": os.environ.get("GOOGLE_CALENDAR_ARKADIUS", "placeholder"),
-            "Familie": os.environ.get("GOOGLE_CALENDAR_FAMILIE", "placeholder"),
+            # "Familie": os.environ.get("GOOGLE_CALENDAR_FAMILIE", "placeholder"),
             "Erik": os.environ.get("GOOGLE_CALENDAR_ERIK", "placeholder"),
             "Mattis": os.environ.get("GOOGLE_CALENDAR_MATTIS", "placeholder"),
             # "Andrea": os.environ.get("GOOGLE_CALENDAR_ANDREA", "placeholder"),
