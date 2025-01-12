@@ -28,7 +28,7 @@ class TimeBlocks(StrEnum):
     Fourth = auto()
     Fifth = auto()
     Sixth = auto()
-    Seventh = auto()
+    Sgeradeth = auto()
     Eighth = auto()
     Ninth = auto()
     LunchBreak = auto()
@@ -76,13 +76,13 @@ timetables = {
     },
     SchoolVisitors.Andrea: {},
     SchoolVisitors.Mattis: {
-        "odd": {
+        "ungerade": {
             TimeBlocks.First: [
                 "Religion",
                 "Physik",
                 "Mathe",
                 "Biologie",
-                "Englisch",
+                "Deutsch",
             ],
             TimeBlocks.Second: [
                 "Englisch",
@@ -95,11 +95,11 @@ timetables = {
                 "Mathe",
                 "Kunst",
                 "Informatik",
-                "Deutsch",
+                "Englisch",
                 None,
             ],
         },
-        "even": {
+        "gerade": {
             TimeBlocks.First: [
                 "Sport",
                 "Physik",
@@ -111,15 +111,15 @@ timetables = {
                 "Biologie",
                 "Informatik",
                 "Englisch",
-                "Deutsch",
+                "Kunst",
                 "Englisch",
             ],
             TimeBlocks.Third: [
                 "Mathe",
                 "Deutsch",
                 "Geschichte",
-                "Kunst",
                 None,
+                "Deutsch",
             ],
         },
     },
@@ -281,23 +281,23 @@ def show_mattis() -> rx.Component:
     next_end_of_week = end_of_week + timedelta(days=7)
     next_end_of_week_string = next_end_of_week.strftime("%d.%m.%Y")
 
-    week_type = "odd" if current_week % 2 != 0 else "even"
-    other_week_type = "even" if week_type == "odd" else "odd"
+    this_week_type = "ungerade" if current_week % 2 != 0 else "gerade"
+    next_week_type = "gerade" if this_week_type == "ungerade" else "ungerade"
     return rx.vstack(
         rx.spacer(),
         rx.heading("Mattis' timetable"),
         rx.text(
-            f"Aktuelle Woche (Kalenderwoche {current_week}; {start_of_week_string}-{end_of_week_string})"
+            f"Aktuelle Woche ({this_week_type} Kalenderwoche {current_week}; {start_of_week_string}-{end_of_week_string})"
         ),
         show_mattis_timetable(
-            timetables[SchoolVisitors.Mattis][week_type], times_mattis
+            timetables[SchoolVisitors.Mattis][this_week_type], times_mattis
         ),
         rx.spacer(spacing="2"),
         rx.text(
-            f"Nächste Woche (Kalenderwoche {current_week + 1}; {next_start_of_week_string}-{next_end_of_week_string})"
+            f"Nächste Woche ({next_week_type} Kalenderwoche {current_week + 1}; {next_start_of_week_string}-{next_end_of_week_string})"
         ),
         show_mattis_timetable(
-            timetables[SchoolVisitors.Mattis][other_week_type], times_mattis
+            timetables[SchoolVisitors.Mattis][next_week_type], times_mattis
         ),
     )
 
