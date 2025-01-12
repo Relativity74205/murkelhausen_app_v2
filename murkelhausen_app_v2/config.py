@@ -103,7 +103,7 @@ config = Config(
             # "Familie": os.environ.get("GOOGLE_CALENDAR_FAMILIE", "placeholder"),
             "Erik": os.environ.get("GOOGLE_CALENDAR_ERIK", "placeholder"),
             "Mattis": os.environ.get("GOOGLE_CALENDAR_MATTIS", "placeholder"),
-            # "Andrea": os.environ.get("GOOGLE_CALENDAR_ANDREA", "placeholder"),
+            "Andrea": os.environ.get("GOOGLE_CALENDAR_ANDREA", "placeholder"),
             "Geburtstage": os.environ.get("GOOGLE_CALENDAR_GEBURTSTAGE", "placeholder"),
         },
     ),

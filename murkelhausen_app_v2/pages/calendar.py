@@ -38,6 +38,31 @@ class CalendarState(rx.State):
     current_calendar_name: str = ALL_CALENDARS
     amount_of_weeks_to_show: str = "2"
 
+    @rx.var
+    def appointments_to_show(self) -> list[Appointment]:
+        return [
+            appointment
+            for appointment in self.appointments
+            if self.current_calendar_name == ALL_CALENDARS
+            or self.current_calendar_name == appointment.calendar_name
+        ]
+
+    @rx.var
+    def todays_appointments(self) -> list[Appointment]:
+        return [
+            appointment
+            for appointment in self.appointments
+            if appointment.start_date == date.today()
+        ]
+
+    @rx.var
+    def tomorrows_appointments(self) -> list[Appointment]:
+        return [
+            appointment
+            for appointment in self.appointments
+            if appointment.start_date == date.today() + timedelta(days=1)
+        ]
+
     @rx.event
     def handle_add_termin_submit(self):
         if self.form_event_name == "" or self.form_event_start_date == "":
@@ -77,16 +102,14 @@ class CalendarState(rx.State):
                 event=event,
                 calendar_id=self._get_calendar_id(self.current_calendar_name),
             )
-            yield rx.toast(f"Event geändert: {event}")
+            yield rx.toast(f"Event geändert: '{event.summary}'")
         else:
             event = Event(
                 summary=self.form_event_name,
                 start=event_start,
                 end=event_end,
             )
-            yield rx.toast(
-                f"Event erstellt: {event.summary=}; {event.start=}; {event.end=}"
-            )
+            yield rx.toast(f"Event erstellt: '{event.summary}'")
             create_appointment(
                 event=event,
                 calendar_id=self._get_calendar_id(self.current_calendar_name),
@@ -106,7 +129,7 @@ class CalendarState(rx.State):
 
     @rx.event
     def get_appointments(self):
-        calendar_ids = self._get_calendar_ids()
+        calendar_ids = self._get_all_calendar_ids()
 
         self.appointments = list(
             itertools.chain(
@@ -167,18 +190,18 @@ class CalendarState(rx.State):
     @rx.event
     def set_new_calendar(self, calendar: str):
         self.current_calendar_name = calendar
-        self.get_appointments()
+        # self.get_appointments()
 
     @rx.event
     def set_new_amount_of_weeks_to_show(self, amount_of_weeks: str):
         self.amount_of_weeks_to_show = amount_of_weeks
         self.get_appointments()
 
-    def _get_calendar_ids(self) -> tuple[str, ...]:
-        if self.current_calendar_name == ALL_CALENDARS:
-            return tuple(config.google.calendars.values())
-
-        return (self._get_calendar_id(self.current_calendar_name),)
+    def _get_all_calendar_ids(self) -> tuple[str, ...]:
+        # if self.current_calendar_name == ALL_CALENDARS:
+        return tuple(config.google.calendars.values())
+        #
+        # return (self._get_calendar_id(self.current_calendar_name),)
 
     @staticmethod
     def _get_calender_name(searched_calendar_id: str) -> str:
@@ -363,12 +386,61 @@ def show_appointment_form() -> rx.Component:
     )
 
 
-def show_appointment_table_row(appointment: Appointment) -> rx.Component:
+def show_edit_appointment_button(appointment: Appointment) -> rx.Component:
+    return rx.badge(
+        rx.icon(
+            tag="pencil",
+            style=rx.Style({"_hover": {"color": "blue", "opacity": 0.5}}),
+            on_click=CalendarState.prepare_appointment_for_change(appointment),
+        )
+    )
+
+
+def show_delete_appointment_button(appointment: Appointment) -> rx.Component:
+    return rx.alert_dialog.root(
+        rx.alert_dialog.trigger(
+            rx.badge(
+                rx.icon(
+                    tag="trash-2",
+                    style=rx.Style({"_hover": {"color": "red", "opacity": 0.5}}),
+                )
+            ),
+        ),
+        rx.alert_dialog.content(
+            rx.alert_dialog.title(
+                f"Termin '{appointment.event_name}' wirklich löschen?"
+            ),
+            rx.flex(
+                rx.alert_dialog.cancel(
+                    rx.button("Abbruch"),
+                ),
+                rx.alert_dialog.action(
+                    rx.button(
+                        "Löschen",
+                        on_click=CalendarState.delete_appointment(appointment),
+                    ),
+                    spacing="12",
+                ),
+                direction="row",
+                justify="between",
+            ),
+        ),
+    )
+
+
+def show_appointment_table_row(
+    appointment: Appointment,
+    show_calendar_col: bool,
+    show_edit_col: bool,
+    show_delete_col: bool,
+    show_row_colors: bool,
+) -> rx.Component:
     row_color = rx.cond(
-        appointment.start_date == date.today(),
+        (appointment.start_date == date.today()) & show_row_colors,
         rx.color("red"),
         rx.cond(
-            appointment.start_date == date.today() + timedelta(days=1),
+            (appointment.start_date == date.today() + timedelta(days=1))
+            & show_row_colors,
             rx.color("yellow"),
             rx.color("gray"),
         ),
@@ -380,7 +452,7 @@ def show_appointment_table_row(appointment: Appointment) -> rx.Component:
             align="center",
         ),
         rx.cond(
-            CalendarState.current_calendar_name == ALL_CALENDARS,
+            show_calendar_col,
             rx.table.cell(appointment.calendar_name),
             None,
         ),
@@ -388,62 +460,35 @@ def show_appointment_table_row(appointment: Appointment) -> rx.Component:
         rx.table.cell(appointment.days_string),
         rx.table.cell(rx.cond(appointment.is_whole_day, "", appointment.start_time)),
         rx.table.cell(rx.cond(appointment.is_whole_day, "", appointment.end_time)),
-        rx.table.cell(
-            rx.badge(
-                rx.icon(
-                    tag="pencil",
-                    style=rx.Style({"_hover": {"color": "blue", "opacity": 0.5}}),
-                    on_click=CalendarState.prepare_appointment_for_change(appointment),
-                )
+        rx.cond(
+            show_edit_col,
+            rx.table.cell(
+                show_edit_appointment_button(appointment),
+                align="center",
             ),
-            align="center",
+            None,
         ),
-        rx.table.cell(
-            rx.alert_dialog.root(
-                rx.alert_dialog.trigger(
-                    rx.badge(
-                        rx.icon(
-                            tag="trash-2",
-                            style=rx.Style(
-                                {"_hover": {"color": "red", "opacity": 0.5}}
-                            ),
-                        )
-                    ),
-                ),
-                rx.alert_dialog.content(
-                    rx.alert_dialog.title(
-                        f"Termin '{appointment.event_name}' wirklich löschen?"
-                    ),
-                    rx.flex(
-                        rx.alert_dialog.cancel(
-                            rx.button("Abbruch"),
-                        ),
-                        rx.alert_dialog.action(
-                            rx.button(
-                                "Löschen",
-                                on_click=CalendarState.delete_appointment(appointment),
-                            ),
-                            spacing="12",
-                        ),
-                        direction="row",
-                        justify="between",
-                    ),
-                ),
+        rx.cond(
+            show_delete_col,
+            rx.table.cell(
+                show_delete_appointment_button(appointment),
+                align="center",
             ),
-            align="center",
+            None,
         ),
         bg=row_color,
-        # style={"_hover": {"bg": color, "opacity": 0.5}},
         align="center",
     )
 
 
-def show_appointment_table_header() -> rx.Component:
+def show_appointment_table_header(
+    show_calendar_col: bool, show_edit_col: bool, show_delete_col: bool
+) -> rx.Component:
     return rx.table.header(
         rx.table.row(
             rx.table.column_header_cell(""),
             rx.cond(
-                CalendarState.current_calendar_name == ALL_CALENDARS,
+                show_calendar_col,
                 rx.table.column_header_cell("Kalender"),
                 None,
             ),
@@ -451,26 +496,62 @@ def show_appointment_table_header() -> rx.Component:
             rx.table.column_header_cell("Tag"),
             rx.table.column_header_cell("Start"),
             rx.table.column_header_cell("Ende"),
-            rx.table.column_header_cell("Bearbeiten"),
-            rx.table.column_header_cell("Löschen"),
+            rx.cond(
+                show_edit_col,
+                rx.table.column_header_cell("Bearbeiten"),
+                None,
+            ),
+            rx.cond(
+                show_delete_col,
+                rx.table.column_header_cell("Löschen"),
+                None,
+            ),
         ),
     )
 
 
+def show_appointment_table(
+    appointments: list[Appointment],
+    show_calendar_col: bool,
+    show_edit_col: bool,
+    show_delete_col: bool,
+    show_row_colors: bool,
+) -> rx.Component:
+    return rx.table.root(
+        show_appointment_table_header(
+            show_calendar_col=show_calendar_col,
+            show_edit_col=show_edit_col,
+            show_delete_col=show_delete_col,
+        ),
+        rx.foreach(
+            appointments,
+            lambda appointment: show_appointment_table_row(
+                appointment,
+                show_calendar_col=show_calendar_col,
+                show_edit_col=show_edit_col,
+                show_delete_col=show_delete_col,
+                show_row_colors=show_row_colors,
+            ),
+        ),
+        variant="surface",
+        size="3",
+    )
+
+
 def show_appointment_list() -> rx.Component:
+    header_string = (
+        f"Termine in den nächsten {CalendarState.amount_of_weeks_to_show} Wochen für {CalendarState.current_calendar_name}",
+    )
+
     return rx.card(
         rx.vstack(
-            rx.heading(
-                f"Termine in den nächsten {CalendarState.amount_of_weeks_to_show} Wochen für {CalendarState.current_calendar_name}"
-            ),
-            rx.table.root(
-                show_appointment_table_header(),
-                rx.foreach(
-                    CalendarState.appointments,
-                    show_appointment_table_row,
-                ),
-                variant="surface",
-                size="3",
+            rx.heading(header_string),
+            show_appointment_table(
+                CalendarState.appointments_to_show,
+                show_calendar_col=CalendarState.current_calendar_name == ALL_CALENDARS,
+                show_edit_col=CalendarState.current_calendar_name != ALL_CALENDARS,
+                show_delete_col=True,
+                show_row_colors=True,
             ),
             rx.hstack(
                 rx.text("Zeige Termine der nächsten Wochen:"),

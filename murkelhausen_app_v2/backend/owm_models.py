@@ -4,6 +4,7 @@ from datetime import date, datetime
 
 import reflex as rx
 from pydantic import Field
+from pydantic.v1 import BaseModel
 
 from murkelhausen_app_v2.backend.owm_functions import (
     _get_moon_phase_string,
@@ -345,15 +346,15 @@ class Alert(rx.Base):
         return _unix_timestamp_to_met_timestamp(self.end)
 
 
-class OWMOneCall(rx.Base):
+class OWMOneCall(BaseModel):
     lat: float
     lon: float
     timezone: str
     timezone_offset: int
     current: Current
-    minutely: tuple[MinutelyItem, ...] = ()
     hourly: tuple[HourlyItem, ...]
     daily: tuple[DailyItem, ...]
+    minutely: tuple[MinutelyItem, ...] = ()
     alerts: tuple[Alert, ...] = ()
 
     @property
