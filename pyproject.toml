@@ -17,6 +17,7 @@ gcsa = "^2.5.1"
 google-api-python-client = "^2.154.0"
 oauth2client = "^4.1.3"
 pytz = "^2024.2"
+apscheduler = "^3.11.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"

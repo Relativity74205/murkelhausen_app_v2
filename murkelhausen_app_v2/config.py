@@ -48,6 +48,21 @@ class Google(BaseModel):
     calendars: dict[str, str]
 
 
+class Pushover(BaseModel):
+    user_key: SecretStr
+    token: SecretStr
+
+
+class BuergeramtTask(BaseModel):
+    active: bool
+    schedule_minutes: int
+    search_timeframe_days: int
+
+
+class Tasks(BaseModel):
+    buergeramt_task: BuergeramtTask
+
+
 class Config(BaseModel):
     mheg: Mheg
     gym_broich: GymBroich
@@ -57,6 +72,8 @@ class Config(BaseModel):
     pihole: PiHole
     owm: OWM
     google: Google
+    pushover: Pushover
+    tasks: Tasks
 
 
 config = Config(
@@ -106,5 +123,16 @@ config = Config(
             "Andrea": os.environ.get("GOOGLE_CALENDAR_ANDREA", "placeholder"),
             "Geburtstage": os.environ.get("GOOGLE_CALENDAR_GEBURTSTAGE", "placeholder"),
         },
+    ),
+    pushover=Pushover(
+        user_key=os.environ.get("PUSHOVER_USER_KEY", "placeholder"),
+        token=os.environ.get("PUSHOVER_TOKEN", "placeholder"),
+    ),
+    tasks=Tasks(
+        buergeramt_task=BuergeramtTask(
+            active=True,
+            schedule_minutes=5,
+            search_timeframe_days=7,
+        ),
     ),
 )
