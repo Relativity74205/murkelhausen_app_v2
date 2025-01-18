@@ -12,7 +12,10 @@ AMOUNT_OF_DOCUMENTS = 3
 
 
 def get_session_cookie() -> str | None:
-    r = requests.get("https://terminvergabe.muelheim-ruhr.de/select2?md=4")
+    r = requests.get(
+        "https://terminvergabe.muelheim-ruhr.de/select2?md=4",
+        timeout=10,
+    )
     try:
         return r.cookies["tvo_session"]
     except KeyError:
@@ -30,6 +33,7 @@ def get_appointment_page(session_cookie: str) -> str:
     r = requests.get(
         f"https://terminvergabe.muelheim-ruhr.de//location?mdt=128&select_cnc=1&cnc-2616=0&cnc-2491=0&cnc-2501={AMOUNT_OF_DOCUMENTS}&cnc-2503=0&cnc-2509=0&cnc-2615=0&cnc-2500=0&cnc-2502=0&cnc-2505=0&cnc-2498=0&cnc-2473=0&cnc-2474=0&cnc-2478=0&cnc-2488=0&cnc-2479=0&cnc-2483=0&cnc-2485=0&cnc-2496=0&cnc-2504=0&cnc-2486=0&cnc-2477=0&cnc-2475=0&cnc-2494=0&cnc-2481=0&cnc-2499=0&cnc-2472=0&cnc-2506=0&cnc-2490=0&cnc-2507=0&cnc-2508=0&cnc-2510=0",
         headers=headers,
+        timeout=10,
     )
 
     soup = bs4.BeautifulSoup(r.text, "html.parser")

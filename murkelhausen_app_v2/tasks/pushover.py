@@ -14,7 +14,11 @@ def sent_pushover_message(title: str, message: str):
         # "expire": 1800,
         # "retry": 60,
     }
-    r = requests.post("https://api.pushover.net/1/messages.json", data=data)
+    r = requests.post(
+        "https://api.pushover.net/1/messages.json",
+        data=data,
+        timeout=10,
+    )
     print(f"Pushover response: {r.text}; {r.status_code=}")
     if r.status_code != 200:
         raise RuntimeError(f"Pushover request failed with status code {r.status_code}")
