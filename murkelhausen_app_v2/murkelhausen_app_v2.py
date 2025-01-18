@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 
 import reflex as rx
@@ -5,16 +6,18 @@ import reflex as rx
 from murkelhausen_app_v2 import styles
 from murkelhausen_app_v2.tasks import scheduler
 
+log = logging.getLogger(__name__)
+
 
 @asynccontextmanager
 async def lifespan(app):
-    print("Starting scheduler")
+    log.info("Starting scheduler")
     scheduler.start()
-    print("Scheduler started")
+    log.info("Scheduler started")
     yield
-    print("Shutting down scheduler")
+    log.info("Shutting down scheduler")
     scheduler.shutdown()
-    print("Scheduler shut down")
+    log.info("Scheduler shut down")
 
 
 app = rx.App(

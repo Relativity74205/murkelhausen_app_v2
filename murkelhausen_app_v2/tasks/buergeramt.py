@@ -1,3 +1,4 @@
+import logging
 import re
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
@@ -9,6 +10,8 @@ from murkelhausen_app_v2.config import config
 from murkelhausen_app_v2.tasks.pushover import sent_pushover_message
 
 AMOUNT_OF_DOCUMENTS = 3
+
+log = logging.getLogger(__name__)
 
 
 def get_session_cookie() -> str | None:
@@ -55,7 +58,7 @@ def parse_appointment_page(text: str) -> NextAppointment:
 def check_if_date_is_within_x_days(date_str: str, x: int) -> bool:
     date_obj = datetime.strptime(date_str, "%d.%m.%Y").date()
     today = date.today()
-    return today <= date_obj + timedelta(days=x)
+    return today + timedelta(days=x) >= date_obj
 
 
 def get_next_free_appointment_from_buergeramt():
@@ -69,9 +72,9 @@ def get_next_free_appointment_from_buergeramt():
         next_appointment.date, config.tasks.buergeramt_task.search_timeframe_days
     ):
         message = f"Nächster freier Termin für {AMOUNT_OF_DOCUMENTS} Dokumente: {next_appointment.date} at {next_appointment.time}"
-        sent_pushover_message("Bürgeramt Termin Alarm:", message=message)
+        sent_pushover_message("FOO: Bürgeramt Termin Alarm:", message=message)
     else:
-        print(
+        log.info(
             f"No free appointment in timeframe of {config.tasks.buergeramt_task.search_timeframe_days} days found."
         )
 

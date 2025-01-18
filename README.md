@@ -42,14 +42,14 @@ docker push ghcr.io/relativity74205/murkel_app2:0.1.0
     - create substate component for vertretungsplan
   - [x] fussball
   - [ ] weather
-  - [ ] ruhrbahn
+  - [x] ruhrbahn
   - [x] mheg
   - [ ] power
   - [ ] garmin
 - [ ] create new pages
   - [ ] nine
-  - [ ] calendar
-  - [ ] openAI
+  - [x] calendar
+  - [x] openAI
 - [ ] make api requests async and run in state background tasks
 - [ ] write backend tests
 - [ ] refactor:
