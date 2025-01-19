@@ -16,5 +16,7 @@ if config.tasks.buergeramt_task.active:
     trigger = IntervalTrigger(minutes=config.tasks.buergeramt_task.schedule_minutes)
     scheduler.add_job(get_next_free_appointment_from_buergeramt, trigger)
     log.info("Buergeramt task added")
+else:
+    log.info("Buergeramt task is deactivated")
 
 __all__ = ["scheduler"]

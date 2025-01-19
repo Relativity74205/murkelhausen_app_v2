@@ -249,4 +249,3 @@ if __name__ == "__main__":
             config.google.calendars["Arkadius"], "Arkadius", amount_of_days_to_show=14
         )
     ]
-    print(len(events))

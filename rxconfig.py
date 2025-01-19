@@ -2,7 +2,9 @@ import logging
 
 import reflex as rx
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s %(levelname)s - %(name)s - %(message)s"
+)
 log = logging.getLogger(__name__)
 
 log.info("Starting app")

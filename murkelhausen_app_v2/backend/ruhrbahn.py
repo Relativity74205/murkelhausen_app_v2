@@ -1,8 +1,8 @@
-import requests
-from cachetools import TTLCache, cached
 import logging
 
 import reflex as rx
+import requests
+from cachetools import TTLCache, cached
 
 from murkelhausen_app_v2.backend.ruhrbahn_DepartureModel import DepartureModel
 from murkelhausen_app_v2.backend.ruhrbahn_StationModel import StationModel
@@ -73,16 +73,3 @@ def get_lierberg_departure_data() -> list[Departure]:
         )
 
     return departures
-
-
-def debug():
-    stations = get_stations()
-    station_id = stations.get_station_id("Lierberg", "Mülheim")
-    departure_data = get_departure_data(station_id)
-    # departures = departure_data.get_departure_list_per_line('125')
-    departures = departure_data.get_departure_list()
-    print(departures[0].planned_departure_time)
-
-
-if __name__ == "__main__":
-    debug()
