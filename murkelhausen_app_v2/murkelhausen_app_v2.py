@@ -5,6 +5,7 @@ import reflex as rx
 
 from murkelhausen_app_v2 import styles
 from murkelhausen_app_v2.tasks import scheduler
+from murkelhausen_app_v2.pages import *  # noqa: F403
 
 log = logging.getLogger(__name__)
 
