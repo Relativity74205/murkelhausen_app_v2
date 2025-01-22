@@ -130,8 +130,8 @@ config = Config(
     ),
     tasks=Tasks(
         buergeramt_task=BuergeramtTask(
-            active=False,
-            schedule_minutes=5,
+            active=True,
+            schedule_minutes=3,
             search_timeframe_days=7,
         ),
     ),

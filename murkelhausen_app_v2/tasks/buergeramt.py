@@ -9,7 +9,7 @@ import requests
 from murkelhausen_app_v2.config import config
 from murkelhausen_app_v2.tasks.pushover import sent_pushover_message
 
-AMOUNT_OF_DOCUMENTS = 3
+AMOUNT_OF_DOCUMENTS = 1
 
 log = logging.getLogger(__name__)
 
