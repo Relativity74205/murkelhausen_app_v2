@@ -10,6 +10,7 @@ from murkelhausen_app_v2.config import config
 from murkelhausen_app_v2.tasks.pushover import sent_pushover_message
 
 AMOUNT_OF_DOCUMENTS = 1
+AMOUNT_OF_CARS = 1
 
 log = logging.getLogger(__name__)
 
@@ -31,10 +32,12 @@ class NextAppointment:
     time: str
 
 
-def get_appointment_page(session_cookie: str) -> str:
+def get_appointment_page(
+    session_cookie: str, amount_documents: int = 0, amount_cars: int = 0
+) -> str:
     headers = {"Cookie": f"tvo_session={session_cookie}"}
     r = requests.get(
-        f"https://terminvergabe.muelheim-ruhr.de//location?mdt=128&select_cnc=1&cnc-2616=0&cnc-2491=0&cnc-2501={AMOUNT_OF_DOCUMENTS}&cnc-2503=0&cnc-2509=0&cnc-2615=0&cnc-2500=0&cnc-2502=0&cnc-2505=0&cnc-2498=0&cnc-2473=0&cnc-2474=0&cnc-2478=0&cnc-2488=0&cnc-2479=0&cnc-2483=0&cnc-2485=0&cnc-2496=0&cnc-2504=0&cnc-2486=0&cnc-2477=0&cnc-2475=0&cnc-2494=0&cnc-2481=0&cnc-2499=0&cnc-2472=0&cnc-2506=0&cnc-2490=0&cnc-2507=0&cnc-2508=0&cnc-2510=0",
+        f"https://terminvergabe.muelheim-ruhr.de//location?mdt=128&select_cnc=1&cnc-2616=0&cnc-2491=0&cnc-2501={amount_documents}&cnc-2503=0&cnc-2509=0&cnc-2615=0&cnc-2500=0&cnc-2502=0&cnc-2505=0&cnc-2498={amount_cars}&cnc-2473=0&cnc-2474=0&cnc-2478=0&cnc-2488=0&cnc-2479=0&cnc-2483=0&cnc-2485=0&cnc-2496=0&cnc-2504=0&cnc-2486=0&cnc-2477=0&cnc-2475=0&cnc-2494=0&cnc-2481=0&cnc-2499=0&cnc-2472=0&cnc-2506=0&cnc-2490=0&cnc-2507=0&cnc-2508=0&cnc-2510=0",
         headers=headers,
         timeout=10,
     )
@@ -61,11 +64,31 @@ def check_if_date_is_within_x_days(date_str: str, x: int) -> bool:
     return today + timedelta(days=x) >= date_obj
 
 
-def get_next_free_appointment_from_buergeramt():
+def get_next_free_appointment_from_buergeramt_docs():
     session_cookie = get_session_cookie()
     if session_cookie is None:
         raise ValueError("Failed to retrieve session cookie.")
-    appointment_page = get_appointment_page(session_cookie)
+    appointment_page = get_appointment_page(
+        session_cookie, amount_documents=AMOUNT_OF_DOCUMENTS
+    )
+    next_appointment = parse_appointment_page(appointment_page)
+
+    if check_if_date_is_within_x_days(
+        next_appointment.date, config.tasks.buergeramt_task.search_timeframe_days
+    ):
+        message = f"Nächster freier Termin für {AMOUNT_OF_DOCUMENTS} Dokumente: {next_appointment.date} at {next_appointment.time}"
+        sent_pushover_message("FOO: Bürgeramt Termin Alarm:", message=message)
+    else:
+        log.info(
+            f"No free appointment in timeframe of {config.tasks.buergeramt_task.search_timeframe_days} days found."
+        )
+
+
+def get_next_free_appointment_from_buergeramt_cars():
+    session_cookie = get_session_cookie()
+    if session_cookie is None:
+        raise ValueError("Failed to retrieve session cookie.")
+    appointment_page = get_appointment_page(session_cookie, amount_cars=AMOUNT_OF_CARS)
     next_appointment = parse_appointment_page(appointment_page)
 
     if check_if_date_is_within_x_days(
@@ -80,4 +103,4 @@ def get_next_free_appointment_from_buergeramt():
 
 
 if __name__ == "__main__":
-    get_next_free_appointment_from_buergeramt()
+    get_next_free_appointment_from_buergeramt_docs()
