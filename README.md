@@ -34,12 +34,22 @@ CREATE
 USER murkelhausen_app_v2 WITH PASSWORD '';
 ALTER
 SCHEMA murkelhausen_app_v2 OWNER TO murkelhausen_app_v2;
+GRANT USAGE ON SCHEMA
+data TO murkelhausen_app_v2;
+GRANT
+SELECT
+ON ALL TABLES IN SCHEMA data TO murkelhausen_app_v2;
 
 CREATE SCHEMA murkelhausen_app_v2_dev;
 CREATE
 USER murkelhausen_app_v2_dev WITH PASSWORD '';
 ALTER
 SCHEMA murkelhausen_app_v2_dev OWNER TO murkelhausen_app_v2_dev;
+GRANT USAGE ON SCHEMA
+data TO murkelhausen_app_v2_dev;
+GRANT
+SELECT
+ON ALL TABLES IN SCHEMA data TO murkelhausen_app_v2_dev;
 ```
 
 ```bash
