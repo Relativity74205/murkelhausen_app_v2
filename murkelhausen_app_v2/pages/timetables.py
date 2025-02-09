@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from enum import StrEnum, auto
+from typing import cast
 
 import reflex as rx
 from reflex import Var
@@ -14,69 +15,27 @@ class SchoolVisitors(StrEnum):
     Erik = auto()
 
 
-class Day(StrEnum):
-    Monday = auto()
-    Tuesday = auto()
-    Wednesday = auto()
-    Thursday = auto()
-    Friday = auto()
+class TimeTableMattis(rx.Model, table=True):
+    __tablename__ = "time_table_mattis"
+    block: int
+    timeframe: str
+    even_week: bool
+    subject_monday: str | None
+    subject_tuesday: str | None
+    subject_wednesday: str | None
+    subject_thursday: str | None
+    subject_friday: str | None
 
 
-class TimeBlocks(StrEnum):
-    First = auto()
-    Second = auto()
-    Third = auto()
-    Fourth = auto()
-    Fifth = auto()
-    Sixth = auto()
-    Sgeradeth = auto()
-    Eighth = auto()
-    Ninth = auto()
-    LunchBreak = auto()
-
-
-times = {
-    SchoolVisitors.Mattis: {
-        TimeBlocks.First: "8:00 - 9:30",
-        TimeBlocks.Second: "9:50 - 11:20",
-        TimeBlocks.Third: "11:40 - 13:10",
-        TimeBlocks.LunchBreak: "13:10 - 14:00",
-        TimeBlocks.Fourth: "14:00 - 15:30",
-    },
-    SchoolVisitors.Erik: {
-        TimeBlocks.First: "8:00 - 8:45",
-        TimeBlocks.Second: "8:50 - 9:30",
-        TimeBlocks.Third: "10:00 - 10:45",
-        TimeBlocks.Fourth: "10:45 - 11:30",
-        TimeBlocks.Fifth: "11:45 - 12:30",
-        TimeBlocks.Sixth: "12:30 - 13:15",
-    },
-}
-
-
-timetables = {
-    SchoolVisitors.Erik: {
-        TimeBlocks.First: ["x", "x", None, "x", "x"],
-        TimeBlocks.Second: ["x", "x", "x", "x", "x"],
-        TimeBlocks.Third: ["x", "x", "x", "Englisch", "Englisch"],
-        TimeBlocks.Fourth: ["x", "x", "x", "x", "Englisch"],
-        TimeBlocks.Fifth: [
-            "Sport",
-            "x",
-            "Schwimmen",
-            "Religion",
-            None,
-        ],
-        TimeBlocks.Sixth: [
-            "Sport",
-            "Digitales Lernen",
-            "Schwimmen",
-            "Religion",
-            None,
-        ],
-    },
-    SchoolVisitors.Andrea: {},
-}
+class TimeTableErik(rx.Model, table=True):
+    __tablename__ = "time_table_erik"
+    block: int
+    timeframe: str
+    subject_monday: str | None
+    subject_tuesday: str | None
+    subject_wednesday: str | None
+    subject_thursday: str | None
+    subject_friday: str | None
 
 
 def _get_header_bg_color(weekday_number: int) -> Color:
@@ -92,40 +51,59 @@ def _parse_subject_name(subject_name: str | None) -> str:
 
 def _get_subject_color(subject: str) -> Var:
     return rx.cond(
-        subject == "Sport",
-        rx.color("cyan", shade=6),
+        subject == "Mittagspause",
+        rx.color("orange", shade=4),
         rx.cond(
-            subject == "Schwimmen", rx.color("red", shade=6), rx.color("white", shade=6)
+            subject == "Sport",
+            rx.color("cyan", shade=6),
+            rx.cond(
+                subject == "Schwimmen",
+                rx.color("red", shade=6),
+                rx.color("white", shade=6),
+            ),
         ),
     )
 
 
-def show_block(subject_list: list[str], time: str) -> rx.Component:
+def _get_subject_opacity(subject: str) -> Var:
+    return rx.cond(
+        subject == "Mittagspause",
+        0.5,
+        1,
+    )
+
+
+def show_block(timetable: TimeTableMattis | TimeTableErik) -> rx.Component:
     return rx.table.row(
-        rx.table.cell(time, align="right"),
+        rx.table.cell(timetable.timeframe, align="right"),
         rx.table.cell(
-            _parse_subject_name(subject_list[0]),
-            bg=_get_subject_color(subject_list[0]),
+            _parse_subject_name(timetable.subject_monday),
+            bg=_get_subject_color(timetable.subject_monday),
+            opacity=_get_subject_opacity(timetable.subject_monday),
             align="center",
         ),
         rx.table.cell(
-            _parse_subject_name(subject_list[1]),
-            bg=_get_subject_color(subject_list[1]),
+            _parse_subject_name(timetable.subject_tuesday),
+            bg=_get_subject_color(timetable.subject_tuesday),
+            opacity=_get_subject_opacity(timetable.subject_tuesday),
             align="center",
         ),
         rx.table.cell(
-            _parse_subject_name(subject_list[2]),
-            bg=_get_subject_color(subject_list[2]),
+            _parse_subject_name(timetable.subject_wednesday),
+            bg=_get_subject_color(timetable.subject_wednesday),
+            opacity=_get_subject_opacity(timetable.subject_wednesday),
             align="center",
         ),
         rx.table.cell(
-            _parse_subject_name(subject_list[3]),
-            bg=_get_subject_color(subject_list[3]),
+            _parse_subject_name(timetable.subject_thursday),
+            bg=_get_subject_color(timetable.subject_thursday),
+            opacity=_get_subject_opacity(timetable.subject_thursday),
             align="center",
         ),
         rx.table.cell(
-            _parse_subject_name(subject_list[4]),
-            bg=_get_subject_color(subject_list[4]),
+            _parse_subject_name(timetable.subject_friday),
+            bg=_get_subject_color(timetable.subject_friday),
+            opacity=_get_subject_opacity(timetable.subject_friday),
             align="center",
         ),
         style={"_hover": {"opacity": 0.5}},
@@ -133,8 +111,8 @@ def show_block(subject_list: list[str], time: str) -> rx.Component:
     )
 
 
-def show_mattis_timetable(
-    timetable_mattis: list[list[str]], times_mattis: dict
+def show_timetable(
+    timetable: list[TimeTableMattis] | list[TimeTableErik],
 ) -> rx.Component:
     return rx.table.root(
         rx.table.header(
@@ -148,171 +126,94 @@ def show_mattis_timetable(
             ),
         ),
         rx.table.body(
-            show_block(
-                timetable_mattis[0],
-                times_mattis[TimeBlocks.First],
-            ),
-            show_block(
-                timetable_mattis[1],
-                times_mattis[TimeBlocks.Second],
-            ),
-            show_block(
-                timetable_mattis[2],
-                times_mattis[TimeBlocks.Third],
-            ),
-            show_block(
-                ["", "", "Mittagspause", "", ""], times_mattis[TimeBlocks.LunchBreak]
-            ),
-            show_block(
-                ["", "", "", "", ""],
-                times_mattis[TimeBlocks.Fourth],
-            ),
+            rx.foreach(timetable, show_block),
         ),
         variant="surface",
         size="3",
     )
 
 
-def show_erik_timetable(timetable_erik: dict, times_erik: dict) -> rx.Component:
-    return rx.table.root(
-        rx.table.header(
-            rx.table.row(
-                rx.table.column_header_cell("Zeit", align="right"),
-                rx.table.column_header_cell("Montag", bg=_get_header_bg_color(1)),
-                rx.table.column_header_cell("Dienstag", bg=_get_header_bg_color(2)),
-                rx.table.column_header_cell("Mittwoch", bg=_get_header_bg_color(3)),
-                rx.table.column_header_cell("Donnerstag", bg=_get_header_bg_color(4)),
-                rx.table.column_header_cell("Freitag", bg=_get_header_bg_color(5)),
-            ),
-        ),
-        rx.table.body(
-            show_block(
-                timetable_erik.get(TimeBlocks.First, []), times_erik[TimeBlocks.First]
-            ),
-            show_block(
-                timetable_erik.get(TimeBlocks.Second, []), times_erik[TimeBlocks.Second]
-            ),
-            show_block(
-                timetable_erik.get(TimeBlocks.Third, []), times_erik[TimeBlocks.Third]
-            ),
-            show_block(
-                timetable_erik.get(TimeBlocks.Fourth, []), times_erik[TimeBlocks.Fourth]
-            ),
-            show_block(
-                timetable_erik.get(TimeBlocks.Fifth, []), times_erik[TimeBlocks.First]
-            ),
-            show_block(
-                timetable_erik.get(TimeBlocks.Sixth, []), times_erik[TimeBlocks.Sixth]
-            ),
-        ),
-        variant="surface",
-        size="3",
-    )
-
-
-class TimetableMattisState(rx.State):
-    now: str
+class TimeTableState(rx.State):
+    timetable_mattis_this_week: list[TimeTableMattis]
+    timetable_mattis_next_week: list[TimeTableMattis]
+    timetable_erik: list[TimeTableErik]
+    current_week: int
+    this_week_type: str
+    next_week_type: str
+    start_of_week_string: str
+    end_of_week_string: str
+    next_start_of_week_string: str
+    next_end_of_week_string: str
 
     @rx.event
     def load(self):
-        self.now = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+        current_date = datetime.now()
+        self.current_week = datetime.now().isocalendar()[1]
+        start_of_week = current_date - timedelta(days=current_date.weekday())
+        self.start_of_week_string = start_of_week.strftime("%d.%m.%Y")
+        end_of_week = start_of_week + timedelta(days=6)
+        self.end_of_week_string = end_of_week.strftime("%d.%m.%Y")
+        next_start_of_week = start_of_week + timedelta(days=7)
+        self.next_start_of_week_string = next_start_of_week.strftime("%d.%m.%Y")
+        next_end_of_week = end_of_week + timedelta(days=7)
+        self.next_end_of_week_string = next_end_of_week.strftime("%d.%m.%Y")
 
-    @rx.var
-    def timetable_mattis_ungerade(self) -> list[list[str]]:
-        return [
-            [
-                "Religion",
-                "Physik",
-                "Mathe",
-                "Biologie",
-                "Deutsch",
-            ],
-            [
-                "Englisch",
-                "Deutsch",
-                "Sport",
-                "Geschichte",
-                "Mathe",
-            ],
-            [
-                "Mathe",
-                "Kunst",
-                "Informatik",
-                "Englisch",
-                None,
-            ],
-        ]
+        self.this_week_type = "ungerade" if self.current_week % 2 != 0 else "gerade"
+        self.next_week_type = (
+            "gerade" if self.this_week_type == "ungerade" else "ungerade"
+        )
 
-    @rx.var
-    def timetable_mattis_gerade(self) -> list[list[str]]:
-        return [
-            [
-                "Sport",
-                "Physik",
-                "Mathe",
-                "Sport",
-                "Religion",
-            ],
-            [
-                "Biologie",
-                "Informatik",
-                "Englisch",
-                "Kunst",
-                "Englisch",
-            ],
-            [
-                "Mathe",
-                "Deutsch",
-                "Geschichte",
-                None,
-                "Deutsch",
-            ],
-        ]
+        with rx.session() as session:
+            timetable_mattis_even = session.exec(
+                TimeTableMattis.select()
+                .filter(TimeTableMattis.even_week == True)
+                .order_by(TimeTableMattis.block.asc())
+            )
+            timetable_mattis_odd = session.exec(
+                TimeTableMattis.select()
+                .filter(TimeTableMattis.even_week == False)
+                .order_by(TimeTableMattis.block.asc())
+            )
+            timetable_erik = session.exec(TimeTableErik.select())
+            if self.this_week_type == "gerade":
+                self.timetable_mattis_this_week = cast(
+                    list[TimeTableMattis], timetable_mattis_even.all()
+                )
+                self.timetable_mattis_next_week = cast(
+                    list[TimeTableMattis], timetable_mattis_odd.all()
+                )
+            else:
+                self.timetable_mattis_this_week = cast(
+                    list[TimeTableMattis], timetable_mattis_odd.all()
+                )
+                self.timetable_mattis_next_week = cast(
+                    list[TimeTableMattis], timetable_mattis_even.all()
+                )
+            self.timetable_erik = cast(list[TimeTableErik], timetable_erik.all())
+            session.close()
 
 
-def show_mattis() -> rx.Component:
-    times_mattis = times[SchoolVisitors.Mattis]
-
-    current_date = datetime.now()
-    current_week = datetime.now().isocalendar()[1]
-    start_of_week = current_date - timedelta(days=current_date.weekday())
-    start_of_week_string = start_of_week.strftime("%d.%m.%Y")
-    end_of_week = start_of_week + timedelta(days=6)
-    end_of_week_string = end_of_week.strftime("%d.%m.%Y")
-    next_start_of_week = start_of_week + timedelta(days=7)
-    next_start_of_week_string = next_start_of_week.strftime("%d.%m.%Y")
-    next_end_of_week = end_of_week + timedelta(days=7)
-    next_end_of_week_string = next_end_of_week.strftime("%d.%m.%Y")
-
-    this_week_type = "ungerade" if current_week % 2 != 0 else "gerade"
-    next_week_type = "gerade" if this_week_type == "ungerade" else "ungerade"
-
+def show_timetable_mattis() -> rx.Component:
     return rx.vstack(
         rx.spacer(),
-        rx.heading(f"Mattis' timetable {TimetableMattisState.now}"),
+        rx.heading("Mattis' timetable"),
         rx.text(
-            f"Aktuelle Woche ({this_week_type} Kalenderwoche {current_week}; {start_of_week_string}-{end_of_week_string})"
+            f"Aktuelle Woche ({TimeTableState.this_week_type} Kalenderwoche {TimeTableState.current_week}; {TimeTableState.start_of_week_string}-{TimeTableState.end_of_week_string})"
         ),
-        show_mattis_timetable(
-            TimetableMattisState.timetable_mattis_ungerade, times_mattis
-        ),
+        show_timetable(TimeTableState.timetable_mattis_this_week),
         rx.spacer(spacing="2"),
         rx.text(
-            f"Nächste Woche ({next_week_type} Kalenderwoche {current_week + 1}; {next_start_of_week_string}-{next_end_of_week_string})"
+            f"Nächste Woche ({TimeTableState.next_week_type} Kalenderwoche {TimeTableState.current_week + 1}; {TimeTableState.next_start_of_week_string}-{TimeTableState.next_end_of_week_string})"
         ),
-        show_mattis_timetable(
-            TimetableMattisState.timetable_mattis_gerade, times_mattis
-        ),
+        show_timetable(TimeTableState.timetable_mattis_next_week),
     )
 
 
-def show_erik() -> rx.Component:
-    times_mattis = times[SchoolVisitors.Erik]
-    time_tables = timetables[SchoolVisitors.Erik]
+def show_timetable_erik() -> rx.Component:
     return rx.vstack(
         rx.spacer(),
         rx.heading("Erik's timetable"),
-        show_erik_timetable(time_tables, times_mattis),
+        show_timetable(TimeTableState.timetable_erik),
     )
 
 
@@ -328,7 +229,7 @@ def show_andrea() -> rx.Component:
     route="/school",
     title="Stundenpläne",
     icon="school",
-    on_load=TimetableMattisState.load,
+    on_load=TimeTableState.load,
 )
 def school_page() -> rx.Component:
     return rx.tabs.root(
@@ -344,11 +245,11 @@ def school_page() -> rx.Component:
             ),
         ),
         rx.tabs.content(
-            show_mattis(),
+            show_timetable_mattis(),
             value=SchoolVisitors.Mattis,
         ),
         rx.tabs.content(
-            show_erik(),
+            show_timetable_erik(),
             value=SchoolVisitors.Erik,
         ),
         rx.tabs.content(

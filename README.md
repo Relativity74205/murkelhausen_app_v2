@@ -26,6 +26,28 @@ docker image tag murkel_app2:0.1.0 ghcr.io/relativity74205/murkel_app2:0.1.0
 docker push ghcr.io/relativity74205/murkel_app2:0.1.0
 ```
 
+## DB Setup
+
+```sql
+CREATE SCHEMA murkelhausen_app_v2;
+CREATE
+USER murkelhausen_app_v2 WITH PASSWORD '';
+ALTER
+SCHEMA murkelhausen_app_v2 OWNER TO murkelhausen_app_v2;
+
+CREATE SCHEMA murkelhausen_app_v2_dev;
+CREATE
+USER murkelhausen_app_v2_dev WITH PASSWORD '';
+ALTER
+SCHEMA murkelhausen_app_v2_dev OWNER TO murkelhausen_app_v2_dev;
+```
+
+```bash
+reflex db init
+reflex db makemigrations
+reflex db migrate
+```
+
 # TODO
 
 - [ ] Dockerfile
