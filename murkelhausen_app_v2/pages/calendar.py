@@ -38,7 +38,7 @@ class CalendarState(rx.State):
     current_calendar_name: str = ALL_CALENDARS
     amount_of_weeks_to_show: str = "2"
 
-    @rx.var
+    @rx.var(cache=True)
     def appointments_to_show(self) -> list[Appointment]:
         return [
             appointment
@@ -47,7 +47,7 @@ class CalendarState(rx.State):
             or self.current_calendar_name == appointment.calendar_name
         ]
 
-    @rx.var
+    @rx.var(cache=True)
     def todays_appointments(self) -> list[Appointment]:
         return [
             appointment
@@ -55,7 +55,7 @@ class CalendarState(rx.State):
             if appointment.start_date == date.today()
         ]
 
-    @rx.var
+    @rx.var(cache=True)
     def tomorrows_appointments(self) -> list[Appointment]:
         return [
             appointment
