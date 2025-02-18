@@ -19,22 +19,22 @@ class WeatherState(rx.State):
     def update_weather(self):
         self.owm_weather, self.error_message = get_weather_data_muelheim()
 
-    @rx.var
+    @rx.var(cache=True)
     def current_temp(self) -> str:
         return self.owm_weather.current.temp_unit
 
-    @rx.var
+    @rx.var(cache=True)
     def current_feels_like(self) -> str:
         return self.owm_weather.current.feels_like_unit
 
-    @rx.var
+    @rx.var(cache=True)
     def today_forecast(self) -> Forecast:
         return Forecast(
             temp=self.owm_weather.daily[0].temp_unit,
             feels_like=self.owm_weather.daily[0].feels_like_unit,
         )
 
-    @rx.var
+    @rx.var(cache=True)
     def tomorrow_forecast(self) -> Forecast:
         return Forecast(
             temp=self.owm_weather.daily[1].temp_unit,

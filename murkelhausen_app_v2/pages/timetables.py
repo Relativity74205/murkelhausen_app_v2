@@ -38,6 +38,17 @@ class TimeTableErik(rx.Model, table=True):
     subject_friday: str | None
 
 
+class TimeTableAndrea(rx.Model, table=True):
+    __tablename__ = "time_table_andrea"
+    block: int
+    timeframe: str
+    subject_monday: str | None
+    subject_tuesday: str | None
+    subject_wednesday: str | None
+    subject_thursday: str | None
+    subject_friday: str | None
+
+
 def _get_header_bg_color(weekday_number: int) -> Color:
     if datetime.now().isoweekday() == weekday_number:
         return rx.color("yellow")
@@ -137,6 +148,7 @@ class TimeTableState(rx.State):
     timetable_mattis_this_week: list[TimeTableMattis]
     timetable_mattis_next_week: list[TimeTableMattis]
     timetable_erik: list[TimeTableErik]
+    timetable_andrea: list[TimeTableAndrea]
     current_week: int
     this_week_type: str
     next_week_type: str
@@ -174,7 +186,12 @@ class TimeTableState(rx.State):
                 .filter(TimeTableMattis.even_week == False)
                 .order_by(TimeTableMattis.block.asc())
             )
-            timetable_erik = session.exec(TimeTableErik.select())
+            timetable_erik = session.exec(
+                TimeTableErik.select().order_by(TimeTableErik.block.asc())
+            )
+            timetable_andrea = session.exec(
+                TimeTableAndrea.select().order_by(TimeTableAndrea.block.asc())
+            )
             if self.this_week_type == "gerade":
                 self.timetable_mattis_this_week = cast(
                     list[TimeTableMattis], timetable_mattis_even.all()
@@ -190,6 +207,7 @@ class TimeTableState(rx.State):
                     list[TimeTableMattis], timetable_mattis_even.all()
                 )
             self.timetable_erik = cast(list[TimeTableErik], timetable_erik.all())
+            self.timetable_andrea = cast(list[TimeTableAndrea], timetable_andrea.all())
             session.close()
 
 
@@ -217,11 +235,11 @@ def show_timetable_erik() -> rx.Component:
     )
 
 
-def show_andrea() -> rx.Component:
+def show_timetable_andrea() -> rx.Component:
     return rx.vstack(
         rx.spacer(),
         rx.heading("Andrea's timetable"),
-        rx.text("Wednesday: 8:00 - 13:00"),
+        show_timetable(TimeTableState.timetable_andrea),
     )
 
 
@@ -253,7 +271,7 @@ def school_page() -> rx.Component:
             value=SchoolVisitors.Erik,
         ),
         rx.tabs.content(
-            show_andrea(),
+            show_timetable_andrea(),
             value=SchoolVisitors.Andrea,
         ),
         default_value=SchoolVisitors.Mattis,
