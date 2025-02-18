@@ -15,7 +15,7 @@ TEAM_ERSTE_HERREN = "1986091"
 
 @dataclass
 class HandballGame:
-    game_date: date
+    game_date: date | None
     game_date_formatted: str
     time: str
     time_original: str | None
@@ -36,30 +36,44 @@ def parse_games(html_content: str) -> list[HandballGame]:
     games = []
     while (next_row := next_row.findNext("tr")) is not None:
         parts = next_row.find_all("td")
-        game_date = parts[1].text.strip()
-        time = parts[2].text.strip().split(" ")[0].strip()
-        if "alt" in parts[2].attrs:
-            time_original = parts[2]["alt"]
-        else:
+        day = parts[0].text.strip()
+        if day == "Termin offen":
+            game_date = None
+            game_date_formatted = "Termin offen"
+            time = None
             time_original = None
-        halle = parts[3].text.strip()
-        home_team = parts[5].text.strip()
-        away_team = parts[6].text.strip()
-        result = parts[7].text.strip()
-        if parts[7].find("a") is not None:
-            link_to_spielbericht = parts[7].find("a")["href"]
-            spielbericht_genehmigt = parts[9].find("img") is not None
-        else:
+            halle = parts[2].text.strip()
+            home_team = parts[4].text.strip()
+            away_team = parts[5].text.strip()
+            result = None
             link_to_spielbericht = None
             spielbericht_genehmigt = None
+        else:
+            game_date = parts[1].text.strip()
+            time = parts[2].text.strip().split(" ")[0].strip()
+            if "alt" in parts[2].attrs:
+                time_original = parts[2]["alt"]
+            else:
+                time_original = None
+            halle = parts[3].text.strip()
+            home_team = parts[5].text.strip()
+            away_team = parts[6].text.strip()
+            result = parts[7].text.strip()
+            if parts[7].find("a") is not None:
+                link_to_spielbericht = parts[7].find("a")["href"]
+                spielbericht_genehmigt = parts[9].find("img") is not None
+            else:
+                link_to_spielbericht = None
+                spielbericht_genehmigt = None
 
-        game_date = datetime.strptime(game_date, "%d.%m.%Y").date()
+            game_date = datetime.strptime(game_date, "%d.%m.%Y").date()
+            game_date_formatted = format_date(
+                game_date, format="EEE, d.M.yyyy", locale="de_DE"
+            )
 
         game = HandballGame(
             game_date=game_date,
-            game_date_formatted=format_date(
-                game_date, format="EEE, d.M.yyyy", locale="de_DE"
-            ),
+            game_date_formatted=game_date_formatted,
             time=time,
             time_original=time_original,
             home_team=home_team,
