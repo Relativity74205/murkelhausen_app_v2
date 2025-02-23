@@ -22,6 +22,7 @@ class FormState(Enum):
 
 
 ALL_CALENDARS = "Alle"
+DEFAULT_APPOINTMENT_CALENDAR_NAME = "Arkadius"
 
 
 class CalendarState(rx.State):
@@ -36,6 +37,8 @@ class CalendarState(rx.State):
     form_whole_day: bool
     form_button_text: str = FormState.ADD.value
     current_calendar_name: str = ALL_CALENDARS
+    form_appointment_calendar_name: str = DEFAULT_APPOINTMENT_CALENDAR_NAME
+    form_original_appointment_calendar_name: str | None = None
     amount_of_weeks_to_show: str = "2"
 
     @rx.var(cache=True)
@@ -98,11 +101,36 @@ class CalendarState(rx.State):
                 start=event_start,
                 end=event_end,
             )
-            update_appointment(
-                event=event,
-                calendar_id=self._get_calendar_id(self.current_calendar_name),
-            )
+            if (
+                self.form_original_appointment_calendar_name
+                != self.form_appointment_calendar_name
+            ):
+                delete_appointment(
+                    event=event,
+                    calendar_id=self._get_calendar_id(
+                        self.form_original_appointment_calendar_name
+                    ),
+                )
+                event = Event(
+                    summary=self.form_event_name,
+                    start=event_start,
+                    end=event_end,
+                )
+                create_appointment(
+                    event=event,
+                    calendar_id=self._get_calendar_id(
+                        self.form_appointment_calendar_name
+                    ),
+                )
+            else:
+                update_appointment(
+                    event=event,
+                    calendar_id=self._get_calendar_id(
+                        self.form_appointment_calendar_name
+                    ),
+                )
             yield rx.toast(f"Event geändert: '{event.summary}'")
+            self._clear_form()
         else:
             event = Event(
                 summary=self.form_event_name,
@@ -112,10 +140,9 @@ class CalendarState(rx.State):
             yield rx.toast(f"Event erstellt: '{event.summary}'")
             create_appointment(
                 event=event,
-                calendar_id=self._get_calendar_id(self.current_calendar_name),
+                calendar_id=self._get_calendar_id(self.form_appointment_calendar_name),
             )
 
-        self._clear_form()
         self.get_appointments()
 
     @rx.event
@@ -168,6 +195,8 @@ class CalendarState(rx.State):
         self.form_event_end_date = appointment.end_timestamp.date().isoformat()
 
         self.form_button_text = FormState.EDIT.value
+        self.form_appointment_calendar_name = appointment.calendar_name
+        self.form_original_appointment_calendar_name = appointment.calendar_name
         if appointment.is_whole_day is False:
             self.form_start_time = appointment.start_timestamp.strftime("%H:%M")
             self.form_end_time = appointment.end_timestamp.strftime("%H:%M")
@@ -186,6 +215,8 @@ class CalendarState(rx.State):
         self.form_end_time = ""
         self.form_whole_day = False
         self.form_button_text = FormState.ADD.value
+        self.form_appointment_calendar_name = DEFAULT_APPOINTMENT_CALENDAR_NAME
+        self.form_original_appointment_calendar_name = None
 
     @rx.event
     def set_new_calendar(self, calendar: str):
@@ -229,14 +260,14 @@ def show_appointment_form_header() -> rx.Component:
         ),
         rx.vstack(
             rx.heading(
-                f"Termin {CalendarState.form_button_text}",
+                f"Termin {CalendarState.form_button_text} für",
                 size="4",
                 weight="bold",
             ),
-            rx.heading(
-                f"für '{CalendarState.current_calendar_name}'",
-                size="4",
-                weight="bold",
+            rx.select(
+                [ALL_CALENDARS] + list(config.google.calendars.keys()),
+                value=CalendarState.form_appointment_calendar_name,
+                on_change=CalendarState.set_form_appointment_calendar_name,
             ),
         ),
         height="100%",
@@ -370,7 +401,7 @@ def show_appointment_form() -> rx.Component:
                     type="submit",
                 ),
                 rx.button(
-                    "Abbrechen",
+                    "Zurücksetzen",
                     on_click=CalendarState.clear_form,
                     width="100%",
                     bg="grey",
@@ -540,16 +571,24 @@ def show_appointment_table(
 
 def show_appointment_list() -> rx.Component:
     header_string = (
-        f"Termine in den nächsten {CalendarState.amount_of_weeks_to_show} Wochen für {CalendarState.current_calendar_name}",
+        f"Termine in den nächsten {CalendarState.amount_of_weeks_to_show} Wochen für",
     )
 
     return rx.card(
         rx.vstack(
-            rx.heading(header_string),
+            rx.hstack(
+                rx.heading(header_string),
+                rx.select(
+                    [ALL_CALENDARS] + list(config.google.calendars.keys()),
+                    value=CalendarState.current_calendar_name,
+                    on_change=CalendarState.set_new_calendar,
+                ),
+                align="center",
+            ),
             show_appointment_table(
                 CalendarState.appointments_to_show,
                 show_calendar_col=CalendarState.current_calendar_name == ALL_CALENDARS,
-                show_edit_col=CalendarState.current_calendar_name != ALL_CALENDARS,
+                show_edit_col=True,
                 show_delete_col=True,
                 show_row_colors=True,
             ),
@@ -569,18 +608,9 @@ def show_appointment_list() -> rx.Component:
 
 def show_appointment_page() -> rx.Component:
     return rx.vstack(
-        rx.select(
-            [ALL_CALENDARS] + list(config.google.calendars.keys()),
-            value=CalendarState.current_calendar_name,
-            on_change=CalendarState.set_new_calendar,
-        ),
         rx.hstack(
             show_appointment_list(),
-            rx.cond(
-                CalendarState.current_calendar_name != ALL_CALENDARS,
-                show_appointment_form(),
-                None,
-            ),
+            show_appointment_form(),
         ),
     )
 
