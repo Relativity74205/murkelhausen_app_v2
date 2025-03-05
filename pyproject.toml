@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "murkelhausen-app-v2"
-version = "0.13.0"
+version = "0.13.1"
 description = ""
 authors = ["Arkadius Schuchhardt <arkadius@schuchhardt.com>"]
 readme = "README.md"
@@ -29,7 +29,7 @@ types-pytz = "^2024.2.0.20241221"
 freezegun = "^1.5.1"
 
 [tool.mypy]
-python_version = "0.13.0"
+python_version = "0.13.1"
 warn_return_any = true
 ignore_missing_imports = true
 
