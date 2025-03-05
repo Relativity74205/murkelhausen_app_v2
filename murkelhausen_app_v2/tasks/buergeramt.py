@@ -130,4 +130,4 @@ def get_next_free_appointment_from_buergeramt_abholungen():
 
 
 if __name__ == "__main__":
-    print(get_next_free_appointment_from_buergeramt_abholungen())
+    get_next_free_appointment_from_buergeramt_abholungen()
