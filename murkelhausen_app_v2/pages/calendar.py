@@ -27,6 +27,7 @@ DEFAULT_APPOINTMENT_CALENDAR_NAME = "Arkadius"
 
 class CalendarState(rx.State):
     appointments: list[Appointment]
+    appointments_loaded: bool = False
     new_appointment_form: dict
     form_event_id: str
     form_event_name: str
@@ -41,7 +42,7 @@ class CalendarState(rx.State):
     form_original_appointment_calendar_name: str | None = None
     amount_of_weeks_to_show: str = "2"
 
-    @rx.var(cache=True)
+    @rx.var(cache=False)
     def appointments_to_show(self) -> list[Appointment]:
         return [
             appointment
@@ -156,6 +157,7 @@ class CalendarState(rx.State):
 
     @rx.event
     def get_appointments(self):
+        self.appointments_loaded = False
         calendar_ids = self._get_all_calendar_ids()
 
         self.appointments = list(
@@ -171,6 +173,7 @@ class CalendarState(rx.State):
             )
         )
         self.appointments.sort(key=lambda x: x.start_timestamp)
+        self.appointments_loaded = True
 
     @rx.event
     def delete_appointment(self, appointment: dict):
@@ -585,12 +588,17 @@ def show_appointment_list() -> rx.Component:
                 ),
                 align="center",
             ),
-            show_appointment_table(
-                CalendarState.appointments_to_show,
-                show_calendar_col=CalendarState.current_calendar_name == ALL_CALENDARS,
-                show_edit_col=True,
-                show_delete_col=True,
-                show_row_colors=True,
+            rx.cond(
+                CalendarState.appointments_loaded == True,
+                show_appointment_table(
+                    CalendarState.appointments_to_show,
+                    show_calendar_col=CalendarState.current_calendar_name
+                    == ALL_CALENDARS,
+                    show_edit_col=True,
+                    show_delete_col=True,
+                    show_row_colors=True,
+                ),
+                rx.spinner("Suche nach Terminen..."),
             ),
             rx.hstack(
                 rx.text("Zeige Termine der nächsten Wochen:"),

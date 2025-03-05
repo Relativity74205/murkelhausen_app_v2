@@ -132,7 +132,7 @@ config = Config(
         buergeramt_task=BuergeramtTask(
             active=False,
             schedule_minutes=3,
-            search_timeframe_days=7,
+            search_timeframe_days=1,
         ),
     ),
 )
