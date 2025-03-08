@@ -2,6 +2,7 @@ import itertools
 from datetime import date, datetime, timedelta
 from enum import Enum
 
+import pytz
 import reflex as rx
 from gcsa.event import Event
 
@@ -82,16 +83,20 @@ class CalendarState(rx.State):
             return
 
         if self.form_whole_day is True:
-            event_start = date.fromisoformat(self.form_event_start_date)
-            event_end = date.fromisoformat(self.form_event_end_date) + timedelta(days=1)
+            event_start = date.fromisoformat(self.form_event_start_date).astimezone(
+                pytz.timezone("Europe/Berlin")
+            )
+            event_end = date.fromisoformat(self.form_event_end_date).astimezone(
+                pytz.timezone("Europe/Berlin")
+            ) + timedelta(days=1)
         else:
             event_start = datetime.fromisoformat(
                 f"{self.form_event_start_date}T{self.form_start_time}:00"
-            )
+            ).astimezone(pytz.timezone("Europe/Berlin"))
 
             event_end = datetime.fromisoformat(
                 f"{self.form_event_start_date}T{self.form_end_time}:00"
-            )
+            ).astimezone(pytz.timezone("Europe/Berlin"))
             if self.form_end_time < self.form_start_time:
                 event_end = event_end + timedelta(days=1)
 
@@ -232,10 +237,7 @@ class CalendarState(rx.State):
         self.get_appointments()
 
     def _get_all_calendar_ids(self) -> tuple[str, ...]:
-        # if self.current_calendar_name == ALL_CALENDARS:
         return tuple(config.google.calendars.values())
-        #
-        # return (self._get_calendar_id(self.current_calendar_name),)
 
     @staticmethod
     def _get_calender_name(searched_calendar_id: str) -> str:

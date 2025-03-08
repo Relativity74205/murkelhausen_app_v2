@@ -157,6 +157,18 @@ def create_appointment(event: Event, calendar_id: str):
     gc.add_event(event, calendar_id=calendar_id)
 
 
+def create_appointment_if_not_exists(event: Event, calendar_id: str):
+    if check_if_appointment_already_exists(
+        summary=event.summary,
+        time_min=event.start,
+        time_max=event.end,
+        calendar_id=calendar_id,
+    ):
+        raise ValueError(f"Appointment {event.summary} already exists")
+
+    create_appointment(event, calendar_id)
+
+
 def update_appointment(event: Event, calendar_id: str):
     gc = get_google_calendar_client()
     gc.update_event(event, calendar_id=calendar_id)
@@ -165,6 +177,16 @@ def update_appointment(event: Event, calendar_id: str):
 def delete_appointment(event: Event, calendar_id: str):
     gc = get_google_calendar_client()
     gc.delete_event(event, calendar_id=calendar_id)
+
+
+def check_if_appointment_already_exists(
+    summary: str, time_min: datetime, time_max: datetime, calendar_id: str
+) -> bool:
+    gc = get_google_calendar_client()
+    events = gc.get_events(
+        calendar_id=calendar_id, time_min=time_min, time_max=time_max, query=summary
+    )
+    return len(list(events)) > 0
 
 
 def get_list_of_appointments(

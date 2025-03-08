@@ -1,10 +1,17 @@
-from datetime import date
+from datetime import date, datetime, timedelta
+from functools import partial
+import logging
 
 import reflex as rx
 from babel.dates import format_date
+from gcsa.event import Event
 
 from murkelhausen_app_v2.backend import fussballde
+from murkelhausen_app_v2.backend.google_calendar import create_appointment_if_not_exists
+from murkelhausen_app_v2.config import config
 from murkelhausen_app_v2.templates.template import template
+
+log = logging.getLogger(__name__)
 
 
 class FussballGame(rx.Base):
@@ -31,7 +38,6 @@ class FussballGame(rx.Base):
 
 class State(rx.State):
     f1_junioren: list[FussballGame]
-    f3_junioren: list[FussballGame]
     speldorf: list[FussballGame]
 
     def update_termine(self):
@@ -39,17 +45,45 @@ class State(rx.State):
             FussballGame.from_dict(game)
             for game in fussballde.get_erik_f1_junioren_next_games()
         ]
-        self.f3_junioren = [
-            FussballGame.from_dict(game)
-            for game in fussballde.get_erik_f3_junioren_next_games()
-        ]
         self.speldorf = [
             FussballGame.from_dict(game)
             for game in fussballde.get_speldorf_next_home_games()
         ]
 
+    @rx.event
+    def add_to_calendar(self, game: FussballGame):
+        game_time = datetime.combine(
+            game.game_date, datetime.strptime(game.time.split(" ")[0], "%H:%M").time()
+        )
+        start = game_time
+        end = game_time + timedelta(hours=1.5)
+        try:
+            create_appointment_if_not_exists(
+                event=Event(
+                    summary=game.home_team + " vs " + game.away_team,
+                    start=start,
+                    end=end,
+                ),
+                calendar_id=config.google.calendars["Erik"],
+            )
+            yield rx.toast(
+                f"Termin hinzugefügt: {game.home_team} vs {game.away_team} am {game.game_date} um {game.time}"
+            )
+            return
+        except ValueError:
+            yield rx.toast("Termin bereits vorhanden", level="error")
+            return
 
-def show_game(game: FussballGame) -> rx.Component:
+
+def show_game_without_calendar_col(game: FussballGame) -> rx.Component:
+    return show_game(game, show_calendar_col=False)
+
+
+def show_game_with_calendar_col(game: FussballGame) -> rx.Component:
+    return show_game(game, show_calendar_col=True)
+
+
+def show_game(game: FussballGame, show_calendar_col: bool) -> rx.Component:
     color = rx.cond(
         game.game_date == date.today(),
         rx.color("yellow"),
@@ -63,13 +97,23 @@ def show_game(game: FussballGame) -> rx.Component:
         rx.table.cell(game.home_team),
         rx.table.cell(game.away_team),
         rx.table.cell(game.result),
+        rx.cond(
+            show_calendar_col,
+            rx.table.cell(
+                rx.button(
+                    "Zum Kalender hinzufügen",
+                    on_click=State.add_to_calendar(game),
+                )
+            ),
+            None,
+        ),
         bg=color,
         style={"_hover": {"bg": color, "opacity": 0.5}},
         align="center",
     )
 
 
-def show_table_header() -> rx.Component:
+def show_table_header(show_calendar_col: bool) -> rx.Component:
     return rx.table.header(
         rx.table.row(
             rx.table.column_header_cell("Tag"),
@@ -78,6 +122,11 @@ def show_table_header() -> rx.Component:
             rx.table.column_header_cell("Heim"),
             rx.table.column_header_cell("Gast"),
             rx.table.column_header_cell("Info"),
+            rx.cond(
+                show_calendar_col,
+                rx.table.column_header_cell("Zum Kalender hinzufügen"),
+                None,
+            ),
         ),
     )
 
@@ -94,23 +143,9 @@ def fussball() -> rx.Component:
             is_external=True,
         ),
         rx.table.root(
-            show_table_header(),
+            show_table_header(show_calendar_col=True),
             rx.table.body(
-                rx.foreach(State.f1_junioren, show_game),
-            ),
-            variant="surface",
-            size="3",
-        ),
-        rx.heading("VFB Speldorf F3-Junioren"),
-        rx.link(
-            "Link",
-            href="https://www.fussball.de/mannschaft/vfb-speldorf-iii-vfb-speldorf-niederrhein/-/saison/2425/team-id/02QRA8CDA4000000VS5489B2VUEKSRPC#!/",
-            is_external=True,
-        ),
-        rx.table.root(
-            show_table_header(),
-            rx.table.body(
-                rx.foreach(State.f3_junioren, show_game),
+                rx.foreach(State.f1_junioren, show_game_with_calendar_col),
             ),
             variant="surface",
             size="3",
@@ -122,9 +157,9 @@ def fussball() -> rx.Component:
             is_external=True,
         ),
         rx.table.root(
-            show_table_header(),
+            show_table_header(show_calendar_col=False),
             rx.table.body(
-                rx.foreach(State.speldorf, show_game),
+                rx.foreach(State.speldorf, show_game_without_calendar_col),
             ),
             variant="surface",
             size="3",

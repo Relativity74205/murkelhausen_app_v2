@@ -61,15 +61,6 @@ def get_erik_f1_junioren_next_games() -> list[dict]:
     return parse_next_games(r.text)
 
 
-def get_erik_f3_junioren_next_games() -> list[dict]:
-    r = requests.get(
-        f"https://www.fussball.de/ajax.team.next.games/-/mode/PAGE/team-id/{F3_JUNIOREN}",
-        timeout=config.fussball_de.request_timeout,
-    )
-
-    return parse_next_games(r.text)
-
-
 def get_speldorf_next_home_games() -> list[dict]:
     games = get_speldorf_next_games()
     return [game for game in games if "Speldorf" in game["home_team"]]

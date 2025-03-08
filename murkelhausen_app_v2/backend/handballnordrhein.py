@@ -25,6 +25,7 @@ class HandballGame:
     result: str
     link_to_spielbericht: str | None
     spielbericht_genehmigt: bool | None
+    spielfrei: bool | None
 
 
 def parse_games(html_content: str) -> list[HandballGame]:
@@ -48,6 +49,7 @@ def parse_games(html_content: str) -> list[HandballGame]:
             result = None
             link_to_spielbericht = None
             spielbericht_genehmigt = None
+            spielfrei = True
         else:
             game_date = parts[1].text.strip()
             time = parts[2].text.strip().split(" ")[0].strip()
@@ -70,6 +72,7 @@ def parse_games(html_content: str) -> list[HandballGame]:
             game_date_formatted = format_date(
                 game_date, format="EEE, d.M.yyyy", locale="de_DE"
             )
+            spielfrei = time == "00:00"
 
         game = HandballGame(
             game_date=game_date,
@@ -82,6 +85,7 @@ def parse_games(html_content: str) -> list[HandballGame]:
             result=result,
             link_to_spielbericht=link_to_spielbericht,
             spielbericht_genehmigt=spielbericht_genehmigt,
+            spielfrei=spielfrei,
         )
         games.append(game)
 
